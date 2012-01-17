@@ -72,9 +72,12 @@ class User
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)
 
   class << self
-
     def [](uname)
       self.where(:username => uname).first
+    end
+
+    def fontli
+      self['fontli']
     end
 
     def by_id(uid)
@@ -485,6 +488,7 @@ private
   end
 
   # create friendships b/w all users invited self.
+  # Make 'fontli' as a friend of mine.
   def check_friendships
     invites = unless self.platform.blank? # FB/Twitter user
       Invite.where(:platform => self.platform, :extuid => self.extuid)
@@ -492,6 +496,8 @@ private
       Invite.where(:email => self.email)
     end
     invites.to_a.each { |invit| invit.mark_as_friend(self) }
+
+    self.follows.create(:follower_id => User.fontli.id)
     true
   end
 

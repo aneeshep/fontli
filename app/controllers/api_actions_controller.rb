@@ -283,7 +283,7 @@ class ApiActionsController < ApiBaseController
   # Returns photos + flag to know whether the current_user liked/commented on it,
   # And also the username of the one who liked/commented on it.
   def my_feeds
-    photos = Photo.feeds_for(@current_user)
+    photos = Photo.feeds_for(@current_user, (@page || 1)).to_a
     return render_response([]) if photos.empty?
     foto_ids = photos.collect(&:id)
 

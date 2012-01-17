@@ -143,9 +143,11 @@ class Photo
       !self.flags.where(:user_id => current_user.id).first.nil?
     end
 
-    def feeds_for(usr = nil)
+    def feeds_for(usr = nil, page = 1, lmt = 15)
       usr ||= current_user
-      Photo.recent(45).to_a
+      frn_ids = usr.friend_ids + [usr.id]
+      offst = (page.to_i - 1) * lmt
+      Photo.where(:user_id.in => frn_ids).desc(:created_at).skip(offst).limit(lmt)
     end
 
     def popular
