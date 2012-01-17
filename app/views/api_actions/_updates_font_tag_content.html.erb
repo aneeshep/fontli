@@ -4,7 +4,7 @@
 <li class="tag">
   <img class="ref-img" src='<%= font.photo.url(:thumb) %>' />
   <div class="text">
-    <%= tagged_usrs.collect do |uname| %>
+    <%= taggd_usrs.collect do |uname| %>
       <a class="author" href="profile:<%= uname %>"><%= uname %></a>
     <% end.join(', ').html_safe %> <%= "and #{pluralize(taggd_cnt, 'other')}" if taggd_cnt > 0 %> tagged <span class="content"><strong>"<%= font.family_name %>"</strong></span> on your post
   </div>
