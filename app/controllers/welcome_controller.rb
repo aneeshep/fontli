@@ -8,7 +8,8 @@ class WelcomeController < ApplicationController
     if logged_in?
       redirect_to feeds_url
     else
-      redirect_to login_url(:default)
+      #redirect_to login_url(:default)
+      render 'index', :layout => false
     end
   end
 

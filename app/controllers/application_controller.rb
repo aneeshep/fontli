@@ -31,4 +31,12 @@ protected
     modal.user_id == current_user.id
   end
   helper_method :owner?
+
+  def mob_req?
+    mob_agent_regex = /iphone|android/
+    agent = request.headers["HTTP_USER_AGENT"].to_s.downcase
+    Rails.logger.info "----my_user_agent = #{agent}----"
+    !agent.match(mob_agent_regex).nil?
+  end
+  helper_method :mob_req?
 end
