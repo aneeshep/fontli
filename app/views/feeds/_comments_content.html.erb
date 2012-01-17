@@ -1,0 +1,21 @@
+<% comments = foto.comments%>
+<div id="font_comment" class="slide">
+  <h1>Comments</h1>
+  <% unless comments.blank? %>
+  <% comments.each do |comment| %>
+  <div class="comment_listing clear">
+    <%= image_tag(comment.user.url_thumb, :class=>"rounded_corner float_left")%>
+    <div class="comment_description">
+      <h5><a href="#"><%= comment.username%></a></h5>
+      <p>
+        <%= comment.body%>
+      </p>
+      <p class="small_text">
+        <%= timestamp(comment.created_at) %>
+      </p>
+    </div>
+  </div>
+  <%end%>
+  <% end %>
+</div>
+<%= render "new_comment", :foto => foto%> 

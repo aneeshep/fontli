@@ -1,0 +1,14 @@
+<div class="meta_elements">
+  <h5 class="photo_title"><%= foto.caption%></h5>
+  <ul class="photo_meta">
+    <li>
+      <%= link_to foto.fonts.count, {}, {:href => "#", :class => "font_types"}%>
+    </li>
+    <li>
+      <%= link_to foto.comments.count, {}, {:href => "#", :class => "comments"}%>
+    </li>
+    <li>
+      <%= link_to foto.likes.count, {}, {:href => "#", :class => "liked"}%>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,29 @@
+<div id="remote_linked_article">
+  <%= render "detail_view_header", :foto => @foto%>
+  <div id="content-slider" class="new_slider">
+    <ul class="royalSlidesContainer">
+      <li class="royalSlide">
+        <div  class="slide" id="tagging_area">
+          <div id="on_image_element">
+            <%= form_tag socialize_feed_path(@foto), :class => 'feed-cta-form', :remote => true do %>
+            <%= button_tag("", :id => "tag_fonts")%>
+            <% if @foto.likes.where(:user_id => current_user.id).empty? %>
+            <%= button_tag("", :type => "submit",:id => 'like_' + @foto.id.to_s, :value => 'like', :name => 'modal', :class => 'like_this')%>
+            <%else %>
+            <%= button_tag("", :type => "submit",:id => 'unlike_' + @foto.id.to_s, :value => 'unlike', :name => 'modal', :class => 'me_likey')%>
+            <% end %>
+            <%end%>
+          </div>
+          <%= image_tag(@foto.url,:size => "500x500", :id=>"foto", :class => @foto.id.to_s)%>
+        </div>
+      </li>
+      <li class="royalSlide">
+        <%= render "detail_view_fonts", :foto => @foto%>
+      </li>
+      <li class="royalSlide comments_block">
+        <%= render "detail_view_comments", :foto => @foto%>
+      </li>
+    </ul>
+  </div>
+  <%= render "detail_view_footer", :foto => @foto%>
+</div>

@@ -1,0 +1,19 @@
+<h3>Sign In</h3>
+<%= form_tag login_path(:default), :id => 'login_form' do %>
+  <label>Username or email</label>
+  <input type="text" name="username" value="<%= params[:username] %>" />
+
+  <label>Password</label>
+  <input type="password" name="password" />
+
+  <div class='submit'>
+    <button type="submit" value="signin">SIGN IN</button>
+    <div class='cta'>
+      <%= link_to 'New User?', signup_path(:default) %>
+      <%= link_to 'Forgot Password?', "#" %>
+    </div>
+    <div class='clear'></div>
+  </div>
+<% end %>
+<br />
+<%= render 'shared/social_connect' %>

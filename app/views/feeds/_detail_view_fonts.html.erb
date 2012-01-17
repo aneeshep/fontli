@@ -1,0 +1,23 @@
+<div id="font_spotted" class="slide">
+  <h1>FONTS</h1>
+  <% foto.fonts.each do |font|%>
+  <div class="fonts clear">
+    <div class="font_names">
+      <% href,image = buy_at_href(font.family_id)%> <h4><a href="#"><%= font.subfont_name ? font.subfont_name : font.family_name %></a></h4>
+      <h2 class="font_sample"><%= image.html_safe%></h2>
+    </div>
+    <div class="font_tags">
+      <a class="spot_on rounded_corner" href="#">Spot on</a>
+      <p class="small_text third_color uppercase">
+        30 Tags , 12 Agrees
+      </p>
+    </div>
+    <div class="buy_at">
+      <p class="uppercase">
+        Buy at
+      </p>
+      <%= link_to(image_tag("support_logo.png"),{},{:href => href})%>
+    </div>
+  </div>
+  <%end%>
+</div>

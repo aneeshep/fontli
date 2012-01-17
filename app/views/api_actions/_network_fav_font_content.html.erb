@@ -1,0 +1,13 @@
+<% recnt_fnt = @fonts_map[feeds.first.font_id].first %>
+<% last_fnt = @fonts_map[feeds.last.font_id].first %>
+<li class="fav">
+  <div class="text">
+    <a class="author" href="profile:<%= uid %>"><%= @users_map[uid].first.username %></a> added <span class="content"><strong><%= recent_fnt.family_name %></strong> <%= "and <strong>#{last_fnt.family_name}</strong>".html_safe if(feeds.length == 2) %> <%= "and #{feeds.length - 1} more fonts" if(feeds.length > 2) %></span> to favorites.
+  </div>
+  <div class="clearfix">
+    <% feeds.each do |fav_fnt| %>
+      <img class="ref-img-med" src="<%= @fonts_map[fav_fnt.font_id].first.img_url %>" />
+    <% end %>
+  </div>
+  <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>
+</li>

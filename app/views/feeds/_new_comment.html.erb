@@ -1,0 +1,25 @@
+<div id="new_comment">
+  <%= form_tag socialize_feed_path(foto), :class => 'comment-form', :id => "comment_form_#{foto.id.to_s}", :remote => true do %>
+  <%= text_area_tag :body, nil, :size => "60x3", :placeholder => "Comment (120 chars max.)"%>
+  <%= hidden_field_tag 'modal', 'comment'%>
+  <%= hidden_field_tag 'foto_id', foto.id.to_s%>
+  <span><%= cta_button foto.id.to_s, 'comment', 'Post' %></span>
+  <% end %>
+</div>
+<script>
+  $(document).ready(function() {
+    $("#body").click(function() {
+      $(this).attr("placeholder", "").focus();
+    });
+    $("#body").keypress(function(event) {
+      if(event.which == 64) {
+        var foto_id = $('#foto_id').val();
+        $.ajax({
+          method : 'get',
+          url : '/get_mentions_list?id=' + foto_id
+        });
+      }
+    })
+  });
+
+</script>

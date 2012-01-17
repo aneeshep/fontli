@@ -1,0 +1,6 @@
+<% if @status %>
+  <%= render "publish_foto_form", :foto => @photo %>
+<% else %>
+  <%= render "upload_foto_form", :errors => @photo.errors.full_messages %>
+  <%= link_to 'Back', feeds_path %>
+<%  end %>

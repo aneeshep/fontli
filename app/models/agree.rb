@@ -1,0 +1,58 @@
+class Agree
+  include Mongoid::Document
+  include Mongoid::Timestamps::Created
+  include MongoExtensions
+  include Scorable
+  include Notifiable
+
+  belongs_to :user, :index => true
+  belongs_to :font, :index => true
+
+  validates :user_id, :font_id, :presence => true
+  validates :user_id, :uniqueness => { :scope => :font_id, :message => 'has already accepted!' }
+
+  after_create :update_font_pick_status
+
+  def notif_context
+    ['has accepted']
+  end
+
+  def publisher_pick?
+    self.user_id == self.font.photo.user_id
+  end
+
+  def expert_pick?
+    self.user.expert
+  end
+
+  def notif_target_user_id
+    FontTag.where(:font_id => self.font_id).only(:user_id).collect(&:user_id)
+  end
+
+  def scorable_target_user
+    self.font.user
+  end
+
+  def active_points
+    expert_pick? ? 5 : 0
+  end
+
+  def passive_points
+    (expert_pick? || publisher_pick?) ? 10 : 1
+  end
+
+private
+
+  def update_font_pick_status
+    return true unless publisher_pick? || expert_pick? # nothing to do
+    fnt, sts_map = [self.font, Font::PICK_STATUS_MAP.dup]
+    exp_pik, pub_pik = [ sts_map[:expert_pick], sts_map[:publisher_pick] ]
+    return true if expert_pick? && fnt.pick_status == exp_pik # already a expert pick
+    return true if publisher_pick? && fnt.pick_status == pub_pik # already a publisher pick
+    return true if fnt.pick_status == exp_pik + pub_pik # max already
+    pck_stats = fnt.pick_status
+    pck_stats += (expert_pick? ? exp_pik : pub_pik)
+    self.font.update_attribute(:pick_status, pck_stats)
+    true
+  end
+end

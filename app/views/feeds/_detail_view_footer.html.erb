@@ -1,0 +1,29 @@
+<div class="clear" id="font_toolbar">
+  <div class="font_profile">
+    <%= image_tag(foto.user.url, :size => "33x33", :class=>"float_left")%>
+    <div class="profile_desc">
+      <%= link_to(foto.user.username,{},{:href => "#"})%>
+      <p class="photo_info">
+        <span class="timeline"><%= timestamp(foto.created_at) %></span>
+      </p>
+    </div>
+  </div>
+  <ul class="photo_actions clear">
+    <%= form_tag socialize_feed_path(foto), :class => 'feed-cta-form', :remote => true do %>
+    <li>
+      <% if foto.flags.where(:user_id => current_user.id).empty? %>
+      <%= button_tag("PROBLEM", :type => "submit",:id => 'flag_' + foto.id.to_s, :value => 'flag', :name => 'modal', :class => 'flag')%>
+      <%else %>
+      <%= button_tag("REPORTED", :type => "submit",:id => 'unflag_' + foto.id.to_s, :value => 'unflag', :name => 'modal', :class => 'unflag')%>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to("Share",{},{:href => "#", :class => "share"})%>
+    </li>
+    <li>
+      <%= link_to("Collapse",{},{:href => "#", :class => "collapse"})%>
+    </li>
+    <%end%>
+  </ul>
+  <br class="clear_both">
+</div>

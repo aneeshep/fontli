@@ -1,0 +1,11 @@
+<li class="like">
+  <div class="text">
+    <a class="author" href="profile:<%= uid %>"><%= @users_map[uid].first.username %></a> liked <%= pluralize(feeds.length, 'post') %>
+  </div>
+  <div class="clearfix">
+    <% feeds.each do |lk| %>
+      <img class="ref-img-med" src="<%= @photos_map[lk.photo_id].first.url_large %>" />
+    <% end %>
+  </div>
+  <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>
+</li>

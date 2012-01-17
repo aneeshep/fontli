@@ -1,0 +1,5 @@
+// update the likes count
+$('#likes_cnt_<%= params[:id] %>').html("<%= @photo.likes.count %>");
+// update the button
+var elem = $('#unlike_<%= params[:id] %>');
+elem.replaceWith("<%= escape_javascript(button_tag("", :type => "submit",:id => 'like_' + @photo.id.to_s, :value => 'like', :name => 'modal', :class => 'like_this')) %>");

@@ -1,0 +1,36 @@
+Fontli is a web application that helps designers and Type enthusiasts to discover fonts and great Typography.
+It also serves as a backend/webservice for the supporting mobile applications.
+
+Prerequisites:
+==============
+Ruby version         1.9.2 (i686-linux)
+RubyGems version     1.8.10
+Rails version        3.1.1
+Rack version         1.3
+JavaScript Runtime   therubyracer (V8)
+Image Manipulation   ImageMagick
+
+Setup:
+======
+bundle install
+
+Startup:
+========
+unicorn_rails -c config/unicorn.rb
+or
+rails s
+
+App Documentation:
+=================
+http://localhost:3000/doc
+
+Development:
+============
+Make changes and git commit appropriately.
+git pull origin master
+git push origin master
+
+Deployment:
+===========
+cap deploy
+COMPILE_ASSETS=true cap deploy

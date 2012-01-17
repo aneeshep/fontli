@@ -1,0 +1,3 @@
+// update the button
+var elem = $('#flag_<%= params[:id] %>');
+elem.replaceWith("<%= escape_javascript(button_tag("REPORTED", :type => "submit",:id => 'unflag_' + @photo.id.to_s, :value => 'unflag', :name => 'modal', :class => 'unflag')) %>");

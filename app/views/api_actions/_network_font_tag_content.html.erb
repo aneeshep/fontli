@@ -1,0 +1,12 @@
+<% foto_ids = feeds.collect { |tg| @tags_map[tg.font_id].first.photo_id }.uniq %>
+<li class="tag">
+  <div class="text">
+    <a class="author" href="profile:<%= uid %>"><%= @users_map[uid].first.username %></a> tagged on <%= pluralize(foto_ids.length, 'post') %>
+  </div>
+  <div class="clearfix">
+    <%= foto_ids.each do |fid| %>
+      <img class="ref-img-med" src="<%= @photos_map[fid].first.url_large %>" />
+    <% end %>
+  </div>
+  <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>
+</li>

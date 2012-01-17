@@ -1,0 +1,8 @@
+<% mention = n.notifiable %>
+<li class="comment">
+  <img class="ref-img" src='<%= mention.mentionable.photo.url(:thumb) %>' />
+  <div class="text">
+    <a class="author" href="profile:<%= n.from_user_id %>"><%= n.from_user.username %></a> mentioned you in a comment: <span class="content"><%= mention.mentionable.body %></span>
+  </div>
+  <div class="timestamp"><%= timestamp(n.updated_at) %></div>
+</li>

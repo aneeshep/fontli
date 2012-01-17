@@ -1,0 +1,46 @@
+<%unless @sub_fonts_list.blank?%>
+<li>
+  <div id="sub_font_page">
+    <div class="pane-toolbar pane-built-in">
+      <p>
+        <span><%= link_to("ALL Fonts",{},{:href => "#", :onclick => "show_font_list();"})%></span> >> <span><%= params[:family_name]%></span>
+      </p>
+    </div>
+    <% @sub_fonts_list.each do |sub_font|%>
+    <div class="sample">
+      <%= link_to(sub_font[:name],{},{:class => "font_name", :href => "#",:title => sub_font[:id], :onclick => "submitTag(this);"})%>
+      <%= form_tag tag_font_path do %>
+      <%= hidden_field :font, :family_unique_id, :value => sub_font[:uniqueid]%>
+      <%= hidden_field :font, :family_name, :value => params[:family_name]%>
+      <%= hidden_field :font, :family_id, :value => params[:family_id]%>
+      <%= hidden_field :font, :subfont_name, :value => sub_font[:name]%>
+      <%= hidden_field :font, :subfont_id, :value => sub_font[:id]%>
+      <%end%>
+      <div class="sample_image" title="Click on the image to select the font">
+        <%= sub_font[:image].html_safe%>
+      </div>
+    </div>
+    <%end%>
+  </div>
+</li>
+<%else%>
+<li>
+  <div id="sub_font_page">
+    No Sub Fonts found.
+  </div>
+</li>
+<%end%>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('div.sample_image img').hover(function() {
+      $(this).attr("title","");
+    });
+    $('div.sample_image').click(function() {
+      submitTag($(this).siblings('form'));
+    });
+    $('div.sample_image').tipTip({
+      defaultPosition : 'top'
+    });
+  });
+
+</script>

@@ -1,0 +1,5 @@
+<% if @status %>
+  $('#feed_content_<%= params[:id] %>').fadeOut();
+<% else %>
+  alert('Unable to delete!');
+<% end %>

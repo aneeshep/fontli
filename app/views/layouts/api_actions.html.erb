@@ -1,0 +1,26 @@
+<!DOCTYPE html> 
+<html> 
+  <head>
+    <title>Fontli</title>
+    <meta content="charset=utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="target-densitydpi=device-dpi">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black" />
+    <style type="text/css">
+      /***reset*****/
+      html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;margin:0;padding:0;}body{line-height:1;-webkit-user-select:none;-webkit-text-size-adjust:none;}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}nav ul{list-style:none;}blockquote,q{quotes:none;}a{font-size:100%;vertical-align:baseline;background:transparent;margin:0;padding:0;}input,select{vertical-align:middle;}
+      /******reset*****/
+      @media screen and (orientation:portrait) { section {width:320px;} }
+      @media screen and (orientation:landscape) { section{width:480px;} }
+    </style>
+
+    <%= yield(:head) %>
+  </head>
+
+  <body>
+    <section>
+      <%= yield %>
+    </section>
+  </body>
+</html>

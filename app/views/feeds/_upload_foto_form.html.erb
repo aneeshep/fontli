@@ -1,0 +1,24 @@
+<div class="file-wrapper" id="feed_upload">
+  <%= form_tag post_feed_path, :id => 'post_feed', :remote => true, :multipart => true do %>
+  <%= simple_errors_for(errors) %>
+  <input type="file" name="photo" id="photo" accept="image/*" />
+  <img title="Upload" src="/assets/upload.png" alt="Upload">
+  <span class="spot_file">Spotted a cool font in action? </span>
+  <span id="file_upload_text" class="browse-file"> Share it here...</span>
+  <% end %>
+</div>
+<div id="upload_bar">
+  <span>Uploading ...</span>
+</div>
+<div class='clear'></div>
+<script>
+  $(function() {
+    $('#file_upload_text').click(function() {
+      document.getElementById("photo").click();
+    });
+  });
+  $('#post_feed').submit(function() {
+    $('#upload_bar').show();
+  });
+
+</script>

@@ -1,0 +1,20 @@
+<div class="clear">
+  <header>
+    <%= link_to(image_tag("logo.png", :title => "Fontli"), root_path) %>
+  </header>
+  <% if logged_in? %>
+  <nav style="display: none;">
+    <ul>
+      <li class="selected">
+        <a><%= image_tag "feed.png", :title => "Fontly Feed" %></a>
+      </li>
+      <li>
+        <a><%= image_tag "popular.png", :title => "Popular Article" %></a>
+      </li>
+      <li>
+        <a><%= image_tag "updates.png", :title => "Nav Updates" %></a><!-- <a href="#" id="updates_notify">23</a> -->
+      </li>
+    </ul>
+  </nav>
+  <%end%>
+</div>

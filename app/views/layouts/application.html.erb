@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fontli</title>
+    <meta  content="charset=utf-8">
+    <meta name = "viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="target-densitydpi=device-dpi">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black" />
+    <%= stylesheet_link_tag    "application", params[:controller] %>
+    <%= javascript_include_tag "application", params[:controller] %>
+    <%= yield(:head) %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="content" class="clear_both">
+        <div id="main_bar">
+          <%= render 'shared/header'%>
+          <%= flash_notices %>
+          <%= yield%>
+        </div>
+        <% if logged_in? %>
+        <div id="side_bar">
+          <div id="profile" class="clear">
+            <%= image_tag(current_user.url, :size => "33x33", :class => "float_left")%>
+            <div>
+              <%= link_to current_user.username %>
+              <br />
+              <%= link_to 'Signout', logout_path, :class=>"small_text" %>
+            </div>
+          </div>
+          <%= image_tag "banner.png", :id => "banner"%>
+          <% if params[:controller] == "feeds" and params[:action] == "index"%>
+          <%= render "shared/most_tagged"%>
+          <%= render "shared/leaderboard"%>
+          <%end%>
+          <div id="app_meta">
+            <div class="meta">
+              <p>
+                Fontli brewed by
+              </p>
+              <div id="company">
+                <%= link_to "Imaginea", {}, {:href => "http://www.imaginea.com/", :target => "_blank"}%>
+              </div>
+            </div>
+            <div class="meta">
+              <p>
+                Fontli support from
+              </p>
+              <%= link_to(image_tag("support_logo.png"), {}, {:href => "http://new.myfonts.com/", :target => "_blank"}) %>
+              <div class="meta" id="meta_detail">
+                <p class="secondary_color">
+                  More info
+                </p>
+                <a href="mailto:feedback@fontli.com">feedback@fontli.com</a>
+                <p>
+                  Copyright Pramati Technologies Pvt Ltd. All Rights Reserved.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%end%>
+      </div>
+      <br class="clear_both">
+    </div>
+    <script type="text/javascript" src="/assets/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="/assets/slider.js"></script>
+    <script type="text/javascript" src="/assets/custom.js"></script>
+  </body>
+</html>

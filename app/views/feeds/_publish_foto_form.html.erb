@@ -1,0 +1,32 @@
+<%= provide :head do %>
+<script type="text/javascript">
+  $(function() {
+    $('#cropbox').Jcrop({
+      onChange : update_crop,
+      onSelect : update_crop,
+      setSelect : [0, 0, 500, 500],
+      aspectRatio : 1
+    });
+  });
+
+</script>
+<% end %>
+
+<%= form_tag publish_feed_path(foto) do %>
+<div id="publish_feed">
+  <div>
+    <img title="Upload" src="/assets/upload.png" alt="Upload">
+    <input type="text" id="caption" name="caption" class='labelled-input' data-label='A short title here' />
+    <%= link_to "TRASH", root_path, {:class=>"trash"}%>
+    <button type="submit" value="post" class="finish_up">
+      FINISH UP
+    </button>
+  </div>
+  <img id="cropbox" src='<%= foto.url %>' alt='Unpublished photo' />
+  <div class='clear'></div>
+  <% for attr in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+  <%= hidden_field 'crop', attr, :id => attr %>
+  <% end %>
+  <%= simple_errors_for(foto) %> <div class='clear'></div>
+</div>
+<% end %> 

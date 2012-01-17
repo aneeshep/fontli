@@ -1,0 +1,46 @@
+<% unless @fonts_list.blank?%>
+<li>
+  <div id="font_page">
+    <div class="pane-toolbar pane-built-in">
+      <p>
+        Results for <b><%= params[:font_name]%></b>
+      </p>
+    </div>
+    <% @fonts_list.each do |font_api|%>
+    <div class="sample">
+      <%= link_to(font_api[:name],{},{:class => "font_name", :href => "#", :onclick => "submitTag($(this).siblings('form'));"})%>
+      <% text= "View " + pluralize(font_api[:count], " Variant")%>
+      <%= link_to(text,{},{:class => "sub_variants", :title => font_api[:uniqueid], :id => font_api[:id], :onclick => "show_sub_font_list($(this).attr('title'),$(this).prev('a').text(),$(this).attr('id'),event);"})%>
+      <%= form_tag tag_font_path do %>
+      <%= hidden_field :font, :family_unique_id, :value => font_api[:uniqueid]%>
+      <%= hidden_field :font, :family_name, :value => font_api[:name]%>
+      <%= hidden_field :font, :family_id, :value => font_api[:id]%>
+      <%end%>
+      <div class="sample_image" title="Click on the image to select the font">
+        <%= font_api[:image].html_safe%>
+      </div>
+    </div>
+    <%end%>
+  </div>
+</li>
+<%else%>
+<li>
+  <div id="font_page">
+    No Fonts found.
+  </div>
+</li>
+<%end%>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('div.sample_image img').hover(function() {
+      $(this).attr("title","");
+    });
+    $('div.sample_image').click(function() {
+      submitTag($(this).siblings('form'));
+    });
+    $('div.sample_image').tipTip({
+      defaultPosition : 'top'
+    });
+  });
+
+</script>
