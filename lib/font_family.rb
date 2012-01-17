@@ -79,4 +79,26 @@ module FontFamily
     end
   end
 
+  def self.font_sample(id, text)
+    params = { :id => id, :render_string => text }
+    request('MyFontsSample/familySample.json', params)
+  end
+
+private
+
+  def self.client
+    req_url = URI.parse("http://new.myfonts.com/")
+    @client ||= Net::HTTP.new(req_url.host, req_url.port)
+  end
+
+  # accepts path string and params hash
+  def self.request(path, params)
+    url = '/rest/di493gjwir/' + path + "?#{params.to_param}"
+    req = Net::HTTP::Get.new(url)
+    res = client.request(req)
+
+    response = JSON.parse(res.body)
+    response["success"] ? response["result"] : nil
+  end
+
 end
