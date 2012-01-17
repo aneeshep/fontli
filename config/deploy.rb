@@ -28,7 +28,7 @@ set :compile_assets, (ENV['COMPILE_ASSETS'] == 'true')
 #	Git
 #############################################################
 
-set :repository,  "ssh://sathish.n@gitent-scm.com/git/imaginea/#{application}"
+set :repository,  "git@github.com:Imaginea/fontli.git"
 set :repository_cache, "git_cache"
 set :deploy_via, :checkout
 set :git_shallow_clone, 1
