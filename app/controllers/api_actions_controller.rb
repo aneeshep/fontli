@@ -119,7 +119,7 @@ class ApiActionsController < ApiBaseController
   end
 
   def likes_list
-    usrs = User.liked_photo(@photo_id).to_a
+    usrs = User.liked_photo(@photo_id, @page || 1).to_a
     usrs = @current_user.populate_friendship_state(usrs)
     render_response(usrs)
   end
@@ -206,14 +206,18 @@ class ApiActionsController < ApiBaseController
 
   def user_friends
     usr = @user_id ? User.by_id(@user_id) : @current_user
-    friends = @current_user.populate_friendship_state(usr.friends.to_a)
-    render_response(friends)
+    offst = (@page || 1).to_i - 1) * 20
+    frnds = usr.friends.skip(offst).limit(20).to_a
+    frnds = @current_user.populate_friendship_state(frnds)
+    render_response(frnds)
   end
 
   def user_followers
     usr = @user_id ? User.by_id(@user_id) : @current_user
-    followers = @current_user.populate_friendship_state(usr.followers.to_a)
-    render_response(followers)
+    offst = (@page || 1).to_i - 1) * 20
+    fllwrs = usr.followers.skip(offst).limit(20).to_a
+    fllwrs = @current_user.populate_friendship_state(fllwrs)
+    render_response(fllwrs)
   end
 
   def user_photos

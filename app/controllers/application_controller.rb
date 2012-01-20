@@ -33,9 +33,8 @@ protected
   helper_method :owner?
 
   def mob_req?
-    mob_agent_regex = /iphone|android/
+    mob_agent_regex = /iphone|android\s(1|2)/ # android 3|4 are tablets
     agent = request.headers["HTTP_USER_AGENT"].to_s.downcase
-    Rails.logger.info "----my_user_agent = #{agent}----"
     !agent.match(mob_agent_regex).nil?
   end
   helper_method :mob_req?

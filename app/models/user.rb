@@ -138,11 +138,12 @@ class User
     end
 
     # list of all users who liked foto_id
-    def liked_photo(foto_id)
+    def liked_photo(foto_id, page = 1, lmt = 20)
       foto = Photo[foto_id]
       return [] if foto.nil?
       usr_ids = foto.likes.only(:user_id).collect(&:user_id)
-      self.where(:_id.in => usr_ids)
+      offst = (page.to_i - 1) * lmt
+      self.where(:_id.in => usr_ids).skip(offst).limit(lmt)
     end
   end
 

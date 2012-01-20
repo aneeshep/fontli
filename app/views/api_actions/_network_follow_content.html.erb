@@ -2,7 +2,7 @@
 <% last_frnd = @users_map[feeds.last.follower_id].first %>
 <li class="follow">
   <div class="text">
-    <a class="author" href="profile:<%= uid %>"><%= @users_map[uid].first.username %></a> started following <a class="author" href="profile:<%= recnt_frnd.id %>"><%= recent_frnd.username %></a> <%= "and <a class='author' href='profile:#{last_frnd.id}'>#{last_frnd.username}</a>".html_safe if feeds.length == 2 %> <%= "and #{feeds.length - 1} other(s)" if feeds.length > 2 %>
+    <a class="author" href="profile:<%= uid %>"><%= @users_map[uid].first.username %></a> started following <a class="author" href="profile:<%= recnt_frnd.id %>"><%= recnt_frnd.username %></a> <%= "and <a class='author' href='profile:#{last_frnd.id}'>#{last_frnd.username}</a>".html_safe if feeds.length == 2 %> <%= "and #{feeds.length - 1} other(s)" if feeds.length > 2 %>
   </div>
   <div class="clearfix">
     <% feeds.each do |flw| %>

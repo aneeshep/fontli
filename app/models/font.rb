@@ -48,10 +48,11 @@ class Font
       agr.destroy ? true : [nil, :unable_to_save]
     end
 
-    def tagged_photos_for(opts)
+    def tagged_photos_for(opts, lmt = 20)
       fids = self.where(opts).only(:photo_id).to_a
       return [] if fids.empty?
-      Photo.where(:_id.in => fids.collect(&:photo_id))
+      offst = ((opts[:page] || 1).to_i - 1) * lmt
+      Photo.where(:_id.in => fids.collect(&:photo_id)).skip(offst).limit(lmt)
     end
 
     def popular
