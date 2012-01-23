@@ -4,7 +4,7 @@
     <a class="author" href="profile:<%= uid %>"><%= @users_map[uid].first.username %></a> tagged on <%= pluralize(foto_ids.length, 'post') %>
   </div>
   <div class="clearfix">
-    <%= foto_ids.each do |fid| %>
+    <% foto_ids.each do |fid| %>
       <img class="ref-img-med" src="<%= @photos_map[fid].first.url_large %>" />
     <% end %>
   </div>

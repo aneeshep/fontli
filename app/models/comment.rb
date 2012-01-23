@@ -13,7 +13,7 @@ class Comment
   has_many :mentions, :as => :mentionable, :dependent => :destroy
 
   validates :user_id, :photo_id, :presence => true
-  validates :body, :length => { :maximum => 120, :allow_blank => true }
+  validates :body, :length => { :maximum => 300, :allow_blank => true }
 
   after_create :populate_mentions
 

@@ -6,7 +6,7 @@
   </div>
   <div class="clearfix">
     <% feeds.each do |flw| %>
-      <img class="ref-img" src="<%= @users_map[flw.follower_id].first.url_thumb %>" />
+      <img class="ref-usr" src="<%= @users_map[flw.follower_id].first.url_thumb %>" />
     <% end %>
   </div>
   <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>
