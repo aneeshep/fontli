@@ -33,7 +33,7 @@ class User
 
   FOTO_DIR = File.join(Rails.root, 'public/avatars')
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
-  DEFAULT_AVATAR_PATH = File.join(Rails.root, 'public/avatar_missing.png')
+  DEFAULT_AVATAR_PATH = File.join(Rails.root, 'public/avatar_missing_:style.png')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   PLATFORMS = ['twitter', 'facebook']
   THUMBNAILS = {:thumb => '75x75', :large => '150x150'}
@@ -221,7 +221,7 @@ class User
   end
 
   def path(style = :original)
-    return DEFAULT_AVATAR_PATH unless has_avatar?
+    return def_avatar_path(style) unless has_avatar?
     fpath = FOTO_PATH.dup
     fpath.sub!(/:id/, self.id.to_s)
     fpath.sub!(/:style/, style.to_s)
@@ -512,6 +512,10 @@ private
 
   def has_avatar?
     !self.avatar_filename.blank?
+  end
+
+  def def_avatar_path(style = :original)
+    DEFAULT_AVATAR_PATH.gsub(/:style/, style.to_s)
   end
 
   def extension
