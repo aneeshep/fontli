@@ -18,7 +18,7 @@ Fontli::Application.routes.draw do
   match "get_sub_font_details" => "fonts#get_sub_font_details", :as => :get_sub_font_details
 
   # welcome controller
-  constraints :host => /(localhost|staging\.fontli\.com)/i do
+  constraints :host => /(localhost|chennai\.pramati\.com)/i do
     root :to => 'welcome#index'
   end
   constraints :host => /(www\.fontli\.com)/i do

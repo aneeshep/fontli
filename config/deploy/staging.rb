@@ -1,10 +1,10 @@
-set :rails_env, "production"
+set :rails_env, "staging"
 set :branch, "master"
 
 #############################################################
 #	Servers
 #############################################################
 
-role :app, "107.22.125.70"
-role :web, "107.22.125.70"
-role :db,  "107.22.125.70", :primary => true
+role :app, "184.73.50.160"
+role :web, "184.73.50.160"
+role :db,  "184.73.50.160", :primary => true
