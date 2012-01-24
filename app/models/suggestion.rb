@@ -4,6 +4,10 @@ class Suggestion
   include MongoExtensions
 
   field :text, :type => String
+  field :sugg_type, :type => String
+  field :platform, :type => String
+  field :os_version, :type => String
+  field :app_version, :type => String
 
   belongs_to :user, :index => true
 

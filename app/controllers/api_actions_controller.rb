@@ -255,7 +255,7 @@ class ApiActionsController < ApiBaseController
   end
 
   def add_suggestion
-    sugg = Suggestion.new(:text => @text, :user_id => @current_user.id)
+    sugg = Suggestion.new current_api_accepts_map_with_user
     resp, error = sugg.my_save
     render_response(resp, !resp.nil?, error)
   end

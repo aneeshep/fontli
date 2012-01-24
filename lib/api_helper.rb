@@ -125,7 +125,7 @@ module ApiHelper
                            :returns => true },
     :follow_user      => { :accepts => [:user_id],
                            :returns => true },
-    :add_suggestion   => { :accepts => [:text],
+    :add_suggestion   => { :accepts => [:text, :platform, :os_version, :sugg_type, :app_version],
                            :returns => true }
   }
 
