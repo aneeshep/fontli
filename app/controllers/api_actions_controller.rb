@@ -157,7 +157,7 @@ class ApiActionsController < ApiBaseController
 
   def font_photos
     opts = current_api_accepts_map
-    fotos = Font.tagged_photos_for(opts).only(:id, :data_filename)
+    fotos = Font.tagged_photos_for(opts)
     render_response(fotos.to_a)
   end
 

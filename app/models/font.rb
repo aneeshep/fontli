@@ -49,10 +49,11 @@ class Font
     end
 
     def tagged_photos_for(opts, lmt = 20)
+      page = opts.delete(:page) || 1
       fids = self.where(opts).only(:photo_id).to_a
       return [] if fids.empty?
-      offst = ((opts[:page] || 1).to_i - 1) * lmt
-      Photo.where(:_id.in => fids.collect(&:photo_id)).skip(offst).limit(lmt)
+      offst = (page.to_i - 1) * lmt
+      Photo.where(:_id.in => fids.collect(&:photo_id)).only(:id, :data_filename).skip(offst).limit(lmt)
     end
 
     def popular
