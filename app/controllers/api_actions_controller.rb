@@ -28,8 +28,8 @@ class ApiActionsController < ApiBaseController
   end
 
   def login_check
-    token, error = User.check_login_for(@extuid_token)
-    render_response(token, !token.nil?, error)
+    resp, error = User.check_login_for(@extuid_token)
+    render_response(resp, !resp.nil?, error)
   end
 
   def check_token

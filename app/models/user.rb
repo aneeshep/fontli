@@ -113,10 +113,9 @@ class User
     end
 
     def check_login_for(extuid_token)
-      uid = Encryptor.decrypt(extuid_token)
-      u = self.by_extid(uid)
+      u = self.by_extid(extuid_token)
       return [nil, :user_not_found] if u.nil?
-      CGI.escape(extuid_token)
+      true
     end
 
     def forgot_pass(email_or_uname)
