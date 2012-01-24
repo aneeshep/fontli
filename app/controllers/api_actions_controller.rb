@@ -254,6 +254,12 @@ class ApiActionsController < ApiBaseController
     render_response(resp, !resp.nil?, error)
   end
 
+  def add_suggestion
+    sugg = Suggestion.new(:text => @text, :user_id => @current_user.id)
+    resp, error = sugg.my_save
+    render_response(resp, !resp.nil?, error)
+  end
+
   def feeds_html
     @feeds = Photo.recent(10).to_a
     render 'feeds'

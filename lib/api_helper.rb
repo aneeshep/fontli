@@ -124,6 +124,8 @@ module ApiHelper
     :unfollow_friend  => { :accepts => [:friend_id],
                            :returns => true },
     :follow_user      => { :accepts => [:user_id],
+                           :returns => true },
+    :add_suggestion   => { :accepts => [:text],
                            :returns => true }
   }
 

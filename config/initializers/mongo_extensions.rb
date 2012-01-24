@@ -14,8 +14,7 @@ module MongoExtensions
   end
 
   def request_domain
-    'http://localhost:3000/'
-    #'http://' + controller.request.env['HTTP_HOST']
+    'http://' + controller.request.env['HTTP_HOST']
   end
 
   def generate_rand(length = 8)
