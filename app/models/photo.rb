@@ -122,13 +122,13 @@ class Photo
       # group by unique fonts
       ftags = ftags.group_by { |f| f[:family_unique_id] + f[:family_id] + f[:subfont_id].to_s }
       fnt, valid_font = [nil, true]
-      opts[:font_ids] = ftags.collect do |key, fnts|
+      opts[:font_tag_ids] = ftags.collect do |key, fnts|
         f, coords = [ fnts.first, fnts.collect { |hsh| hsh[:coords] } ]
         f[:user_id] = opts[:user_id]
-        fnt = build_font_tags(f, foto, coords)
+        fnt, tag_ids = build_font_tags(f, foto, coords)
         break unless valid_font = (fnt.new_record? || fnt.save)
-        fnt.id
-      end
+        tag_ids
+      end.flatten
       return [nil, fnt.errors.full_messages] unless valid_font
 
       foto.comments.build(opts)
@@ -226,15 +226,15 @@ class Photo
     return true if fnts.blank?
     fnts = fnts.group_by { |f| f[:family_unique_id] + f[:family_id] + f[:subfont_id].to_s }
     cur_user_id = current_user.id
-    font_ids = []
+    fnt_tag_ids = []
     fnts.each do |key, fonts|
       f, coords = [ fonts.first, fonts.collect { |hsh| hsh[:coords] } ]
       f[:user_id] = cur_user_id
-      fnt = self.class.send(:build_font_tags, f, self, coords)
-      font_ids << fnt.id.to_s
+      fnt, tag_ids = self.class.send(:build_font_tags, f, self, coords)
+      fnt_tag_ids << tag_ids
     end
     # all font tags are also a comment
-    self.comments.build(:user_id => cur_user_id, :font_ids => font_ids)
+    self.comments.build(:user_id => cur_user_id, :font_tag_ids => fnt_tag_ids.flatten)
   end
 
   #hshs - Array of HashTag hashes
@@ -309,10 +309,11 @@ private
   def self.build_font_tags(opts, foto, coords)
     opts.delete(:coords)
     fnt = foto.fonts.find_or_initialize_by(opts)
-    coords.each do |c|
-      fnt.font_tags.build(:coords => c, :user_id => opts[:user_id])
+    tag_ids = coords.collect do |c|
+      tg = fnt.font_tags.build(:coords => c, :user_id => opts[:user_id])
+      tg.id
     end
-    fnt
+    [fnt, tag_ids]
   end
 
   def populate_mentions

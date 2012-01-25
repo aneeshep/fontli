@@ -6,7 +6,7 @@ class Comment
   include Notifiable
 
   field :body, :type => String
-  field :font_ids, :type => Array
+  field :font_tag_ids, :type => Array
 
   belongs_to :photo, :index => true
   belongs_to :user, :index => true
@@ -17,9 +17,22 @@ class Comment
 
   after_create :populate_mentions
 
+  # return a custom font collection(w/ coords) tagged with this comment.
   def fonts
-    return [] if self.font_ids.blank?
-    @fonts ||= Font.where(:_id.in => self.font_ids).to_a
+    return [] if self.font_tag_ids.blank?
+    return @fonts unless @fonts.nil? # compute once per instance
+    fnt_tags = FontTag.where(:_id.in => self.font_tag_ids).to_a
+    fnt_ids = fnt_tags.collect(&:font_id).uniq
+    fnts = Font.where(:_id.in => fnt_ids).to_a.group_by(&:id)
+    @fonts = fnt_tags.collect do |ft|
+      f = fnts[ft.font_id].first
+      OpenStruct.new(f.attributes.update(
+        :id => f.id,
+        :tags_count => f.tags_count,
+        :my_agree_status => f.my_agree_status,
+        :my_fav? => f.my_fav?,
+        :coords => ft.coords) )
+    end
   end
 
   def username

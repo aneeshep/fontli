@@ -45,11 +45,11 @@ module ApiHelper
     :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags]],
                          :returns => [:body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
                          :collection => {:font_tags => [:family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :coords] },
-                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?] },
+                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?, :coords] },
 
     :comments_list  => { :accepts => [:photo_id],
                          :returns => [:body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
-                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?] },
+                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?, :coords] },
     :agree_font     => { :accepts => [:font_id, [:close_help]],
                          :returns => true },
     :unagree_font   => { :accepts => [:font_id],
