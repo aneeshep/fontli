@@ -1,8 +1,9 @@
 <% com = n.notifiable %>
+<% foto = com.photo %>
 <li class="comment">
-  <img class="ref-img" src='<%= com.photo.url(:thumb) %>' />
+  <a href="OpenPhoto://<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
-    <a class="author" href="profile:<%= n.from_user_id %>"><%= n.from_user.username %></a> commented on your post: <span class="content"><%= com.body %></span>
+    <a class="author" href="OpenProfile://<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>commented on your <a href="OpenPhoto://<%= foto.id.to_s %>">post:</a> <span class="content"><%= com.body %></span>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>

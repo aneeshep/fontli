@@ -1,8 +1,9 @@
 <% agree = n.notifiable %>
+<% foto = agree.font.photo %>
 <li class="agree">
-  <img class="ref-img" src='<%= agree.font.photo.url(:thumb) %>' />
+  <a href="OpenPhoto://<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
-    <a class="author" href="profile:<%= n.from_user_id %>"><%= n.from_user.username %></a> agreed your Font pick <span class="content"><strong>"<%= agree.font.family_name %>"</strong></span>
+    <a class="author" href="OpenProfile://<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your Font pick: <span class="content"><strong><%= agree.font.family_name %></strong></span>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>

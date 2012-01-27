@@ -292,8 +292,8 @@ class Photo
     unless (lkd_usr_ids + cmt_usr_ids).empty?
       usrs = User.where(:_id.in => lkd_usr_ids + cmt_usr_ids).only(:id, :username).to_a
       usrs = usrs.group_by(&:id)
-      self.liked_user = lkd_usr_ids.collect { |uid| uid == self.user_id ? "you" : usrs[uid].first.username }.join('||')
-      self.commented_user = cmt_usr_ids.collect { |uid| uid == self.user_id ? "you" : usrs[uid].first.username }.join('||')
+      self.liked_user = lkd_usr_ids.collect { |uid| usrs[uid].first.username }.join('||')
+      self.commented_user = cmt_usr_ids.collect { |uid| usrs[uid].first.username }.join('||')
     end
   end
 

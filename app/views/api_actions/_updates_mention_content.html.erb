@@ -1,8 +1,15 @@
 <% mention = n.notifiable %>
+<% obj = mention.mentionable %>
+<% is_comment = (obj.klass_s == 'comment') %>
+<% foto = is_comment ? obj.photo : obj %>
 <li class="comment">
-  <img class="ref-img" src='<%= mention.mentionable.photo.url(:thumb) %>' />
+  <a href="OpenPhoto://<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
-    <a class="author" href="profile:<%= n.from_user_id %>"><%= n.from_user.username %></a> mentioned you in a comment: <span class="content"><%= mention.mentionable.body %></span>
+    <% if is_comment %>
+      <a class="author" href="OpenProfile://<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>mentioned you in a <a href="OpenComment://<%= foto.id.to_s %>/<%= obj.id.to_s %>">comment:</a> <span class="content"><%= obj.body %></span>
+    <% else %>
+      <a class="author" href="OpenProfile://<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>mentioned you in the caption of a <a href="OpenPhoto://<%= foto.id.to_s %>">post:</a> <span class="content"><%= obj.caption %></span>
+    <% end %>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>
