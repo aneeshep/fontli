@@ -265,6 +265,11 @@ class ApiActionsController < ApiBaseController
     render 'feeds'
   end
 
+  def my_notifications_count
+    usr = @current_user
+    render_response(usr)
+  end
+
   def my_updates
     @notifications = @current_user.my_updates
   end

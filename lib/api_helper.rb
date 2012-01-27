@@ -110,9 +110,6 @@ module ApiHelper
                          :returns => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :my_fav?] },
     :user_fav_fonts => { :accepts => [[:user_id, :page]],
                          :returns => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :my_fav?] },
-    :my_notifications       => { :accepts => [],
-                                 :returns => [:user_url_thumb, :target_id, :notifiable_type, :username, :created_dt],
-                                 :conditionally_return => { :attrs => [:comment_body], :if => :for_comment? } },
     :my_notifications_count => { :accepts => [],
                                  :returns => [:notifications_count] },
 
