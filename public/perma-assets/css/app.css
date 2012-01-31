@@ -35,7 +35,7 @@
 	h3{font-size:1.5em;margin-bottom:4px; font-weight:700}
 
 	#profile img{padding:3px;border:1px solid #F1F1F1;-moz-box-shadow:0 0 5px #999;-webkit-box-shadow: 0 0 5px #999}
-	#profile div{float:left;width:70%;margin-left:20px;}
+	#profile div{float:left;width:70%;margin-left:10px;}
 	#profile div p{color:#999; font-size:0.9em;line-height:1.4em}
 	#profile div span{font-weight:bold;margin-right:5px; font-size:1em}
 	p.clear_both{margin-top:10px;color: #707070}

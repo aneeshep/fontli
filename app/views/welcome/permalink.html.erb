@@ -48,16 +48,16 @@
             <img src="<%= @user.url_thumb %>" class="float_left" />
             <div>
               <h3><%= @user.username %></h3>
-              <p><span><%= @user.photos_count %></span>Clicks</p>
-              <p><span><%= @user.followers_count %></span>Followers</p>
+              <p><span><%= @user.photos_count %></span>Click<%= 's' if @user.photos_count > 1 %></p>
+              <p><span><%= @user.followers_count %></span>Follower<%= 's' if @user.followers_count > 1 %></p>
               <p><span><%= @user.follows_count %></span>following</p>
             </div>
 
           </div>
           <p class="clear_both"><%= truncate(@obj.caption, :length => 250, :separator => '') %></p>
           <div id="font_listing">
-            <p id="useraction"><span class="likes"><%= @obj.likes_count %> Likes</span><span class="comment"><%= @obj.comments_count %> comment</span></p>
-            <p class="bold font_icon"><%= @obj.fonts_count %> Fonts tagged<%= ', top picks;' if top_fnts.length > 0 %></p>
+            <p id="useraction"><span class="likes"><%= pluralize(@obj.likes_count, 'Like') %></span><span class="comment"><%= pluralize(@obj.comments_count, 'comment') %></span></p>
+            <p class="bold font_icon"><%= pluralize(@obj.fonts_count, 'Font') %> tagged<%= ', top picks;' if top_fnts.length > 0 %></p>
 
             <% top_fnts.each do |fnt| %>
               <div class="font">
