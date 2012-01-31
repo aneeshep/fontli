@@ -97,8 +97,12 @@ private
     req = Net::HTTP::Get.new(url)
     res = client.request(req)
 
-    response = JSON.parse(res.body)
-    response["success"] ? response["result"] : nil
+    if url.match(/\.json/)
+      response = JSON.parse(res.body)
+      response["success"] ? response["result"] : nil
+    else
+      res.body
+    end
   end
 
 end
