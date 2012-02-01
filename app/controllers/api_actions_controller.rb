@@ -135,7 +135,7 @@ class ApiActionsController < ApiBaseController
   end
 
   def hash_tag_photos
-    photos = Photo.all_by_hash_tag(@name)
+    photos = Photo.all_by_hash_tag(@name, @page || 1)
     render_response(photos)
   end
 

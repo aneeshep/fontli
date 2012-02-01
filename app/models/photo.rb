@@ -33,7 +33,7 @@ class Photo
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   DEFAULT_TITLE = 'Yet to publish'
   THUMBNAILS = { :large => '320x320', :thumb => '150x150' }
-  POPULAR_LIMIT = 40
+  POPULAR_LIMIT = 20
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
@@ -159,11 +159,12 @@ class Photo
       pops
     end
 
-    def all_by_hash_tag(tag_name)
+    def all_by_hash_tag(tag_name, pge = 1, lmt = 20)
       return [] if tag_name.blank?
       hsh_tags = HashTag.where(:name => tag_name).only(:photo_id)
       foto_ids = hsh_tags.to_a.collect(&:photo_id)
-      self.where(:_id.in => foto_ids ).only(:id, :data_filename).to_a
+      offst = (pge.to_i - 1) * lmt
+      self.where(:_id.in => foto_ids).only(:id, :data_filename).skip(offst).limit(lmt).to_a
     end
 
     def check_mentions_in(val)

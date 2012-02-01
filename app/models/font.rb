@@ -23,7 +23,7 @@ class Font
   validates :family_unique_id, :family_name, :family_id, :presence => true
   validates :photo_id, :user_id, :presence => true
 
-  POPULAR_API_LIMIT = 30
+  POPULAR_API_LIMIT = 20
   PICK_STATUS_MAP = { :expert_pick => 1, :publisher_pick => 2, :expert_publisher_pick => 3 }
 
   class << self

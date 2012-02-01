@@ -65,7 +65,7 @@ module ApiHelper
                          :returns => [:username, :user_id, :full_name] },
     :hash_tag_search => { :accepts => [:name],
                           :returns => [:name, :photos_count] },
-    :hash_tag_photos => { :accepts => [:name],
+    :hash_tag_photos => { :accepts => [:name, [:page]],
                           :returns => [:id, :url_thumb] },
     :leaderboard    => { :accepts => [],
                          :returns => [:id, :username, :full_name, :points, :url_thumb, :photos_count, :fonts_count, :created_dt, :friendship_state ] },

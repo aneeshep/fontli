@@ -37,7 +37,7 @@ class User
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   PLATFORMS = ['twitter', 'facebook']
   THUMBNAILS = {:thumb => '75x75', :large => '150x150'}
-  LEADERBOARD_LIMIT = 50
+  LEADERBOARD_LIMIT = 20
 
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
