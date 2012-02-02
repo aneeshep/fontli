@@ -5,7 +5,7 @@
     <a class="author" href="OpenProfile://<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>added <span class="content"><strong><%= recnt_fnt.family_name %></strong> <%= "and <strong>#{last_fnt.family_name}</strong>".html_safe if(feeds.length == 2) %> <%= "and #{feeds.length - 1} more fonts" if(feeds.length > 2) %></span> to favorites.
   </div>
   <div class="clearfix">
-    <% feeds.each do |fav_fnt| %>
+    <% feeds[0,6].each do |fav_fnt| %>
       <img class="ref-img-med" src="<%= @fonts_map[fav_fnt.font_id].first.img_url %>" />
     <% end %>
   </div>

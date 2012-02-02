@@ -4,7 +4,7 @@
     <a class="author" href="OpenProfile://<%= uid.to_s %>"><%= @users_map[uid].first.username %></a> tagged on <%= pluralize(foto_ids.length, 'post') %>
   </div>
   <div class="clearfix">
-    <% foto_ids.each do |fid| %>
+    <% foto_ids[0,6].each do |fid| %>
       <a href="OpenPhoto://<%= fid.to_s %>"><img class="ref-img-med" src="<%= @photos_map[fid].first.url_large %>" /></a>
     <% end %>
   </div>

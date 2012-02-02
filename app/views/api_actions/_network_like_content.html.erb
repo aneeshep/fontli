@@ -3,7 +3,7 @@
     <a class="author" href="OpenProfile://<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>liked <%= pluralize(feeds.length, 'post') %>
   </div>
   <div class="clearfix">
-    <% feeds.each do |lk| %>
+    <% feeds[0,6].each do |lk| %>
       <a href="OpenPhoto://<%= lk.photo_id.to_s %>"><img class="ref-img-med" src="<%= @photos_map[lk.photo_id].first.url_large %>" /></a>
     <% end %>
   </div>

@@ -5,7 +5,7 @@
     <a class="author" href="OpenProfile://<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>started following <a class="author" href="OpenProfile://<%= recnt_frnd.id.to_s %>"><%= recnt_frnd.username %></a><%= "and <a class='author' href='OpenProfile://#{last_frnd.id.to_s}'>#{last_frnd.username}</a>".html_safe if feeds.length == 2 %> <%= "and #{feeds.length - 1} other(s)" if feeds.length > 2 %>
   </div>
   <div class="clearfix">
-    <% feeds.each do |flw| %>
+    <% feeds[0,6].each do |flw| %>
       <a class="ref-usr" style="background-image:url(<%= @users_map[flw.follower_id].first.url_thumb %>);" href="OpenProfile://<%= flw.follower_id.to_s %>"></a>
     <% end %>
   </div>
