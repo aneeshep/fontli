@@ -56,7 +56,7 @@
           </div>
           <p class="clear_both"><%= truncate(@obj.caption, :length => 250, :separator => '') %></p>
           <div id="font_listing">
-            <p id="useraction"><span class="likes"><%= pluralize(@obj.likes_count, 'Like') %></span><span class="comment"><%= pluralize(@obj.comments_count, 'comment') %></span></p>
+            <p id="useraction"><span class="likes"><%= pluralize(@obj.likes_count, 'Like') %></span><span class="comment"><%= pluralize(@obj.comments_count, 'Comment') %></span></p>
             <p class="bold font_icon"><%= pluralize(@obj.fonts_count, 'Font') %> tagged<%= ', top picks;' if top_fnts.length > 0 %></p>
 
             <% top_fnts.each do |fnt| %>

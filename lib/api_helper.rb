@@ -29,8 +29,8 @@ module ApiHelper
                                          :hashes => [:name] }},
 
     :photo_detail   => { :accepts => [:photo_id],
-                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :user_url_thumb, :username, :permalink, :likes_count, :fonts_count, :comments_count, :fonts, :address, :latitude, :longitude, :liked?, :commented?, :liked_user, :commented_user, :font_help, :hash_tags],
-                         :fonts => [:id, :user_id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?],
+                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :user_url_thumb, :username, :permalink, :likes_count, :fonts_count, :comments_count, :fonts_ord, :address, :latitude, :longitude, :liked?, :commented?, :liked_user, :commented_user, :font_help, :hash_tags],
+                         :fonts_ord => [:id, :user_id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?],
                          :hash_tags => [:name] },
     :delete_photo   => { :accepts => [:photo_id],
                          :returns => true },

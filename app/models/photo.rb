@@ -276,6 +276,12 @@ class Photo
     top_picks + top_agreed
   end
 
+  # order fonts by top; pick_status -> agrees_count -> tags_count
+  def fonts_ord
+    fnts = self.fonts.to_a
+    fnts.sort_by {|f| [-f.pick_status, -f.agrees_count, -f.tags_count] }
+  end
+
   def liked?
     current_user.fav_photo_ids.include?(self.id)
   end
