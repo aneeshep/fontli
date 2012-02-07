@@ -4,11 +4,11 @@
 <% lks_cnt = foto.likes_count - lkd_usrs.length %>
 <% septr = (lkd_usrs.length == 2 ? 'and ' : ', ') %>
 <li class="like">
-  <a href="OpenPhoto://<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
+  <a href="http://openphoto/<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
     <%= lkd_usrs.collect do |uname|
-      "<a class='author' href='OpenProfile://#{uname}'>#{uname}</a>"
-    end.join(septr).html_safe %><%= "and #{pluralize(lks_cnt, 'other')}" if lks_cnt > 0 %>liked your <a href="OpenPhoto://<%= foto.id.to_s %>">post</a>
+      "<a class='author' href='http://openprofile/#{uname}'>#{uname}</a>"
+    end.join(septr).html_safe %><%= "and #{pluralize(lks_cnt, 'other')}" if lks_cnt > 0 %>liked your <a href="http://openphoto/<%= foto.id.to_s %>">post</a>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>

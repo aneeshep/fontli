@@ -324,4 +324,10 @@ class ApiActionsController < ApiBaseController
     end
     render_response(photos)
   end
+
+  def feed_detail
+    foto = Photo.where(:_id => @feed_id).first
+    foto && foto.populate_liked_commented_users
+    render_response(foto, !foto.nil?, :photo_not_found)
+  end
 end

@@ -2,11 +2,11 @@
 <% last_frnd = @users_map[feeds.last.follower_id].first %>
 <li class="follow">
   <div class="text">
-    <a class="author" href="OpenProfile://<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>started following <a class="author" href="OpenProfile://<%= recnt_frnd.id.to_s %>"><%= recnt_frnd.username %></a><%= "and <a class='author' href='OpenProfile://#{last_frnd.id.to_s}'>#{last_frnd.username}</a>".html_safe if feeds.length == 2 %> <%= "and #{feeds.length - 1} other(s)" if feeds.length > 2 %>
+    <a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>started following <a class="author" href="http://openprofile/<%= recnt_frnd.id.to_s %>"><%= recnt_frnd.username %></a><%= "and <a class='author' href='http://openprofile/#{last_frnd.id.to_s}'>#{last_frnd.username}</a>".html_safe if feeds.length == 2 %> <%= "and #{feeds.length - 1} other(s)" if feeds.length > 2 %>
   </div>
   <div class="clearfix">
     <% feeds[0,6].each do |flw| %>
-      <a class="ref-usr" style="background-image:url(<%= @users_map[flw.follower_id].first.url_thumb %>);" href="OpenProfile://<%= flw.follower_id.to_s %>"></a>
+      <a class="ref-usr" style="background-image:url(<%= @users_map[flw.follower_id].first.url_thumb %>);" href="http://openprofile/<%= flw.follower_id.to_s %>"></a>
     <% end %>
   </div>
   <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>

@@ -1,11 +1,11 @@
 <% foto_ids = feeds.collect { |tg| @tags_map[tg.font_id].first.photo_id }.uniq %>
 <li class="tag">
   <div class="text">
-    <a class="author" href="OpenProfile://<%= uid.to_s %>"><%= @users_map[uid].first.username %></a> tagged on <%= pluralize(foto_ids.length, 'post') %>
+    <a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a> tagged on <%= pluralize(foto_ids.length, 'post') %>
   </div>
   <div class="clearfix">
     <% foto_ids[0,6].each do |fid| %>
-      <a href="OpenPhoto://<%= fid.to_s %>"><img class="ref-img-med" src="<%= @photos_map[fid].first.url_large %>" /></a>
+      <a href="http://openphoto/<%= fid.to_s %>"><img class="ref-img-med" src="<%= @photos_map[fid].first.url_large %>" /></a>
     <% end %>
   </div>
   <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>

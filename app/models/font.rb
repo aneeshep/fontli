@@ -8,7 +8,6 @@ class Font
   field :family_id, :type => String
   field :subfont_name, :type => String
   field :subfont_id, :type => String
-  field :img_url, :type => String
   field :agrees_count, :type => Integer, :default => 0
   field :font_tags_count, :type => Integer, :default => 0
   # pick_status is to identify expert/publisher's pick
@@ -22,6 +21,9 @@ class Font
 
   validates :family_unique_id, :family_name, :family_id, :presence => true
   validates :photo_id, :user_id, :presence => true
+
+  attr_accessor :img_url
+  after_create :save_preview_image
 
   POPULAR_API_LIMIT = 20
   PICK_STATUS_MAP = { :expert_pick => 1, :publisher_pick => 2, :expert_publisher_pick => 3 }
@@ -110,5 +112,27 @@ class Font
 
   def my_fav?
     current_user.fav_font_ids.include? self.id
+  end
+
+  def img_url=(my_fnts_url)
+    @img_url = my_fnts_url
+  end
+
+  def img_url
+    request_domain + "/fonts/#{self.id.to_s}.gif"
+  end
+
+private
+
+  def save_preview_image
+    return true if @img_url.blank?
+    img_path = "public/fonts/#{self.id.to_s}.gif"
+    io = open(URI.parse(img_url))
+    Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
+    File.new(img_path, 'wb') { |fp| fp.write(io.read) }
+  rescue Exception => ex
+    Rails.logger.info "Error while Font preview image: #{ex.message}"
+  ensure
+    io.close
   end
 end
