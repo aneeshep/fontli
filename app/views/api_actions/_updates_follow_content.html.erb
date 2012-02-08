@@ -1,7 +1,10 @@
 <% follow = n.notifiable %>
 <% frm_usr = follow.user %>
 <li class="follow">
-  <a class="ref-usr" style="float:right;background-image:url(<%= frm_usr.url_thumb %>);" href="http://openprofile/<%= frm_usr.id.to_s %>"></a>
+  <div class="ref-usr">
+    <img src='<%= frm_usr.url_thumb %>' />
+    <a class="ref-usr-ring" href="http://openprofile/<%= frm_usr.id.to_s %>"></a>
+  </div>
   <div class="text">
     <a class="author" href="http://openprofile/<%= frm_usr.id.to_s %>"><%= frm_usr.username %></a>started following your feeds
   </div>

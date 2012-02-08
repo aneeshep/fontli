@@ -6,7 +6,10 @@
   </div>
   <div class="clearfix">
     <% feeds[0,6].each do |flw| %>
-      <a class="ref-usr" style="background-image:url(<%= @users_map[flw.follower_id].first.url_thumb %>);" href="http://openprofile/<%= flw.follower_id.to_s %>"></a>
+      <div class="ref-usr">
+        <img src='<%= @users_map[flw.follower_id].first.url_thumb %>' />
+        <a class="ref-usr-ring" href="http://openprofile/<%= flw.follower_id.to_s %>"></a>
+      </div>
     <% end %>
   </div>
   <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>
