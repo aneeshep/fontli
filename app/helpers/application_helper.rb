@@ -51,7 +51,8 @@ module ApplicationHelper
     if (Time.now - dattime) < 15.minutes
       'Just now'
     else
-      distance_of_time_in_words_to_now(dattime) + ' ago'
+      str = distance_of_time_in_words_to_now(dattime) + ' ago'
+      str.gsub(/About /, '')
     end
   end
 end
