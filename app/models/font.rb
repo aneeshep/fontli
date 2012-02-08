@@ -127,7 +127,7 @@ private
   def save_preview_image
     return true if @img_url.blank?
     img_path = "public/fonts/#{self.id.to_s}.gif"
-    io = open(URI.parse(img_url))
+    io = open(URI.parse(@img_url))
     Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
     File.new(img_path, 'wb') { |fp| fp.write(io.read) }
   rescue Exception => ex
