@@ -9,7 +9,7 @@ module ApiHelper
     :signin      => { :accepts => [:username, :password, :device_id],
                       :returns => 'Auth Token' },
     :signup      => { :accepts => [:username, :email, :password, [:full_name, :description, :website, :platform, :extuid, :avatar]],
-                      :returns => [:username, :email, :password] },
+                      :returns => [:username, :email, :password, :url_thumb] },
     :signout     => { :accepts => [],
                       :returns => true },
     :forgot_pass => { :accepts => [:email_or_uname],
@@ -49,7 +49,7 @@ module ApiHelper
 
     :comments_list  => { :accepts => [:photo_id],
                          :returns => [:body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
-                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?, :coords] },
+                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords] },
     :agree_font     => { :accepts => [:font_id, [:close_help]],
                          :returns => true },
     :unagree_font   => { :accepts => [:font_id],

@@ -119,17 +119,17 @@ class Font
   end
 
   def img_url
-    request_domain + "/fonts/#{self.id.to_s}.gif"
+    request_domain + "/fonts/#{self.id.to_s}.png"
   end
 
 private
 
   def save_preview_image
     return true if @img_url.blank?
-    img_path = "public/fonts/#{self.id.to_s}.gif"
+    img_path = "public/fonts/#{self.id.to_s}.png"
     io = open(URI.parse(@img_url))
     Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
-    File.new(img_path, 'wb') { |fp| fp.write(io.read) }
+    `convert #{io.path} #{img_path}`
   rescue Exception => ex
     Rails.logger.info "Error while Font preview image: #{ex.message}"
   ensure

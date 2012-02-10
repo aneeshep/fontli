@@ -52,7 +52,7 @@ module ApplicationHelper
       'Just now'
     else
       str = distance_of_time_in_words_to_now(dattime) + ' ago'
-      str.gsub(/About /, '')
+      str.gsub(/about /i, '')
     end
   end
 end
