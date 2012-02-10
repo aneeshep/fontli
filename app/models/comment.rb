@@ -30,6 +30,7 @@ class Comment
         :id => f.id,
         :tags_count => f.tags_count,
         :my_agree_status => f.my_agree_status,
+        :img_url => f.img_url,
         :my_fav? => f.my_fav?,
         :coords => ft.coords) )
     end

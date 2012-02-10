@@ -12,6 +12,7 @@ class Font
   field :font_tags_count, :type => Integer, :default => 0
   # pick_status is to identify expert/publisher's pick
   field :pick_status, :type => Integer, :default => 0
+  field :expert_tagged, :type => Boolean, :default => false
 
   include MongoExtensions::CounterCache
   belongs_to :photo, :index => true

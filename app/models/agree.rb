@@ -52,7 +52,7 @@ private
     return true if fnt.pick_status == exp_pik + pub_pik # max already
     pck_stats = fnt.pick_status
     pck_stats += (expert_pick? ? exp_pik : pub_pik)
-    self.font.update_attribute(:pick_status, pck_stats)
+    fnt.update_attribute(:pick_status, pck_stats)
     true
   end
 end
