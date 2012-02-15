@@ -54,7 +54,7 @@ module ApiHelper
                          :returns => true },
     :unagree_font   => { :accepts => [:font_id],
                          :returns => true },
-    :fav_font       => { :accepts => [:font_id],
+    :fav_font       => { :accepts => [:font_id, :thumb_url],
                          :returns => true },
     :unfav_font     => { :accepts => [:font_id],
                          :returns => true },

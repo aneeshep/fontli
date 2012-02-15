@@ -123,6 +123,26 @@ class Font
     request_domain + "/fonts/#{self.id.to_s}.png"
   end
 
+  # Thumb url is set after font creation. 
+  # So its ok to create the image right here.
+  def thumb_url=(my_fnts_thumb_url)
+    return true if my_fnts_thumb_url.blank?
+    img_path = "public/fonts/#{self.id.to_s}_thumb.png"
+    io = open(URI.parse(my_fnts_thumb_url))
+    Rails.logger.info "Creating thumb image for font - #{self.id.to_s}"
+    `convert #{io.path} #{img_path}`
+    true
+  rescue Exception => ex
+    Rails.logger.info "Error while saving font thumb image: #{ex.message}"
+    false
+  ensure
+    io.close
+  end
+
+  def thumb_url
+    request_domain + "/fonts/#{self.id.to_s}_thumb.png"
+  end
+
 private
 
   def save_preview_image
@@ -132,7 +152,7 @@ private
     Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
     `convert #{io.path} #{img_path}`
   rescue Exception => ex
-    Rails.logger.info "Error while Font preview image: #{ex.message}"
+    Rails.logger.info "Error while saving font preview image: #{ex.message}"
   ensure
     io.close
   end

@@ -109,6 +109,7 @@ class ApiActionsController < ApiBaseController
   def fav_font
     fav = @current_user.fav_fonts.build(:font_id => @font_id)
     resp, error = fav.my_save(true)
+    Font[@font_id].thumb_url = @thumb_url # update thumb_url
     render_response(resp, !resp.nil?, error)
   end
 
