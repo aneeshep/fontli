@@ -11,7 +11,8 @@ class Agree
   validates :user_id, :font_id, :presence => true
   validates :user_id, :uniqueness => { :scope => :font_id, :message => 'has already accepted!' }
 
-  after_create :update_font_pick_status
+  after_create :inc_font_pick_status
+  after_destroy :dec_font_pick_status
 
   def notif_context
     ['has accepted']
@@ -43,16 +44,25 @@ class Agree
 
 private
 
-  def update_font_pick_status
+  # increment method
+  def inc_font_pick_status
     return true unless publisher_pick? || expert_pick? # nothing to do
     fnt, sts_map = [self.font, Font::PICK_STATUS_MAP.dup]
     exp_pik, pub_pik = [ sts_map[:expert_pick], sts_map[:publisher_pick] ]
     return true if expert_pick? && fnt.pick_status == exp_pik # already a expert pick
     return true if publisher_pick? && fnt.pick_status == pub_pik # already a publisher pick
     return true if fnt.pick_status == exp_pik + pub_pik # max already
-    pck_stats = fnt.pick_status
-    pck_stats += (expert_pick? ? exp_pik : pub_pik)
-    fnt.update_attribute(:pick_status, pck_stats)
+    fnt.inc(:pick_status, (expert_pick? ? exp_pik : pub_pik))
+    true
+  end
+
+  # decrement method
+  def dec_font_pick_status
+    return true unless publisher_pick? || expert_pick? # no action req.
+    fnt, sts_map = [self.font, Font::PICK_STATUS_MAP.dup]
+    exp_pik, pub_pik = [ sts_map[:expert_pick], sts_map[:publisher_pick] ]
+    return true if expert_pick? && fnt.agrees.any?(&:expert_pick?) # some other expert has also agreed
+    fnt.inc(:pick_status, -(expert_pick? ? exp_pik : pub_pik))
     true
   end
 end
