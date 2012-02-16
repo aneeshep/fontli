@@ -80,6 +80,7 @@ class Photo
         foto.update_attributes(opts) if opts[:data]
         return foto
       end
+      Rails.logger.info "Foto created at #{Time.now.utc} with options - #{opts.inspect}"
       self.new(opts).my_save
     end
 
@@ -314,8 +315,10 @@ private
   end
 
   def self.build_font_tags(opts, foto, coords)
-    find_opts = opts.dup.keep_if { |k, v| [:family_unique_id, :family_id, :subfont_id].include? k }
+    find_opts = opts.dup.keep_if { |k, v| [:family_unique_id, :family_id, :subfont_id].include? k.to_sym }
     fnt = foto.fonts.find_or_initialize_by(find_opts)
+    okeys = opts.keys - find_opts.keys - ['coords']
+    okeys.each { |k| fnt.send("#{k}=".to_sym, opts[k]) }
     tag_ids = coords.collect do |c|
       tg = fnt.font_tags.build(:coords => c, :user_id => opts[:user_id])
       tg.id
