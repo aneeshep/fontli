@@ -314,8 +314,8 @@ private
   end
 
   def self.build_font_tags(opts, foto, coords)
-    opts.delete(:coords)
-    fnt = foto.fonts.find_or_initialize_by(opts)
+    find_opts = opts.dup.keep_if { |k, v| [:family_unique_id, :family_id, :subfont_id].include? k }
+    fnt = foto.fonts.find_or_initialize_by(find_opts)
     tag_ids = coords.collect do |c|
       tg = fnt.font_tags.build(:coords => c, :user_id => opts[:user_id])
       tg.id

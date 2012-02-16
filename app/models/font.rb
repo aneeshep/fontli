@@ -134,13 +134,16 @@ class Font
     true
   rescue Exception => ex
     Rails.logger.info "Error while saving font thumb image: #{ex.message}"
+    Airbrake.notify(ex)
     false
   ensure
     io.close
   end
 
   def thumb_url
-    request_domain + "/fonts/#{self.id.to_s}_thumb.png"
+    tpath = "/fonts/#{self.id.to_s}_thumb.png"
+    tpath = '/font_thumb_missing.jpg' unless File.exist?('public' + tpath)
+    request_domain + tpath
   end
 
 private
@@ -153,6 +156,7 @@ private
     `convert #{io.path} #{img_path}`
   rescue Exception => ex
     Rails.logger.info "Error while saving font preview image: #{ex.message}"
+    Airbrake.notify(ex)
   ensure
     io.close
   end
