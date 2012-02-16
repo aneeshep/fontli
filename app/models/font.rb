@@ -137,7 +137,7 @@ class Font
     Airbrake.notify(ex)
     false
   ensure
-    io.close
+    io && io.close
   end
 
   def thumb_url
@@ -158,6 +158,6 @@ private
     Rails.logger.info "Error while saving font preview image: #{ex.message}"
     Airbrake.notify(ex)
   ensure
-    io.close
+    io && io.close
   end
 end
