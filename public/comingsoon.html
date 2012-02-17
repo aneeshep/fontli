@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+<title>Fontli</title>
+<meta  content="charset=utf-8">
+<meta name = "viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="target-densitydpi=device-dpi">
+<meta name="apple-mobile-web-app-status-bar-style" content="translucent-black" />
+<style type="text/css">
+/***reset*****/
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;margin:0;padding:0;}body{line-height:1;-webkit-user-select:none;
+    -webkit-text-size-adjust:none;}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}nav ul{list-style:none;}ul{list-style:none;}blockquote,q{quotes:none;}a{font-size:100%;vertical-align:baseline;background:transparent;margin:0;padding:0;}input,select{vertical-align:middle;}
+/******reset*****/
+
+@media screen and (orientation:portrait) {
+
+section{width:320px;}
+}
+ 
+
+@media screen and (orientation:landscape) {
+ 
+section{width:480px;}
+}
+
+p{margin-bottom:1.5em;}
+section{padding-bottom:30px;}
+article{padding:20px;}
+h4{color:#cd1818; font-size:1.15em; margin-top:1.5em;}
+section{margin: 0 0px; font-family:sans-serif; font-size:.81em; color: #444; line-height:1.45;}
+ul{list-style-position:inside;}
+li{font-weight:bold; font-size:1.1em;margin-bottom:.5em; line-height:1.4em; padding-left:20px;background:url(data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABGAAD/4QMraHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjAtYzA2MSA2NC4xNDA5NDksIDIwMTAvMTIvMDctMTA6NTc6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDUzUuMSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkY2NEJBNUI2NDVCMDExRTFCODY0QzEyM0Y4MzlDMDdEIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkY2NEJBNUI3NDVCMDExRTFCODY0QzEyM0Y4MzlDMDdEIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RjY0QkE1QjQ0NUIwMTFFMUI4NjRDMTIzRjgzOUMwN0QiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RjY0QkE1QjU0NUIwMTFFMUI4NjRDMTIzRjgzOUMwN0QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7/7gAOQWRvYmUAZMAAAAAB/9sAhAAEAwMDAwMEAwMEBgQDBAYHBQQEBQcIBgYHBgYICggJCQkJCAoKDAwMDAwKDAwNDQwMEREREREUFBQUFBQUFBQUAQQFBQgHCA8KCg8UDg4OFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAQAA4DAREAAhEBAxEB/8QAdgAAAwAAAAAAAAAAAAAAAAAABAYIAQACAwEAAAAAAAAAAAAAAAAEBQIDBgcQAAEEAQIFBQEAAAAAAAAAAAIBAwQFBhEHACExQRJRIjITCBQRAAIBAwMDAwUAAAAAAAAAAAECAwARBCExBkFxBVGxEpEiMkIT/9oADAMBAAIRAxEAPwCvnt69tY2Vy8MlXjUe5go5/UruoRwNkVNwFdX2+Yoi6p68uvAZzIg5QnUVpF43ntjLkLGSjWtbfXQG29jQ9fvvtlaY/cZNDt/OqonWGrMvqNHGxlPCw059ap5K2RF8kTsvEVzYmUsDou9WS8X8hFOkLJ98oJXUWPxHyIvtcCpp39/PuWVmR2ma460d3T3c85L0eOClLjyJ7ykoqCfIFcPQSHpqmvrwjzsB1YuuoJ966nxXleNLAmNMf5vGlrn8WCD16Gw2+lM+P/mbLKbaTLozjrT2bZLGgizVCaCyw3CmNy1bJ3mhOmgadhReWvfgiPxzrCw/ZradjelWXzPGm8nAwBEMJe7dSWQre3RRfv7V/9k=)	no-repeat 0 -2px; background-size:14px 16px;}
+
+
+
+a:link, a:active, a:hover, a:visited{text-decoration:none; color:#304e6b;}
+.timestamp{color:#ccc; text-transform:uppercase; font-size:10px; font-weight:bold;line-height:1.8;}
+.content{color:#333;}
+.ref-img{background-color:white; border:white 2px solid; width:35px; height:35px; float:right;-moz-box-shadow: 0px 1px 3px #b5b5b5;-webkit-box-shadow: 0px 1px 3px #b5b5b5; box-shadow: 0px 1px 3px #b5b5b5;-webkit-border-radius: 2px;
+-moz-border-radius: 2px; border-radius: 2px;margin:2px 2px 0 0}
+.ref-usr{background-color:white; width:35px; height:35px; float:right;-moz-box-shadow: 0px 1px 3px #c2c2c2;-webkit-box-shadow: 0px 1px 3px #c2c2c2; box-shadow: 0px 1px 3px #c2c2c2;-webkit-border-radius: 20px;
+-moz-border-radius: 20px; border-radius: 20px; margin:2px 3px 0 0}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+
+li{background:url(data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABWAAD/4QMraHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjAtYzA2MSA2NC4xNDA5NDksIDIwMTAvMTIvMDctMTA6NTc6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDUzUuMSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjgxNzJCMTRCNDVCMjExRTFCM0VBQ0M5MEQ5MEJEMDdCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjgxNzJCMTRDNDVCMjExRTFCM0VBQ0M5MEQ5MEJEMDdCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ODE3MkIxNDk0NUIyMTFFMUIzRUFDQzkwRDkwQkQwN0IiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODE3MkIxNEE0NUIyMTFFMUIzRUFDQzkwRDkwQkQwN0IiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7/7gAOQWRvYmUAZMAAAAAB/9sAhAACAQEBAQECAQECAgIBAgIDAgICAgMDAwMDAwMDBAMEBAQEAwQEBQUFBQUEBwcHBwcHCgkJCQoLCwsLCwsLCwsLAQICAgMDAwYEBAYJBwYHCQsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwv/wAARCAAgABwDAREAAhEBAxEB/8QAkgABAAMBAAAAAAAAAAAAAAAACQAECAcBAAICAwEAAAAAAAAAAAAAAAAHBggCAwkFEAAABAQEBAUCBwAAAAAAAAABAgMEEQUGBwASFAgxExgJIUEiIxYXClFCUjNTFRkRAAECAwUFBgQHAAAAAAAAAAECAwARBDFBEgUGIVFhcRMiFBUWBwjRMlIk8LHBQoJDF//aAAwDAQACEQMRAD8AfzBBEwQRMEETBBBnd27va1RtouUvtt2slbDciU5DVJUjtNByizXOGbRIoLpqEOoUogKhjBABGABEBHEG1FqlVM70Kf5had3CUWq9GfQVjPKEZpm8+gufTbBIKh9ZIIIBuAttirsv+4WoSpLM1Q43btiMbrUtKjTOXHlvLISowzFSK2RTApSpOuYcIhDLlibwyiGMcr1k2plfeRJaRMS/dw5xt117aqtjM2BkysVO8vCrFObV+Im9Mhznsvjgkl+5I3OJXnJVM+p+Tq2XM7grSzcEyrkaieAiR4KXMFYC+IRHKI+UMeQnW9V1sRSMG7hzhiP+1zIjlhZbeWKqWxwzli4pnKU922ULP1c2Y6UusjXj9GfjXybVQ9zk5P2cv8vM9qH6/DDD8RZ7p3mfYwz/AB+UU48mZn5g8Dwfc9Xpyunv5S7U90BJ3kttF07Cb5q3qmt2i5qQrmoX9V07NwKYWzhu/cncCgCkIc1uJshicQAAHgIYU2pqF2nrlqWNiySDz+EdCPQ/VVBm+lKVmnUOpTNpbWm8FIAnLcq0Gy0WgxlPEfhwRakcjnNTThrT1OtHL+fPVyNmbJomdZddZQwFIRNNMBMYxhGAAAYyQhSlBKRMmNNRUNMNqddUEoSJkkyAAtJJsEPD0PXw/wAKujblB9cviOq0GcI6n+/+R6LNwz8v2PwzYbXhT/gXdv7MNn8sUv0jnp5/yr/V/HJ/adaWLh0ulj5T7XKNd3ysDZ/cnb93a+90hYVBRbwPW1ekiZM4BAqqKhYHSVL+U5BAweQ4kdXRs1LZbdSFJMJfT+o8yySsTV0DymnU3i/gRYQbwZgwLW/HsT3lstfWnpDtfReVVait5wErlB3IhqJM6OBlBRmCpQy6cpCiYrgQAIAIG9UBMsM30m8w+kU/aQsyHDnw4xer089weWZnlLzmbEMVFMjEqVjgGyaB9RMgUbzMbJySft09pqwuw+mWlQLtm1S7hlm4BNateJAbknOEToy5NSOnRDhmD1n4mHgUJvkunqegSDLE5er4boq36m+seb6sfU2FFmjB7LQNu4rI+Y8LBcLzq7EhhPR//9k=) 0 -2px	no-repeat;}
+
+
+
+</style>
+</head> 
+<body>
+<section>
+<article>
+<p>
+Fontli will be available on Windows and Android devices soon. A web app. is also getting ready. Here is a list of features to expect for the upcoming versions.
+</p>
+<ul>
+<li>Find posts spotted with a specific Typeface</li>
+<li>Test drive spotted fonts with custom preview text </li>
+<li>Profile badges and reputation</li>
+<li>Image filters</li>
+<li>Post to Tumblr and Posterous</li>
+<li>Share via email</li>
+<li>Invite friends via email/Facebook/Linkedin</li>
+<li>Follow your favourite fonts</li>
+</ul>
+</article>
+
+
+</section>
+
+</body>
+</html>
