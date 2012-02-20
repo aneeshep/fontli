@@ -2,11 +2,11 @@
 <% last_fnt = @fonts_map[feeds.last.font_id].first %>
 <li class="fav">
   <div class="text">
-    <a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>added <span class="content"><strong><%= recnt_fnt.family_name %></strong> <%= "and <strong>#{last_fnt.family_name}</strong>".html_safe if(feeds.length == 2) %> <%= "and #{feeds.length - 1} more fonts" if(feeds.length > 2) %></span> to favorites
+    <a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>added <span class="content"><a href="http://openfont/<%= fav_fnt.family_id %>"><strong><%= recnt_fnt.family_name %></strong></a><%= "and <a href='http://openfont/#{fav_fnt.family_id}'><strong>#{last_fnt.family_name}</strong></a>".html_safe if(feeds.length == 2) %><%= "and #{feeds.length - 1} more fonts" if(feeds.length > 2) %></span> to favorites
   </div>
   <div class="clearfix">
     <% feeds[0,6].each do |fav_fnt| %>
-      <img class="ref-img-med" src="<%= @fonts_map[fav_fnt.font_id].first.img_url %>" />
+      <a href="http://openfont/<%= fav_fnt.family_id %>"><img class="ref-img-med" src="<%= @fonts_map[fav_fnt.font_id].first.thumb_url %>" /></a>
     <% end %>
   </div>
   <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>
