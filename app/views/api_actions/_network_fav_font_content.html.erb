@@ -2,7 +2,7 @@
 <% last_fnt = @fonts_map[feeds.last.font_id].first %>
 <li class="fav">
   <div class="text">
-    <span class="content"><a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>added <a href="http://openfont/<%= fav_fnt.family_id %>"><strong><%= recnt_fnt.family_name %></strong></a><%= "and <a href='http://openfont/#{fav_fnt.family_id}'><strong>#{last_fnt.family_name}</strong></a>".html_safe if(feeds.length == 2) %><%= "and #{feeds.length - 1} more fonts" if(feeds.length > 2) %> to favorites.</span>
+    <span class="content"><a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>added <a href="http://openfont/<%= recnt_fnt.family_id %>"><strong><%= recnt_fnt.family_name %></strong></a><%= "and <a href='http://openfont/#{last_fnt.family_id}'><strong>#{last_fnt.family_name}</strong></a>".html_safe if(feeds.length == 2) %><%= "and #{feeds.length - 1} more fonts" if(feeds.length > 2) %> to favorites.</span>
   </div>
   <div class="clearfix">
     <% feeds[0,6].each do |fav_fnt| %>
