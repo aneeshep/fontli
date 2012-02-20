@@ -128,8 +128,8 @@ class Font
   def thumb_url=(my_fnts_thumb_url)
     return true if my_fnts_thumb_url.blank?
     img_path = "public/fonts/#{self.id.to_s}_thumb.png"
-    io = open(URI.parse(my_fnts_thumb_url))
     Rails.logger.info "Creating thumb image for font - #{self.id.to_s}"
+    io = open(URI.parse(my_fnts_thumb_url))
     `convert #{io.path} #{img_path}`
     true
   rescue Exception => ex

@@ -96,7 +96,9 @@ class User
 
     def search(uname)
       return [] if uname.blank?
-      self.where(:username => /^#{uname}.*/).to_a
+      res = self.where(:username => /^#{uname}.*/).to_a
+      res << self.where(:full_name => /^#{uname}.*/i).to_a
+      res
     end
 
     # uname can be username or email
