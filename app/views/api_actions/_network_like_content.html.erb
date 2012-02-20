@@ -1,6 +1,6 @@
 <li class="like">
   <div class="text">
-    <a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>liked <%= pluralize(feeds.length, 'post') %>
+    <a class="author" href="http://openprofile/<%= uid.to_s %>"><%= @users_map[uid].first.username %></a>liked <%= pluralize(feeds.length, 'post') %>.
   </div>
   <div class="clearfix">
     <% feeds[0,6].each do |lk| %>

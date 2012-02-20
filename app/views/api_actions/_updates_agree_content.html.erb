@@ -3,7 +3,7 @@
 <li class="agree">
   <a href="http://openphoto/<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
-    <a class="author" href="http://openprofile/<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your Font pick: <span class="content"><strong><%= agree.font.family_name %></strong></span>
+    <span class="content"><a class="author" href="http://openprofile/<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your spotting of <strong><%= agree.font.family_name %></strong>.</span>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>
