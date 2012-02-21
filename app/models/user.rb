@@ -51,9 +51,9 @@ class User
 
   validates :email, :username, :presence => true, :uniqueness => true
   validates :password, :presence => true, :on => :create
-  validates :username, :length => 5..12, :allow_blank => true
+  validates :username, :length => 5..15, :allow_blank => true
   validates :email, :format => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, :allow_blank => true
-  validates :password, :length => 8..10, :confirmation => true, :allow_blank => true
+  validates :password, :length => 6..15, :confirmation => true, :allow_blank => true
   validates :avatar_size,
     :inclusion => { :in => 0..(3.megabytes), :message => "should be less than 3MB" },
     :if => lambda { has_avatar? }
@@ -98,7 +98,7 @@ class User
       return [] if uname.blank?
       res = self.where(:username => /^#{uname}.*/).to_a
       res << self.where(:full_name => /^#{uname}.*/i).to_a
-      res.flatten
+      res.flatten.uniq(&:id)
     end
 
     # uname can be username or email
@@ -124,8 +124,7 @@ class User
       u = self.by_uname_or_email(email_or_uname)
       return [nil, :user_not_found] if u.nil?
       (u.password = rand_s) && u.hash_password
-      Rails.logger.info "----your_new_code = #{u.password}------------"
-      (saved = u.my_save(true)) #&& UserMailer.forgot_pass_email(u).deliver
+      (saved = u.my_save(true)) && AppMailer.forgot_pass_mail(u).deliver
       saved
     end
 
@@ -504,7 +503,7 @@ private
   end
 
   def send_welcome_mail!
-    #UserMailer.welcome_email(self).deliver
+    AppMailer.welcome_mail(self).deliver
   end
     
   def me?

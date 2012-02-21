@@ -45,7 +45,7 @@ module ApiHelper
     :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags]],
                          :returns => [:body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
                          :collection => {:font_tags => [:family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :coords] },
-                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :my_fav?, :coords, :expert_tagged] },
+                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged] },
 
     :comments_list  => { :accepts => [:photo_id],
                          :returns => [:body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
