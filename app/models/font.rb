@@ -59,12 +59,15 @@ class Font
       Photo.where(:_id.in => fids.collect(&:photo_id)).only(:id, :data_filename).skip(offst).limit(lmt)
     end
 
+    # get 20(max) popular family fonts(grouped) based on total tags_count, for a month
+    # total tags_count, includes the count of subfonts as well.
     def popular
       lmt = POPULAR_API_LIMIT
-      fnts = self.where(:created_at.gte => 1.months.ago).limit(lmt).to_a
+      fnts = self.where(:created_at.gte => 1.months.ago).desc(:created_at).to_a
       return [] if fnts.empty?
-      resp = fnts.group_by { |f| f[:family_unique_id] + f[:family_id] + f[:subfont_id].to_s }
-      resp.collect { |uniq_id, dup_fts| dup_fts.first }
+      resp = fnts.group_by { |f| f[:family_id] }
+      resp = resp.sort_by { |fam_id, dup_fts| -dup_fts.sum(&:tags_count) }
+      resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
     end
   end
 

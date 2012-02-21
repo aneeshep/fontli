@@ -57,9 +57,9 @@ module Fontli
       :address              => 'smtp.gmail.com',
       :port                 => 587,
       :domain               => 'fontli.com',
-      :user_name            => 'admin',
+      :user_name            => 'admin@fontli.com',
       :password             => 'Type5try',
-      :authentication       => 'login',
+      :authentication       => 'plain',
       :enable_starttls_auto => true
     }
   end

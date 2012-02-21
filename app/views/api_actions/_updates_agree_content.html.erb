@@ -1,9 +1,10 @@
 <% agree = n.notifiable %>
-<% foto = agree.font.photo %>
+<% fnt = agree.font %>
+<% foto = fnt.photo %>
 <li class="agree">
   <a href="http://openphoto/<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
-    <span class="content"><a class="author" href="http://openprofile/<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your spotting of <strong><%= agree.font.family_name %></strong>.</span>
+    <span class="content"><a class="author" href="http://openprofile/<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your spotting of <a href='http://openfont/<%= fnt.family_id %>'><strong><%= fnt.family_name %></strong></a>.</span>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>
