@@ -98,7 +98,7 @@ class User
       return [] if uname.blank?
       res = self.where(:username => /^#{uname}.*/).to_a
       res << self.where(:full_name => /^#{uname}.*/i).to_a
-      res
+      res.flatten
     end
 
     # uname can be username or email

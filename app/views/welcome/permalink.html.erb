@@ -24,7 +24,7 @@
   <body>
     <% top_fnts = @ob.fonts.where(:expert_tagged => true).limit(5).to_a %>
     <% rem_cnt = 5 - top_fnts.length %>
-    <% top_fnts << @obj.fonts.where(:pick_status.gt => 0).desc(:pick_status).limit(rem_cnt).to_a if rem_cnt > 0 %>
+    <% top_fnts += @obj.fonts.where(:pick_status.gt => 0).desc(:pick_status).limit(rem_cnt).to_a if rem_cnt > 0 %>
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
        var js, fjs = d.getElementsByTagName(s)[0];
