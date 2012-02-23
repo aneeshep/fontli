@@ -12,7 +12,7 @@ class HashTag
     # returns an array #OpenStruct with 'name' and 'photos_count'
     def search(name)
       return [] if name.blank?
-      hsh_tags = self.where(:name => /^#{name}.*/).to_a
+      hsh_tags = self.where(:name => /^#{name}.*/i).to_a
       resp = hsh_tags.group_by(&:name)
       resp.collect do |tag_name, hsh_tags|
         OpenStruct.new(:name => tag_name, :photos_count => hsh_tags.length)

@@ -96,7 +96,7 @@ class User
 
     def search(uname)
       return [] if uname.blank?
-      res = self.where(:username => /^#{uname}.*/).to_a
+      res = self.where(:username => /^#{uname}.*/i).to_a
       res << self.where(:full_name => /^#{uname}.*/i).to_a
       res.flatten.uniq(&:id)
     end
@@ -488,7 +488,7 @@ private
     `identify -format %wx%h #{file.path}`.strip
   end
 
-  # create friendships b/w all users invited self.
+  # create friendships b/w all users invited me.
   def check_friendships
     invites = unless self.platform.blank? # FB/Twitter user
       Invite.where(:platform => self.platform, :extuid => self.extuid)
@@ -497,8 +497,10 @@ private
     end
     invites.to_a.each { |invit| invit.mark_as_friend(self) }
 
-    # Let 'fontli' follow all users by default.
-    User.fontli.follows.create(:follower_id => self.id)
+    # Also make fontli user as a mutual friend.
+    fntli = User.fontli
+    self.follows.create(:follower_id => fntli.id)
+    fntli.follows.create(:follower_id => self.id)
     true
   end
 

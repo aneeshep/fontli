@@ -379,7 +379,7 @@ private
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 100 -strip #{self.path(style)}`
+      `convert #{self.path} -resize '#{size}' -quality 95 -strip #{self.path(style)}`
     end
     true
   end
