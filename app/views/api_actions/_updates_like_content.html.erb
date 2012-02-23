@@ -7,7 +7,7 @@
   <a href="http://openphoto/<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
     <%= lkd_usrs.collect do |uname|
-      "<a class='author' style='padding-right:0px;' href='http://openprofile/#{usrs[uname].first.id.to_s}'>#{uname}</a>"
+      "<a class='author' style='padding-right:0px;' href='http://openprofile/#{uname == 'You' ? current_user.id.to_s : usrs[uname].first.id.to_s}'>#{uname}</a>"
     end.to_sentence.gsub(/, and/, ' and').html_safe %> <%= "and #{pluralize(lks_cnt, 'other')}" if lks_cnt > 0 %> liked your post.
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>

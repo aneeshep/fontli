@@ -48,6 +48,9 @@ html[xmlns] .clearfix {display: block;}
         <%= render ('network_' + klass.to_s + '_content'), :uid => uid, :feeds => farr %>
       <% end %>
     <% end %>
+    <% if @updates_by_user.empty? %>
+      <li><%= @current_user.friend_ids.empty? ? 'You are not following anyone' : 'No updates from your network' %></li>
+    <% end %>
   </ul>
 </article>
 <script type="text/javascript">

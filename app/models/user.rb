@@ -489,7 +489,6 @@ private
   end
 
   # create friendships b/w all users invited self.
-  # Make 'fontli' as a friend of mine.
   def check_friendships
     invites = unless self.platform.blank? # FB/Twitter user
       Invite.where(:platform => self.platform, :extuid => self.extuid)
@@ -498,7 +497,8 @@ private
     end
     invites.to_a.each { |invit| invit.mark_as_friend(self) }
 
-    self.follows.create(:follower_id => User.fontli.id)
+    # Let 'fontli' follow all users by default.
+    User.fontli.follows.create(:follower_id => self.id)
     true
   end
 
