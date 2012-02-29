@@ -32,7 +32,8 @@ module Notifiable
     return false if self.user_id == tgt_id
     notif = Notification.find_for(tgt_id, self.notif_extid, self.class.to_s)
     return true if notif.nil?
-    notif.update_attribute(:unread, true) == false
+    # force the update query to set the updated_at.
+    notif.update_attributes(:unread => true, :updated_at => Time.now.utc) == false
   end
 
 private

@@ -7,7 +7,7 @@
   <span id="file_upload_text" class="browse-file"> Share it here...</span>
   <% end %>
 </div>
-<div id="upload_bar">
+<div id="upload_bar" style="display:none;">
   <span>Uploading ...</span>
 </div>
 <div class='clear'></div>
@@ -16,6 +16,9 @@
     $('#file_upload_text').click(function() {
       document.getElementById("photo").click();
     });
+  });
+  $('#photo').change(function() {
+    $('#post_feed').submit();
   });
   $('#post_feed').submit(function() {
     $('#upload_bar').show();

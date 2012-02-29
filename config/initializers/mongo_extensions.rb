@@ -84,3 +84,14 @@ module MongoExtensions
   end
 
 end
+
+# override when required
+module Mongoid
+  module Timestamps
+    module Created
+      def set_created_at
+        self.created_at = Time.now.utc if !created_at
+      end
+    end
+  end
+end

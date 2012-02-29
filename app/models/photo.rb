@@ -1,6 +1,5 @@
 class Photo
   include Mongoid::Document
-  include Mongoid::Timestamps::Created
   include MongoExtensions
   include Scorable
 
@@ -17,6 +16,7 @@ class Photo
   field :comments_count, :type => Integer, :default => 0
   field :flags_count, :type => Integer, :default => 0
   field :fonts_count, :type => Integer, :default => 0
+  field :created_at, :type => Time
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
@@ -80,13 +80,14 @@ class Photo
         foto.update_attributes(opts) if opts[:data]
         return foto
       end
-      Rails.logger.info "Foto created at #{Time.now.utc} with options - #{opts.inspect}"
+      Rails.logger.info "Foto created at #{Time.now.utc} --#{`date`}--#{Time.zone.now}- with options - #{opts[:user_id].inspect}"
       self.new(opts).my_save
     end
 
     def publish(opts)
       foto = self.unpublished.where(:_id => opts.delete(:photo_id)).first
       return [nil, :photo_not_found] if foto.nil?
+      opts[:created_at] = Time.now.utc
       resp = foto.update_attributes(opts)
       resp ? foto : [nil, foto.errors.full_messages]
     end

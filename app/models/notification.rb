@@ -13,7 +13,7 @@ class Notification
   validates :from_user_id, :to_user_id, :presence => true
   validates :notifiable_id, :notifiable_type, :presence => true
 
-  default_scope desc(:created_at)
+  default_scope desc(:updated_at, :unread)
   scope :unread, where(:unread => true)
 
   class << self

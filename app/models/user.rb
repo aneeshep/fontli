@@ -406,7 +406,7 @@ class User
   end
 
   def my_updates
-    notifs = self.notifications.desc(:updated_at, :unread).to_a
+    notifs = self.notifications.to_a
     self.notifications.unread.update_all(:unread => false) # mark all as read
     notifs
   end
