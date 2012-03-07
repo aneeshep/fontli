@@ -22,7 +22,6 @@ class User
   field :admin, :type => Boolean, :default => false
   field :expert, :type => Boolean, :default => false
   field :points, :type => Integer, :default => 5
-  field :photos_count, :type => Integer, :default => 0
   field :fav_fonts_count, :type => Integer, :default => 0
   field :likes_count, :type => Integer, :default => 0
   field :follows_count, :type => Integer, :default => 0
@@ -349,6 +348,11 @@ class User
       end
     end
     mlist.flatten.uniq(&:username)
+  end
+
+  # return realtime photos(only published) count.
+  def photos_count
+    @fotos_cnt ||= self.photos.count
   end
 
   def my_photos(page = 1, lmt = 20)
