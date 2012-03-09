@@ -18,19 +18,17 @@ Fontli::Application.routes.draw do
   match "get_sub_font_details" => "fonts#get_sub_font_details", :as => :get_sub_font_details
 
   # welcome controller
-  constraints :host => /(localhost|chennai\.pramati\.com)/i do
-    root :to => 'welcome#index'
-  end
-  constraints :host => /(www\.fontli\.com)/i do
-    root :to => 'welcome#splash'
-  end
+  root :to => 'welcome#index'
+
   match 'signup/:platform' => 'welcome#signup', :as => :signup
   match 'login/:platform'  => 'welcome#login',  :as => :login
   match 'auth/:platform/callback' => 'welcome#auth_callback', :as => :auth_callback
   match 'logout' => 'welcome#logout', :as => :logout
 
   # Utils
-  match 'doc' => 'welcome#api_doc'
+  constraints :host => /(localhost|chennai\.pramati\.com)/i do
+    match 'doc' => 'welcome#api_doc'
+  end
 
   # Permalink - Has to be the last one
   match '*url' => 'welcome#permalink'
