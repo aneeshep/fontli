@@ -130,13 +130,14 @@ class Font
   # So its ok to create the image right here.
   def thumb_url=(my_fnts_thumb_url)
     return true if my_fnts_thumb_url.blank?
+    return true if my_fnts_thumb_url.to_s == '(null)'
     img_path = "public/fonts/#{self.id.to_s}_thumb.png"
     Rails.logger.info "Creating thumb image for font - #{self.id.to_s}"
     io = open(URI.parse(my_fnts_thumb_url))
     `convert #{io.path} #{img_path}`
     true
   rescue Exception => ex
-    Rails.logger.info "Error while saving font thumb image: #{ex.message}"
+    Rails.logger.info "Error while saving font thumb image with url - #{my_fnts_thumb_url}: #{ex.message}"
     Airbrake.notify(ex)
     false
   ensure

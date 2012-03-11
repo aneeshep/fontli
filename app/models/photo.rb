@@ -171,6 +171,7 @@ class Photo
 
     def check_mentions_in(val)
       regex = /\s@([a-zA-Z0-9]+\.?_?-?\$?[a-zA-Z0-9]+\b)/
+      val = ' ' + val # add a space infront, to match mentions at the start.
       unames = val.to_s.scan(regex).flatten
       return [] if unames.blank?
       # return only valid users hash of id, username
