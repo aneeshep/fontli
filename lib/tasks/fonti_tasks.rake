@@ -20,4 +20,15 @@ namespace :fontli do
     puts "Done. Updated #{updated_fnts_cnt} font image urls."
   end
 
+  desc 'Display app statistics'
+  task :stats => :environment do
+    usr_cnt = User.count
+    puts "#{usr_cnt} users"
+    fotos_cnt = Photo.count
+    puts "#{fotos_cnt} photos"
+    fnts_cnt = Font.count
+    puts "#{fnts_cnt} typefaces"
+    cmts_cnt = Comment.count
+    puts "#{cmts_cnt} comments"
+  end
 end
