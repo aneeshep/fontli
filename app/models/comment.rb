@@ -3,7 +3,6 @@ class Comment
   include Mongoid::Timestamps::Created
   include MongoExtensions
   include Scorable
-  include Notifiable
 
   field :body, :type => String
   field :font_tag_ids, :type => Array
@@ -16,6 +15,7 @@ class Comment
   validates :body, :length => { :maximum => 500, :allow_blank => true }
 
   after_create :populate_mentions
+  include Notifiable
 
   # return a custom font collection(w/ coords) tagged with this comment.
   def fonts

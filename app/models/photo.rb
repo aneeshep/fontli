@@ -50,7 +50,7 @@ class Photo
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
-  scope :all_popular, where(:likes_count.gt => 1).desc(:likes_count)
+  scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 48.hours.ago).desc(:likes_count) }
 
   before_save :crop_file
   after_create :populate_mentions
@@ -153,7 +153,8 @@ class Photo
     end
 
     def popular
-      pops = self.all_popular.limit(POPULAR_LIMIT).to_a
+      pops = self.all_popular.limit(POPULAR_LIMIT * 3).to_a
+      pops = pops.shuffle.slice(0, POPULAR_LIMIT)
       # add recent fotos if there aren't enough populars
       if pops.length < POPULAR_LIMIT
         pops += self.recent(POPULAR_LIMIT - pops.length)
@@ -171,7 +172,7 @@ class Photo
 
     def check_mentions_in(val)
       regex = /\s@([a-zA-Z0-9]+\.?_?-?\$?[a-zA-Z0-9]+\b)/
-      val = ' ' + val # add a space infront, to match mentions at the start.
+      val = ' ' + val.to_s # add a space infront, to match mentions at the start.
       unames = val.to_s.scan(regex).flatten
       return [] if unames.blank?
       # return only valid users hash of id, username

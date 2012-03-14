@@ -8,7 +8,7 @@ module Scorable
     :like     => { :passive => 01 },
     :comment  => { :active => 05, :passive => 01 },
     :font_tag => { :active => 05, :passive => 01 },
-    :follow   => { :active => 05, :passive => 10 },
+    :follow   => { :active => 01, :passive => 02 },
     :agree    => { :active => 0, :passive => 0 },
     :share    => { :active => 5, :passive => 0 }
   }

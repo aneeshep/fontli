@@ -11,6 +11,7 @@ gem 'airbrake', '3.0.9'
 gem 'redis', '2.2.2'
 gem 'resque', '1.19.0'
 gem 'apn_sender', '1.0.5', :require => 'apn'
+gem 'newrelic_rpm', '3.3.2'
 
 # Gems used only for assets and not required
 # in production environments by default.
