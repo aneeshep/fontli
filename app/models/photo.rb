@@ -171,7 +171,7 @@ class Photo
     end
 
     def sos(pge = 1, lmt = 20)
-      return [] if pge > 5
+      return [] if pge.to_i > 5
       offst = (pge.to_i - 1) * lmt
       self.where(:font_help => true).desc(:created_at).skip(offst).limit(lmt).to_a
     end
