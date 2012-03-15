@@ -1,0 +1,24 @@
+
+<%= @user.username %> said/reported:
+
+---------------------------------------
+
+<%= @feedbk.text %>
+
+---------------------------------------
+
+User information:
+=================
+
+Email: <%= @user.email %>
+Full Name: <%= @user.full_name %>
+Points: <%= @user.points %>
+Joined at: <%= @user.created_dt %>
+
+Trace:
+======
+
+Environment: <%= Rails.env.to_s %>
+Platform: <%= @feedbk.platform %>
+App Version: <%= @feedbk.app_version %>
+OS Version: <%= @feedbk.os_version %>

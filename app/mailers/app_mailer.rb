@@ -26,4 +26,11 @@ class AppMailer < ActionMailer::Base
     @message = opts.delete(:message)
     mail(opts)
   end
+
+  def feedback_mail(feedbk)
+    @feedbk = feedbk
+    @user = feedbk.user
+    mail(:to => 'info@fontli.com',
+         :subject => "Feedback API - #{Rails.env}: #{feedbk.sugg_type}")
+  end
 end

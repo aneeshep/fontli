@@ -34,6 +34,17 @@ namespace :fontli do
 
   desc 'Trigger email for all the suggestions and feedbacks stored in DB'
   task :email_feedbacks => :environment do
-    puts ENV['FROM']
+    suggs = Suggestion.unnotified.to_a
+    puts "Trying to notify about #{suggs.length} feedbacks"
+    success_cnt = 0
+    suggs.each do |sg|
+      begin
+        AppMailer.feedback_mail(sg).deliver!
+        sg.update_attribute(:notified, true) && (success_cnt += 1)
+      rescue Exception => ex
+        Airbrake.notify(ex)
+      end
+    end
+    puts "Complete. Emailed #{success_cnt} feedbacks."
   end
 end
