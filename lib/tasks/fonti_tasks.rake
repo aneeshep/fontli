@@ -31,4 +31,9 @@ namespace :fontli do
     cmts_cnt = Comment.count
     puts "#{cmts_cnt} comments"
   end
+
+  desc 'Trigger email for all the suggestions and feedbacks stored in DB'
+  task :email_feedbacks => :environment do
+    puts ENV['FROM']
+  end
 end

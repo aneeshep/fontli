@@ -85,6 +85,8 @@ module ApiHelper
 
     :popular_photos => { :accepts => [],
                          :returns => [:id, :user_id, :caption, :created_dt, :url_large, :url_thumb] },
+    :sos_photos     => { :accepts => [[:page]],
+                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :url_thumb] },
     :popular_fonts  => { :accepts => [],
                          :returns => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :img_url, :pick_status, :my_fav?, :expert_tagged] },
     :font_photos    => { :accepts => [:family_id, [:page]],

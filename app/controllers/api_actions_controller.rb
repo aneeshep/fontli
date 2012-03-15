@@ -153,6 +153,11 @@ class ApiActionsController < ApiBaseController
     render_response(photos)
   end
 
+  def sos_photos
+    fotos = Photo.sos(@page || 1)
+    render_response(fotos)
+  end
+
   def popular_fonts
     fonts = Font.popular.to_a
     render_response(fonts)

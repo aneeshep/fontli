@@ -170,6 +170,12 @@ class Photo
       self.where(:_id.in => foto_ids).only(:id, :data_filename).skip(offst).limit(lmt).to_a
     end
 
+    def sos(pge = 1, lmt = 20)
+      return [] if pge > 5
+      offst = (pge.to_i - 1) * lmt
+      self.where(:font_help => true).skip(offst).limit(lmt).to_a
+    end
+
     def check_mentions_in(val)
       regex = /\s@([a-zA-Z0-9]+\.?_?-?\$?[a-zA-Z0-9]+\b)/
       val = ' ' + val.to_s # add a space infront, to match mentions at the start.
