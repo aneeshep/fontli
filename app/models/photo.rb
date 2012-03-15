@@ -173,7 +173,7 @@ class Photo
     def sos(pge = 1, lmt = 20)
       return [] if pge > 5
       offst = (pge.to_i - 1) * lmt
-      self.where(:font_help => true).skip(offst).limit(lmt).to_a
+      self.where(:font_help => true).desc(:created_at).skip(offst).limit(lmt).to_a
     end
 
     def check_mentions_in(val)

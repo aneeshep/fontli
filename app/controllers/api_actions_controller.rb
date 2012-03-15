@@ -297,7 +297,7 @@ class ApiActionsController < ApiBaseController
     tag_foto_ids = tag_fotos.collect(&:photo_id)
     @photos_map = Photo.where(:_id.in => lik_foto_ids + tag_foto_ids).only(:id, :data_filename).group_by(&:id)
     fav_fnt_ids = (@updates_by_item[:fav_font] || []).collect(&:font_id)
-    @fonts_map = Font.where(:_id.in => fav_fnt_ids).only(:id, :family_name, :family_id, :img_url).group_by(&:id)
+    @fonts_map = Font.where(:_id.in => fav_fnt_ids).only(:id, :family_name, :family_id, :family_unique_id, :img_url).group_by(&:id)
     usr_ids = @updates_by_user.keys + (@updates_by_item[:follow] || []).collect(&:follower_id)
     @users_map = User.where(:_id.in => usr_ids).only(:id, :username, :avatar_filename).group_by(&:id)
   end
