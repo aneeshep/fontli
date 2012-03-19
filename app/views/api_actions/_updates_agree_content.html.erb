@@ -4,7 +4,7 @@
 <li class="agree">
   <a href="http://openphoto/<%= foto.id.to_s %>"><img class="ref-img" src='<%= foto.url(:thumb) %>' /></a>
   <div class="text">
-    <span class="content"><a class="author" href="http://openprofile/<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your spotting of <a href='http://openfont/<%= fnt.family_id %>/<%= fnt.family_unique_id %>/<%= fnt.id %>'><strong><%= fnt.family_name %></strong></a>.</span>
+    <span class="content"><a class="author" href="http://openprofile/<%= n.from_user_id.to_s %>"><%= n.from_user.username %></a>agreed your spotting of <a href='http://openfont/<%= fnt.family_id %>/<%= fnt.family_unique_id %>/<%= fnt.id %>/<%= fnt.subfont_id %>'><strong><%= fnt.family_name %></strong></a>.</span>
   </div>
   <div class="timestamp"><%= timestamp(n.updated_at) %></div>
 </li>

@@ -48,7 +48,7 @@ class User
   has_many :invites, :dependent => :destroy
   has_many :sessions, :class_name => 'ApiSession', :dependent => :destroy
 
-  validates :email, :username, :presence => true, :uniqueness => true
+  validates :email, :username, :presence => true, :uniqueness => { :case_sensitive => false }
   validates :password, :presence => true, :on => :create
   validates :username, :length => 5..15, :allow_blank => true
   validates :email, :format => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, :allow_blank => true
@@ -262,9 +262,8 @@ class User
   end
 
   def delete_photo(foto_id)
-    foto = self.photos.where(:id => foto_id).first
-    resp = foto.nil? || foto.destroy.nil?
-    !resp
+    foto = self.photos.where(:_id => foto_id).first
+    !foto.nil? && foto.destroy
   end
 
   def follow_user(usr_id)
