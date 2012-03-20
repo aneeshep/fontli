@@ -72,7 +72,7 @@ module ApiHelper
 
     :feeds_html     => { :accepts => [],
                          :returns => 'Feeds HTML' },
-    :my_updates     => { :accepts => [],
+    :my_updates     => { :accepts => [[:page]],
                          :returns => 'Updates HTML' },
     :network_updates => { :accepts => [],
                           :returns => 'Network Updates HTML' },

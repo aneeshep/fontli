@@ -1,0 +1,6 @@
+<% if @notifications.empty? %>
+  $('#load_more').replaceWith('<span>Nothing more</span>');
+<% else %>
+  $('ul.updates').append('<%= escape_javascript(render(:partial => 'updates_all.html.erb')) %>');
+  $('#load_more').replaceWith('<%= escape_javascript(render(:partial => 'updates_load_more.html.erb')) %>');
+<% end %>

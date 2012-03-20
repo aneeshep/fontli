@@ -279,7 +279,8 @@ class ApiActionsController < ApiBaseController
   end
 
   def my_updates
-    @notifications = @current_user.my_updates
+    @page ||= 1
+    @notifications = @current_user.my_updates(@page)
   end
   
   def network_updates

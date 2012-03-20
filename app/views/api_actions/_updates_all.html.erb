@@ -1,0 +1,3 @@
+<% @notifications.each do |n| %>
+  <%= render ('updates_' + n.notifiable_type.underscore + '_content'), :n => n %>
+<% end %>

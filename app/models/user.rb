@@ -408,15 +408,21 @@ class User
     self.notifications.unread.count
   end
 
-  def my_updates
-    notifs = self.notifications.to_a
-    self.notifications.unread.update_all(:unread => false) # mark all as read
+  def notifs_all_count
+    @notifs_cnt ||= self.notifications.count
+  end
+
+  def my_updates(pge = 1, lmt = 20)
+    offst  = (pge.to_i - 1) * lmt
+    notifs = self.notifications.skip(offst).limit(lmt).to_a
+    # mark these notifs as read
+    Notification.where(:_id.in => notifs.collect(&:id), :unread => true).update_all(:unread => false)
     notifs
   end
 
   # updates on friend's activity, grouped by friend_id
   def network_updates
-    frn_ids, tspan = [self.friend_ids, 30.days.ago]
+    frn_ids, tspan = [self.friend_ids, 1.week.ago]
     return [] if frn_ids.empty?
 
     opts = { :user_id.in => frn_ids, :created_at.gt => tspan }
