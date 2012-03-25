@@ -150,6 +150,10 @@ class Font
     request_domain + tpath
   end
 
+  def display_name
+    self.subfont_id.nil? ? self.family_name : self.subfont_name
+  end
+
 private
 
   def save_preview_image

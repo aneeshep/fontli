@@ -34,6 +34,7 @@ class Photo
   DEFAULT_TITLE = 'Yet to publish'
   THUMBNAILS = { :large => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
+  ALLOWED_FLAGS_COUNT = 5
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
@@ -46,7 +47,7 @@ class Photo
 
   attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user
 
-  default_scope where(:caption.ne => DEFAULT_TITLE) # never show them in UI, except publish
+  default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
@@ -388,7 +389,7 @@ private
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 95 -strip #{self.path(style)}`
+      `convert #{self.path} -resize '#{size}' -quality 75 -strip -sharpen 5 #{self.path(style)}`
     end
     true
   end

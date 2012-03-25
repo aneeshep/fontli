@@ -77,10 +77,10 @@ module ApiHelper
     :network_updates => { :accepts => [],
                           :returns => 'Network Updates HTML' },
     :my_feeds       => { :accepts => [[:page]],
-                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :username, :user_url_thumb, :permalink, :likes_count, :fonts_count, :comments_count, :fonts_ord, :address, :latitude, :longitude, :font_help, :liked?, :commented?, :liked_user, :commented_user],
+                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :url, :username, :user_url_thumb, :permalink, :likes_count, :fonts_count, :comments_count, :fonts_ord, :address, :latitude, :longitude, :font_help, :liked?, :commented?, :liked_user, :commented_user],
                          :fonts_ord => [:user_id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :pick_status, :img_url, :my_fav?, :expert_tagged] },
     :feed_detail    => { :accepts => [:feed_id],
-                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :username, :user_url_thumb, :permalink, :likes_count, :fonts_count, :comments_count, :fonts_ord, :address, :latitude, :longitude, :font_help, :liked?, :commented?, :liked_user, :commented_user],
+                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :url, :username, :user_url_thumb, :permalink, :likes_count, :fonts_count, :comments_count, :fonts_ord, :address, :latitude, :longitude, :font_help, :liked?, :commented?, :liked_user, :commented_user],
                          :fonts_ord => [:user_id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :pick_status, :my_fav?, :expert_tagged] },
 
     :popular_photos => { :accepts => [],

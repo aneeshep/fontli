@@ -1,3 +1,3 @@
 <% if @notifications.length == 20 %>
-  <a id="load_more" href="/api/my_updates?auth_token=<%= CGI.escape(@auth_token) %>&page=<%= @page.to_i + 1 %>" data-remote='true'>Load More</a>
+  <a id="load_more" href="/api/my_updates?auth_token=<%= CGI.escape(@auth_token || Encryptor.encrypt(@extuid_token)) %>&page=<%= @page.to_i + 1 %>" data-remote='true'>Load More</a>
 <% end %>

@@ -1,6 +1,12 @@
 <% if @notifications.empty? %>
-  $('#load_more').replaceWith('<span>Nothing more</span>');
+  $('#load_more').html('Completed');
+  $('#load_more').attr('href', '#');
 <% else %>
   $('ul.updates').append('<%= escape_javascript(render(:partial => 'updates_all.html.erb')) %>');
-  $('#load_more').replaceWith('<%= escape_javascript(render(:partial => 'updates_load_more.html.erb')) %>');
+  <% if @notifications.length == 20 %>
+    $('#load_more').replaceWith('<%= escape_javascript(render(:partial => 'updates_load_more.html.erb')) %>');
+  <% else %>
+    $('#load_more').html('Completed');
+    $('#load_more').attr('href', '#');
+  <% end %>
 <% end %>

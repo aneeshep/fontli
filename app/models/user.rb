@@ -51,6 +51,7 @@ class User
   validates :email, :username, :presence => true, :uniqueness => { :case_sensitive => false }
   validates :password, :presence => true, :on => :create
   validates :username, :length => 5..15, :allow_blank => true
+  validates :username, :format => {:with => /^[A-Z0-9._-]+$/i, :allow_blank => true, :message => "can only be alphanumeric with _-. chars."}
   validates :email, :format => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, :allow_blank => true
   validates :password, :length => 6..15, :confirmation => true, :allow_blank => true
   validates :avatar_size,
@@ -434,7 +435,7 @@ class User
     ftgs = FontTag.where(opts.merge(:font_id.nin => fnt_ids)).desc(:created_at).to_a
     flls = Follow.where(opts.merge(:follower_id.ne => self.id)).desc(:created_at).to_a
     favs = FavFont.where(opts).desc(:created_at).to_a
-    liks + ftgs + flls + favs
+    (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end
 
 private
