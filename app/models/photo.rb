@@ -32,7 +32,7 @@ class Photo
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   DEFAULT_TITLE = 'Yet to publish'
-  THUMBNAILS = { :large => '320x320', :thumb => '150x150' }
+  THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
 
@@ -221,6 +221,10 @@ class Photo
     url(:large)
   end
 
+  def url_medium
+    url(:medium)
+  end
+
   def crop?
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
   end
@@ -389,7 +393,7 @@ private
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 75 -strip -sharpen 5 #{self.path(style)}`
+      `convert #{self.path} -resize '#{size}' -quality 75 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
     end
     true
   end

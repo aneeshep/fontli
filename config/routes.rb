@@ -25,6 +25,10 @@ Fontli::Application.routes.draw do
   match 'auth/:platform/callback' => 'welcome#auth_callback', :as => :auth_callback
   match 'logout' => 'welcome#logout', :as => :logout
 
+  # admin controller
+  match 'admin' => 'admin#index', :as => :admin
+  match 'admin/:action', :controller => 'admin'
+
   # Utils
   constraints :host => /(localhost|chennai\.pramati\.com)/i do
     match 'doc' => 'welcome#api_doc'

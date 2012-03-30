@@ -78,6 +78,11 @@ class ApiActionsController < ApiBaseController
     render_response(photo, !photo.nil?, error)
   end
 
+  def flag_user
+    usr, error = User.add_flag_for(@user_id, @current_user.id)
+    render_response(usr, !usr.nil?, error)
+  end
+
   def share_photo
     resp, error = Photo.add_share_for(@photo_id, @current_user.id)
     render_response(resp, !resp.nil?, error)
@@ -93,6 +98,12 @@ class ApiActionsController < ApiBaseController
     foto = Photo[@photo_id]
     commnts = foto.nil? ? [] : foto.comments.to_a
     render_response(commnts)
+  end
+
+  def delete_comment
+    cmt = Comment[@comment_id]
+    resp = !cmt.nil? && cmt.destroy
+    render_response(resp)
   end
 
   def agree_font

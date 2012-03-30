@@ -15,7 +15,15 @@ class Comment
   validates :body, :length => { :maximum => 500, :allow_blank => true }
 
   after_create :populate_mentions
+  after_destroy :delete_assoc_font_tags
   include Notifiable
+
+  class << self
+    # delete_comment api finds comment bypassing the assoc photo, though its not recommended.
+    def [](cmt_id)
+      self.where(:_id => cmt_id).first
+    end
+  end
 
   # return a custom font collection(w/ coords) tagged with this comment.
   def fonts
@@ -60,6 +68,13 @@ private
   def populate_mentions
     mnts = Photo.check_mentions_in(self.body)
     mnts.each { |hsh| self.mentions.create(hsh) }
+    true
+  end
+
+  def delete_assoc_font_tags
+    return true if self.font_tag_ids.empty?
+    fnt_tgs = FontTag.where(:_id.in => self.font_tag_ids).to_a
+    fnt_tgs.each { |ft| ft.destroy }
     true
   end
 end
