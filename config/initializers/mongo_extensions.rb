@@ -95,3 +95,23 @@ module Mongoid
     end
   end
 end
+
+# patch for issue - https://github.com/mongoid/mongoid/issues/1259
+module Mongoid
+  module Attributes
+    # @since 2.0.0.rc.8
+    def apply_defaults
+      defaults.each do |name|
+        unless attributes.has_key?(name)
+          if field = fields[name]
+            default = field.eval_default(self)
+            if attributes[name] != default
+              attribute_will_change!(name)
+              attributes[name] = default
+            end
+          end
+        end
+      end
+    end
+  end
+end

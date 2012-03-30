@@ -1,6 +1,6 @@
 class Font
   include Mongoid::Document
-  include Mongoid::Timestamps::Created
+  include Mongoid::Timestamps
   include MongoExtensions
 
   field :family_unique_id, :type => String
@@ -67,6 +67,17 @@ class Font
       return [] if fnts.empty?
       resp = fnts.group_by { |f| f[:family_id] }
       resp = resp.sort_by { |fam_id, dup_fts| -dup_fts.sum(&:tags_count) }
+      resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
+    end
+
+    # fonts with min 3 agrees or a publisher_pick, sorted by updated_at
+    def api_recent
+      lmt = POPULAR_API_LIMIT
+      fnts = self.where(:agrees_count.gte => 3).to_a
+      fnts += self.where(:pick_status.gte => PICK_STATUS_MAP[:publisher_pick]).to_a
+      fnts = fnts.sort_by(&:updated_at).reverse
+      return [] if fnts.empty?
+      resp = fnts.group_by { |f| f[:family_id] }
       resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
     end
   end

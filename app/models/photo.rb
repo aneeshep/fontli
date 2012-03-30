@@ -116,7 +116,7 @@ class Photo
       self.add_interaction_for(photo_id, :shares, opts)
     end
 
-    # opts - photo_id, body, user_id, font_tags
+    # opts - photo_id, body, user_id, font_tags, hashes
     # creates the font_tags on the photo and then create the comment
     def add_comment_for(opts)
       foto = self[opts.delete(:photo_id)]
@@ -134,6 +134,7 @@ class Photo
       end.flatten
       return [nil, fnt.errors.full_messages] unless valid_font
 
+      hashes.each { |hsh_tg_opts| foto.hash_tags.build hsh_tg_opts }
       foto.comments.build(opts)
       foto.save ? foto.reload : [nil, foto.errors.full_messages]
     end

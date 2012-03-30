@@ -174,6 +174,11 @@ class ApiActionsController < ApiBaseController
     render_response(fonts)
   end
 
+  def recent_fonts
+    fonts = Font.api_recent
+    render_response(fonts)
+  end
+
   def font_photos
     opts = current_api_accepts_map
     fotos = Font.tagged_photos_for(opts)
