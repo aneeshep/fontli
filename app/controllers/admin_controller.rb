@@ -9,10 +9,10 @@ class AdminController < ApplicationController
   end
 
   def users
-    @page, @lmt = [(params[:page] || 1).to_i, 5]
+    @page, @lmt = [(params[:page] || 1).to_i, 10]
     offst       = (@page - 1) * @lmt
     @users_cnt  = User.non_admins.count
-    @max_page   = (@users_cnt / @lmt.to_f).round
+    @max_page   = (@users_cnt / @lmt.to_f).ceil
     unless params[:search].to_s.strip.blank?
       @users = User.search(params[:search])
     else
@@ -21,7 +21,7 @@ class AdminController < ApplicationController
   end
 
   def photos
-    @page, @lmt = [(params[:page] || 1).to_i, 5]
+    @page, @lmt = [(params[:page] || 1).to_i, 10]
     offst = (@page - 1) * @lmt
     @fotos_cnt = Photo.count
     @max_page  = (@fotos_cnt / @lmt.to_f).round
