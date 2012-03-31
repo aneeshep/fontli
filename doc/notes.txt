@@ -1,0 +1,27 @@
+TODO List for next deployment:
+------------------------------
+
+Pre deploy:
+-----------
+
+1). Setup admin login credentials:
+
+cd /data/www/typestry/shared/config
+vim admin_creds.yml
+username: admin
+password: P@s$w0rd
+
+Share the password to the admin, in person.
+
+Post deploy:
+------------
+
+1). Enable the new fields in users document:
+
+RAILS_ENV=production rails c
+User.unscoped.count
+User.unscoped.all.to_a.each { |u| u.active = true; u.user_flags_count = 0; u.save; }
+User.count
+exit
+
+Result: User.unscoped.count should be equal to User.count

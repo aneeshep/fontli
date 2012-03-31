@@ -73,7 +73,7 @@ class User
   after_save :save_avatar_to_file, :save_thumbnail
   after_destroy :delete_file
 
-  #default_scope where(:active => true, :user_flags_count.lt => ALLOWED_FLAGS_COUNT)
+  default_scope where(:active => true, :user_flags_count.lt => ALLOWED_FLAGS_COUNT)
   scope :non_admins, where(:admin => false)
   scope :experts, where(:expert => true)
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)

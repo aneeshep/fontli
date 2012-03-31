@@ -10,8 +10,7 @@ protected
   end
 
   def admin_required
-    # TODO:: fix security flaw. move the password out of the codebase.(a config file, may be)
-    admin_users = { 'admin' => 'password' }
+    admin_users = YAML.load_file 'config/admin_creds.yml'
     authenticate_or_request_with_http_digest do |username|
       admin_users[username]
     end
