@@ -508,7 +508,7 @@ private
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 75 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
+      `convert #{self.path} -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
     end
     true
   end
