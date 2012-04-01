@@ -137,7 +137,7 @@ class Photo
       end.flatten
       return [nil, fnt.errors.full_messages] unless valid_font
 
-      opts.delete(:hashes).each { |hsh_tg_opts| foto.hash_tags.build hsh_tg_opts }
+      (opts.delete(:hashes) || []).each { |hsh_tg_opts| foto.hash_tags.build hsh_tg_opts }
       foto.comments.build(opts)
       foto.save ? foto.reload : [nil, foto.errors.full_messages]
     end

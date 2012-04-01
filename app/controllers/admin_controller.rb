@@ -54,6 +54,7 @@ class AdminController < ApplicationController
       @fotos_cnt = Photo.count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
     end
+    @delete_photo = true
   end
 
   def flagged_users
@@ -75,6 +76,7 @@ class AdminController < ApplicationController
     @fotos = Photo.unscoped.where(:flags_count.gte => Photo::ALLOWED_FLAGS_COUNT).desc(:flags_count).to_a
     @title, params[:search] = ['Flagged Photos', 'Not Implemented']
     @unflag_photo = true
+    @delete_photo = true
     render :photos
   end
 
@@ -101,6 +103,7 @@ class AdminController < ApplicationController
       @fotos_cnt = Photo.where(conds).count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
     end
+    @delete_photo = true
     render :photos
   end
 
@@ -108,6 +111,12 @@ class AdminController < ApplicationController
     @res = Photo[params[:photo_id]].update_attribute(:sos_approved, true) rescue false
     opts = @res ? {:notice => 'SoS Approved.'} : {:alert => 'Couldn\'t approve. Please try again!'}
     redirect_to '/admin/sos', opts
+  end
+
+  def delete_photo
+    @res = Photo.unscoped.where(:_id => params[:id]).destroy rescue false
+    opts = @res ? {:notice => 'Photo deleted.'} : {:alert => 'Couldn\'t delete. Please try again!'}
+    redirect_to '/admin/photos', opts
   end
 
 end

@@ -31,10 +31,16 @@
       <td><%= f.likes_count %></td>
       <td><%= f.comments_count %></td>
       <td><%= f.fonts_count %></td>
-      <td><%= f.user.username %></td>
+      <td><%= f.user.username rescue 'User Flagged' %></td>
       <td><%= f.created_dt %></td>
       <% if @approve_sos %>
         <td><%= link_to('Approve SoS', '/admin/approve_sos?photo_id='+f.id.to_s) %></td>
+      <% end %>
+      <% if @unflag_photo %>
+        <td><%= link_to('Unflag', '/admin/unflag_photo?photo_id='+f.id.to_s) %></td>
+      <% end %>
+      <% if @delete_photo %>
+        <td><%= link_to('Delete', '/admin/delete_photo?id='+f.id.to_s) %></td>
       <% end %>
     </tr>
     <% end %>
@@ -44,10 +50,10 @@
 <% if params[:search].to_s.blank? %>
 <ul class='pager'>
   <li class='previous <%= 'disabled' if @page == 1 %>'>
-    <a href='/admin/users?page=<%= @page - 1 %>'>&larr; Previous</a>
+    <a href='/admin/<%= params[:action] %>?page=<%= @page - 1 %>'>&larr; Previous</a>
   </li>
   <li class='next <%= 'disabled' if @page >= @max_page %>'>
-    <a href='/admin/users?page=<%= @page + 1 %>'>Next &rarr;</a>
+    <a href='/admin/<%= params[:action] %>?page=<%= @page + 1 %>'>Next &rarr;</a>
   </li>
 </ul>
 <% end %>
