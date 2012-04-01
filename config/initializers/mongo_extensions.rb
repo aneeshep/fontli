@@ -73,7 +73,7 @@ module MongoExtensions
           end
 
           def #{destroy_meth}
-            modal = self.#{klass}
+            modal = #{klass.classify.constantize}.unscoped.where(:_id => self.#{klass}_id).first
             count = modal.#{col} - 1
             modal.update_attribute('#{col}'.to_sym, count)
           end

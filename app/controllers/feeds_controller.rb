@@ -21,6 +21,7 @@ class FeedsController < ApplicationController
     @photo = current_user.photos.unpublished.find(params[:id])
     @photo.caption = params[:caption]
     @photo.crop = params[:crop]
+    @photo.created_at = Time.now.utc
     if @photo.save
     redirect_to feeds_url, :notice => "Posted to feed, successfully."
     end

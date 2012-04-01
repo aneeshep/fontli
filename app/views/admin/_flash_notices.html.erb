@@ -1,0 +1,6 @@
+<% if flash.any? %>
+<div class="alert alert-<%= flash.key?(:alert) ? 'error' : 'success' %>">
+  <a class="close" data-dismiss="alert">&times;</a>
+  <%= flash[:notice] || flash[:alert] %>
+</div>
+<% end %>

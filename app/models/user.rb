@@ -76,6 +76,7 @@ class User
   default_scope where(:active => true, :user_flags_count.lt => ALLOWED_FLAGS_COUNT)
   scope :non_admins, where(:admin => false)
   scope :experts, where(:expert => true)
+  scope :flagged, where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).desc(:user_flags_count)
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)
 
   class << self

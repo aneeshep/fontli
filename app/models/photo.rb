@@ -11,6 +11,7 @@ class Photo
   field :latitude, :type => Float
   field :longitude, :type => Float
   field :address, :type => String
+  field :sos_approved, :type => Boolean, :default => false
   field :font_help, :type => Boolean, :default => false
   field :likes_count, :type => Integer, :default => 0
   field :comments_count, :type => Integer, :default => 0
@@ -50,6 +51,8 @@ class Photo
   default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
+  scope :flagged, where(:flags_count.gte => ALLOWED_FLAGS_COUNT).desc(:flags_count)
+  scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:created_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 48.hours.ago).desc(:likes_count) }
 
@@ -175,7 +178,7 @@ class Photo
     def sos(pge = 1, lmt = 20)
       return [] if pge.to_i > 2
       offst = (pge.to_i - 1) * lmt
-      self.where(:font_help => true).desc(:created_at).skip(offst).limit(lmt).to_a
+      self.where(:font_help => true, :sos_approved => true).desc(:created_at).skip(offst).limit(lmt).to_a
     end
 
     def check_mentions_in(val)

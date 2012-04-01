@@ -40,13 +40,7 @@
           </a>
           <a class="brand" href="/admin">Fontli Admin</a>
           <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="/admin">Home</a></li>
-              <li><a href="/admin/users">Users</a></li>
-              <li><a href="/admin/photos">Photos</a></li>
-              <li><a href="/admin/flagged">Flagged Content</a></li>
-              <li><a href="/admin/sos">SoS photos</a></li>
-            </ul>
+            <%= render 'top_nav' %>
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -72,6 +66,12 @@
     <script src="/bootstrap-assets/js/bootstrap-collapse.js"></script>
     <script src="/bootstrap-assets/js/bootstrap-carousel.js"></script>
     <script src="/bootstrap-assets/js/bootstrap-typeahead.js"></script>
-
+    <%= javascript_tag :defer => 'defer' do %>
+      $('li.disabled').each(function() {
+        elem = $(this).find('a');
+        elem.attr('href', '#');
+        elem.attr('onclick', 'return false;');
+      });
+    <% end %>
   </body>
 </html>
