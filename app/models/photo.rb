@@ -51,7 +51,6 @@ class Photo
   default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
-  scope :flagged, where(:flags_count.gte => ALLOWED_FLAGS_COUNT).desc(:flags_count)
   scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:created_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 48.hours.ago).desc(:likes_count) }
@@ -189,6 +188,10 @@ class Photo
       # return only valid users hash of id, username
       urs = User.where(:username.in => unames).only(:id, :username).to_a
       urs.collect { |u| { :user_id => u.id, :username => u.username } }
+    end
+
+    def flagged_ids
+      self.unscoped.where(:flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
     end
   end
 
@@ -336,7 +339,7 @@ private
   def self.build_font_tags(opts, foto, coords)
     find_opts = opts.dup.keep_if { |k, v| [:family_unique_id, :family_id, :subfont_id].include? k.to_sym }
     fnt = foto.fonts.find_or_initialize_by(find_opts)
-    okeys = opts.keys - find_opts.keys - ['coords']
+    okeys = opts.keys - find_opts.keys - [:coords]
     okeys.each { |k| fnt.send("#{k}=".to_sym, opts[k]) }
     tag_ids = coords.collect do |c|
       tg = fnt.font_tags.build(:coords => c, :user_id => opts[:user_id])

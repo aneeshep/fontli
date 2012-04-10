@@ -14,7 +14,7 @@ class FontTag
   validates :font_id, :coords_x, :coords_y, :presence => true
 
   after_create :update_tagged_status
-  after_destroy :delete_font_or_update_tagged_status
+  after_destroy :reupdate_tagged_status
 
   # val = 'x,y'
   def coords=(val)
@@ -53,11 +53,9 @@ private
     true # assume success
   end
 
-  # delete the assoc font, if this is the only font_tag, or
   # update the expert_tagged status, if this is the only tag by an expert.
-  def delete_font_or_update_tagged_status
+  def reupdate_tagged_status
     fnt = self.font
-    return fnt.destroy if fnt.tags_count.zero?
     exp_usr_ids = User.all_expert_ids # includes flagged users too
     exp_tagged  = fnt.tagged_user_ids.any? { |uid| exp_usr_ids.include? uid }
     fnt.update_attribute(:expert_tagged, false) unless exp_tagged

@@ -34,7 +34,7 @@ class User
   index :email, :unique => true
 
   FOTO_DIR = File.join(Rails.root, 'public/avatars')
-  FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
+  FOTO_PATH = File.join(FOTO_DIR, ':id/:filename_:style.:extension')
   DEFAULT_AVATAR_PATH = File.join(Rails.root, 'public/avatar_missing_:style.png')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   PLATFORMS = ['twitter', 'facebook']
@@ -76,7 +76,6 @@ class User
   default_scope where(:active => true, :user_flags_count.lt => ALLOWED_FLAGS_COUNT)
   scope :non_admins, where(:admin => false)
   scope :experts, where(:expert => true)
-  scope :flagged, where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).desc(:user_flags_count)
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)
 
   class << self
@@ -164,6 +163,12 @@ class User
     def all_expert_ids
       self.unscoped.experts.collect(&:id)
     end
+
+    def inactive_ids
+      uids = self.unscoped.where(:active => false).only(:id).collect(&:id)
+      uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
+      uids.uniq(&:id)
+    end
   end
 
   # Signup using FB/Twitter will not carry password. Also handle users
@@ -241,8 +246,9 @@ class User
 
   def path(style = :original)
     return def_avatar_path(style) unless has_avatar?
-    fpath = FOTO_PATH.dup
+    fpath, fname = [FOTO_PATH.dup, self.avatar_filename]
     fpath.sub!(/:id/, self.id.to_s)
+    fpath.sub!(/:filename/, fname.gsub(File.extname(fname), '').to_s)
     fpath.sub!(/:style/, style.to_s)
     fpath.sub!(/:extension/, extension)
     fpath
@@ -434,7 +440,18 @@ class User
 
   def my_updates(pge = 1, lmt = 20)
     offst  = (pge.to_i - 1) * lmt
-    notifs = self.notifications.skip(offst).limit(lmt).to_a
+    # find out all possible inactive (notifiable) items
+    inactv_uids = User.inactive_ids
+    inactv_pids = Photo.flagged_ids
+    inactv_lids = Like.where(:photo_id.in => inactv_pids).only(&:id).collect(&:id)
+    inactv_cids = Comment.where(:photo_id.in => inactv_pids).only(&:id).collect(&:id)
+    inactv_mids = Mention.where(:mentionable_id.in => inactv_pids + inactv_cids).only(&:id).collect(&:id)
+    inactv_fids = Font.where(:photo_id.in => inactv_pids).only(&:id).collect(&:id)
+    inactv_ftids = FontTag.where(:font_id.in => inactv_fids).only(&:id).collect(&:id)
+    inactv_aids = Agree.where(:font_id.in => inactv_fids).only(&:id).collect(&:id)
+    blacklst_ids = inactv_pids + inactv_lids + inactv_cids + inactv_mids + inactv_ftids + inactv_aids
+
+    notifs = self.notifications.where(:from_user_id.nin => inactv_uids, :notifiable_id.nin => blacklst_ids).skip(offst).limit(lmt).to_a
     # mark these notifs as read
     Notification.where(:_id.in => notifs.collect(&:id), :unread => true).update_all(:unread => false)
     notifs
@@ -444,15 +461,17 @@ class User
   def network_updates
     frn_ids, tspan = [self.friend_ids, 1.week.ago]
     return [] if frn_ids.empty?
+    blacklst_uids = User.inactive_ids
 
-    opts = { :user_id.in => frn_ids, :created_at.gt => tspan }
+    opts = { :user_id.in => frn_ids - blacklst_uids, :created_at.gt => tspan }
     # filter out activity on current_user photos.
     foto_ids = self.photo_ids
     fnt_ids = Font.where(:photo_id.in => foto_ids).only(:id).collect(&:id)
 
-    liks = Like.where(opts.merge(:photo_id.nin => foto_ids)).desc(:created_at).to_a
+    blacklst_fids = (foto_ids + Photo.flagged_ids).uniq
+    liks = Like.where(opts.merge(:photo_id.nin => blacklst_fids)).desc(:created_at).to_a
     ftgs = FontTag.where(opts.merge(:font_id.nin => fnt_ids)).desc(:created_at).to_a
-    flls = Follow.where(opts.merge(:follower_id.ne => self.id)).desc(:created_at).to_a
+    flls = Follow.where(opts.merge(:follower_id.nin => [self.id] + blacklst_uids)).desc(:created_at).to_a
     favs = FavFont.where(opts).desc(:created_at).to_a
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end

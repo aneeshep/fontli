@@ -74,7 +74,8 @@ private
   def delete_assoc_font_tags
     return true if self.font_tag_ids.empty?
     fnt_tgs = FontTag.where(:_id.in => self.font_tag_ids).to_a
-    fnt_tgs.each { |ft| ft.destroy }
+    # destroy the font all together if that's the last tag on it.
+    fnt_tgs.each { |ft| ft.font.tags_count == 1 ? ft.font.destroy : ft.destroy }
     true
   end
 end

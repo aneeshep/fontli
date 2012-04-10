@@ -90,13 +90,13 @@ class ApiActionsController < ApiBaseController
 
   def comment_photo
     photo, error = Photo.add_comment_for current_api_accepts_map_with_user
-    commnts = photo && photo.comments
+    commnts = photo && photo.comments.asc(:created_at).to_a
     render_response(commnts, !photo.nil?, error)
   end
 
   def comments_list
     foto = Photo[@photo_id]
-    commnts = foto.nil? ? [] : foto.comments.to_a
+    commnts = foto.nil? ? [] : foto.comments.asc(:created_at).to_a
     render_response(commnts)
   end
 

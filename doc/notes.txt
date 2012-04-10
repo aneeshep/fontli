@@ -25,3 +25,10 @@ User.count
 exit
 
 Result: User.unscoped.count should be equal to User.count
+
+2). Update users profile pic path to include filenames
+
+usrs = User.where(:avatar_filename.ne => nil).to_a
+usrs.each { |u| fname = u.avatar_filename.gsub(File.extname(u.avatar_filename), ''); src_fname = u.path.gsub("#{fname}_", ''); next unless File.exist?(src_fname); File.rename(src_fname, u.path) }
+
+Test a few samples
