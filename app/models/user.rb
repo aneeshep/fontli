@@ -452,8 +452,8 @@ class User
     blacklst_ids = inactv_pids + inactv_lids + inactv_cids + inactv_mids + inactv_ftids + inactv_aids
 
     notifs = self.notifications.where(:from_user_id.nin => inactv_uids, :notifiable_id.nin => blacklst_ids).skip(offst).limit(lmt).to_a
-    # mark these notifs as read
-    Notification.where(:_id.in => notifs.collect(&:id), :unread => true).update_all(:unread => false)
+    # mark all notifications as read, on page 1
+    self.notifications.unread.update_all(:unread => false)
     notifs
   end
 
