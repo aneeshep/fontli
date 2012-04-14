@@ -20,6 +20,25 @@ namespace :fontli do
     puts "Done. Updated #{updated_fnts_cnt} font image urls."
   end
 
+  desc 'Update the font thumb_url from MyFonts, if missing'
+  task :update_font_thumb_url => :environment do
+    Font.class_eval { def request_domain; ""; end } # avoid exceptions due to nil request
+    require 'font_family'
+
+    fnts = Font.all.to_a
+    updated_fnts_cnt = 0
+    fnts.each do |f|
+      next unless f.thumb_url =~ /thumb_missing/
+      dets = FontFamily.font_thumb(f.family_id)
+      puts("Sample Image not available for #{f.family_id}") || next if dets.blank?
+
+      thmb_url = dets.match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
+      puts "Thumb url from API is empty!" if thmb_url.blank?
+      f.update_attribute(:thumb_url, thmb_url) && updated_fnts_cnt += 1
+    end
+    puts "Done. Updated #{updated_fnts_cnt} font thumb urls."
+  end
+
   desc 'Display app statistics'
   task :stats => :environment do
     usr_cnt = User.count
