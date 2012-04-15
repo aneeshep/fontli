@@ -17,6 +17,7 @@
       <th>Likes</th>
       <th>Comments</th>
       <th>Fonts</th>
+      <th>Flags</th>
       <th>Username</th>
       <th>Created</th>
       <%= '<th>Actions</th>'.html_safe if cta_req? %>
@@ -31,13 +32,14 @@
       <td><%= f.likes_count %></td>
       <td><%= f.comments_count %></td>
       <td><%= f.fonts_count %></td>
+      <td><%= f.flags_count %></td>
       <td><%= f.user.username rescue 'User Flagged' %></td>
       <td><%= f.created_dt %></td>
       <% if @approve_sos %>
         <td><%= link_to('Approve SoS', '/admin/approve_sos?photo_id='+f.id.to_s) %></td>
       <% end %>
       <% if @unflag_photo %>
-        <td><%= link_to('Unflag', '/admin/unflag_photo?photo_id='+f.id.to_s) %></td>
+        <td><%= link_to('Unflag', '/admin/unflag_photo?id='+f.id.to_s) %></td>
       <% end %>
       <% if @delete_photo %>
         <td><%= link_to('Delete', '/admin/delete_photo?id='+f.id.to_s) %></td>

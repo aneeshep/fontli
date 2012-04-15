@@ -114,7 +114,7 @@ class AdminController < ApplicationController
   end
 
   def delete_photo
-    @res = Photo.unscoped.where(:_id => params[:id]).destroy rescue false
+    @res = Photo.unscoped.where(:_id => params[:id]).first.destroy rescue false
     opts = @res ? {:notice => 'Photo deleted.'} : {:alert => 'Couldn\'t delete. Please try again!'}
     redirect_to '/admin/photos', opts
   end
