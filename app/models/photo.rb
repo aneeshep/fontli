@@ -35,7 +35,7 @@ class Photo
   DEFAULT_TITLE = 'Yet to publish'
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
-  ALLOWED_FLAGS_COUNT = 5
+  ALLOWED_FLAGS_COUNT = 10
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true

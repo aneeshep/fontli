@@ -40,7 +40,7 @@ class User
   PLATFORMS = ['twitter', 'facebook']
   THUMBNAILS = {:thumb => '75x75', :large => '150x150'}
   LEADERBOARD_LIMIT = 20
-  ALLOWED_FLAGS_COUNT = 5
+  ALLOWED_FLAGS_COUNT = 10
 
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
