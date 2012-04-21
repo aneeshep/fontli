@@ -8,8 +8,8 @@ Pre deploy:
 
 cd /data/www/typestry/shared/config
 vim admin_creds.yml
-username: admin
-password: P@s$w0rd
+
+admin: password
 
 Share the password to the admin, in person.
 
