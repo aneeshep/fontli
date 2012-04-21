@@ -2,7 +2,7 @@ require "open-uri"
 
 module FontFamily
   def find_font_name_only(query="")
-    req_url = URI.parse("http://new.myfonts.com/")
+    req_url = URI.parse("http://www.myfonts.com/")
 
     http = Net::HTTP.new(req_url.host, req_url.port)
     path = "/rest/di493gjwir/MyFontsSearch/autocomplete.json?"
@@ -22,7 +22,7 @@ module FontFamily
   end
 
   def font_details(query="")
-    req_url = URI.parse("http://new.myfonts.com/")
+    req_url = URI.parse("http://www.myfonts.com/")
 
     http = Net::HTTP.new(req_url.host, req_url.port)
     params = {:searchText => query, :resultType => "fonts"}.to_param
@@ -42,7 +42,7 @@ module FontFamily
   end
 
   def sub_font_details(font_unique_id)
-    req_url = URI.parse("http://new.myfonts.com/")
+    req_url = URI.parse("http://www.myfonts.com/")
 
     http = Net::HTTP.new(req_url.host, req_url.port)
     params = {:uniqueid => font_unique_id}.to_param
@@ -64,7 +64,7 @@ module FontFamily
   end
 
   def get_family_details(id)
-    req_url = URI.parse("http://new.myfonts.com/")
+    req_url = URI.parse("http://www.myfonts.com/")
 
     http = Net::HTTP.new(req_url.host, req_url.port)
     params = {:idlist => id}.to_param
@@ -87,7 +87,7 @@ module FontFamily
 private
 
   def self.client
-    req_url = URI.parse("http://new.myfonts.com/")
+    req_url = URI.parse("http://www.myfonts.com/")
     @client ||= Net::HTTP.new(req_url.host, req_url.port)
   end
 
