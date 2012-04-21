@@ -40,7 +40,7 @@ class User
   PLATFORMS = ['twitter', 'facebook']
   THUMBNAILS = {:thumb => '75x75', :large => '150x150'}
   LEADERBOARD_LIMIT = 20
-  ALLOWED_FLAGS_COUNT = 10
+  ALLOWED_FLAGS_COUNT = 3
 
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
@@ -65,7 +65,7 @@ class User
   validates :avatar_content_type,
     :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/gif' },
     :if => lambda { has_avatar? }
-  validates :extuid, :presence => true, :if => lambda { PLATFORMS.include? self.platform } 
+  validates :extuid, :presence => true, :if => lambda { PLATFORMS.include? self.platform }
 
   attr_accessor :password, :password_confirmation, :avatar, :avatar_url, :friendship_state, :invite_state
 
@@ -555,7 +555,7 @@ private
   def send_welcome_mail!
     AppMailer.welcome_mail(self).deliver
   end
-    
+
   def me?
     current_user.id.to_s == self.id.to_s
   end

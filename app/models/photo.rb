@@ -35,15 +35,15 @@ class Photo
   DEFAULT_TITLE = 'Yet to publish'
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
-  ALLOWED_FLAGS_COUNT = 10
+  ALLOWED_FLAGS_COUNT = 5
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
-  validates :data_size, 
-    :inclusion => { :in => 0..(5.megabytes), :message => "should be less than 5MB" }, 
+  validates :data_size,
+    :inclusion => { :in => 0..(5.megabytes), :message => "should be less than 5MB" },
     :allow_blank => true
-  validates :data_content_type, 
-    :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/png' }, 
+  validates :data_content_type,
+    :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/png' },
     :allow_blank => true
 
   attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user
@@ -339,7 +339,7 @@ private
   def self.build_font_tags(opts, foto, coords)
     find_opts = opts.dup.keep_if { |k, v| [:family_unique_id, :family_id, :subfont_id].include? k.to_sym }
     fnt = foto.fonts.find_or_initialize_by(find_opts)
-    okeys = opts.keys - find_opts.keys - [:coords]
+    okeys = opts.keys - find_opts.keys - ['coords']
     okeys.each { |k| fnt.send("#{k}=".to_sym, opts[k]) }
     tag_ids = coords.collect do |c|
       tg = fnt.font_tags.build(:coords => c, :user_id => opts[:user_id])

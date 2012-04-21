@@ -32,3 +32,11 @@ usrs = User.where(:avatar_filename.ne => nil).to_a
 usrs.each { |u| fname = u.avatar_filename.gsub(File.extname(u.avatar_filename), ''); src_fname = u.path.gsub("#{fname}_", ''); next unless File.exist?(src_fname); File.rename(src_fname, u.path) }
 
 Test a few samples
+
+3). Enable the new fields in fonts document:
+
+RAILS_ENV=production rails c
+Font.all.to_a.each {|f| f.update_attribute(:updated_at, f.created_at) }
+Font.where(:updated_at => nil).count
+
+Result: should be zero.
