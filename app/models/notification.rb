@@ -16,6 +16,8 @@ class Notification
   default_scope desc(:updated_at, :unread)
   scope :unread, where(:unread => true)
 
+  after_create :send_apn
+
   class << self
     def find_for(tgt_id, extid, not_type)
       self.where(:to_user_id => tgt_id, :extid => extid, :notifiable_type => not_type).first
@@ -23,32 +25,35 @@ class Notification
   end
 
   def message
-    msg = [self.from_user.full_name]
-    msg << self.notifiable.notif_context
-    msg << self.user_context
-    msg << ['photo']
-    msg.join(' ')
-  end
-
-  def user_context
-    ["your"] #static for now
+    frm_usr = self.from_user
+    case self.notifiable_type.to_s
+    when /Like/
+      "#{frm_usr.username} liked your post."
+    when /Comment/
+      "#{frm_usr.username} commented on your post."
+    when /Mention/
+      cntxt = self.notifiable.mentionable_type == 'Comment' ? 'comment' : 'post'
+      "#{frm_usr.username} mentioned you in a #{cntxt}."
+    when /FontTag/
+      "#{frm_usr.username} spotted on your post."
+    when /Agree/
+      "#{frm_usr.username} agreed your spotting."
+    when /Follow/
+      "#{frm_usr.username} started following your feed."
+    else
+      "You have an unread notification!"
+    end
   end
 
 private
 
-  # sends push notification for every new notification, when cnt < 6
-  # and one push notification for 6th, 16th and 31st notification.
+  # sends push notification for every new notification
   def send_apn
     to_usr = self.to_user
     return true if to_usr.iphone_token.blank?
     notif_cnt = to_usr.notifications.unread.count
-    opts = { :badge => notif_cnt }
-    if notif_cnt < 6
-      APN.notify(to_usr.iphone_token, opts)
-    elsif [6, 16, 31].include?(notif_cnt)
-      opts = opts.merge(:alert => "You have more than #{notif_cnt - 1} pending notifications", :sound => true)
-      APN.notify(to_usr.iphone_token, opts)
-    end
+    opts = { :badge => notif_cnt, :alert => self.message, :sound => true }
+    APN.notify(to_usr.iphone_token, opts)
     true
   end
 end

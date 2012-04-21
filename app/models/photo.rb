@@ -11,6 +11,7 @@ class Photo
   field :latitude, :type => Float
   field :longitude, :type => Float
   field :address, :type => String
+  field :sos_approved, :type => Boolean, :default => false
   field :font_help, :type => Boolean, :default => false
   field :likes_count, :type => Integer, :default => 0
   field :comments_count, :type => Integer, :default => 0
@@ -32,17 +33,17 @@ class Photo
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   DEFAULT_TITLE = 'Yet to publish'
-  THUMBNAILS = { :large => '320x320', :thumb => '150x150' }
+  THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
-  validates :data_size, 
-    :inclusion => { :in => 0..(5.megabytes), :message => "should be less than 5MB" }, 
+  validates :data_size,
+    :inclusion => { :in => 0..(5.megabytes), :message => "should be less than 5MB" },
     :allow_blank => true
-  validates :data_content_type, 
-    :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/png' }, 
+  validates :data_content_type,
+    :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/png' },
     :allow_blank => true
 
   attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user
@@ -50,6 +51,7 @@ class Photo
   default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
+  scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:created_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 48.hours.ago).desc(:likes_count) }
 
@@ -116,7 +118,7 @@ class Photo
       self.add_interaction_for(photo_id, :shares, opts)
     end
 
-    # opts - photo_id, body, user_id, font_tags
+    # opts - photo_id, body, user_id, font_tags, hashes
     # creates the font_tags on the photo and then create the comment
     def add_comment_for(opts)
       foto = self[opts.delete(:photo_id)]
@@ -134,6 +136,7 @@ class Photo
       end.flatten
       return [nil, fnt.errors.full_messages] unless valid_font
 
+      (opts.delete(:hashes) || []).each { |hsh_tg_opts| foto.hash_tags.build hsh_tg_opts }
       foto.comments.build(opts)
       foto.save ? foto.reload : [nil, foto.errors.full_messages]
     end
@@ -174,7 +177,7 @@ class Photo
     def sos(pge = 1, lmt = 20)
       return [] if pge.to_i > 2
       offst = (pge.to_i - 1) * lmt
-      self.where(:font_help => true).desc(:created_at).skip(offst).limit(lmt).to_a
+      self.where(:font_help => true, :sos_approved => true).desc(:created_at).skip(offst).limit(lmt).to_a
     end
 
     def check_mentions_in(val)
@@ -185,6 +188,10 @@ class Photo
       # return only valid users hash of id, username
       urs = User.where(:username.in => unames).only(:id, :username).to_a
       urs.collect { |u| { :user_id => u.id, :username => u.username } }
+    end
+
+    def flagged_ids
+      self.unscoped.where(:flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
     end
   end
 
@@ -219,6 +226,10 @@ class Photo
 
   def url_large
     url(:large)
+  end
+
+  def url_medium
+    url(:medium)
   end
 
   def crop?
@@ -389,7 +400,7 @@ private
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 75 -strip -sharpen 5 #{self.path(style)}`
+      `convert #{self.path} -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
     end
     true
   end

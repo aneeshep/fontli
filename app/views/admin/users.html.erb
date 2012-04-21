@@ -1,0 +1,69 @@
+<h3><%= @title || 'Users' %> <span class="badge badge-info"><%= @users_cnt || @users.length %></span> </h3>
+
+<form class="well form-search">
+  <input type="text" name='search' value='<%= params[:search]%>' class="input-medium search-query">
+  <button type="submit" class="btn">Search</button>
+</form>
+
+<%= render 'flash_notices' %>
+
+<table class='table table-striped table-condensed'>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Avatar</th>
+      <th>Username</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Photos</th>
+      <th>Follows</th>
+      <th>Fav fonts</th>
+      <th>Flags</th>
+      <th>Points</th>
+      <th>Created</th>
+      <%= '<th>Actions</th>'.html_safe if cta_req? %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each_with_index do |u, i| %>
+    <% fotos_cnt = u.photos_count %>
+    <tr>
+      <td><%= (@page - 1) * @lmt + i + 1 %></td>
+      <td><img src='<%= u.url_thumb %>' /></td>
+      <td><%= u.username %></td>
+      <td><%= u.full_name %></td>
+      <td><%= u.email %></td>
+      <% if fotos_cnt > 0 %>
+        <td><%= link_to fotos_cnt, '/admin/photos?user_id='+u.id.to_s %></td>
+      <% else %>
+        <td><%= fotos_cnt %></td>
+      <% end %>
+      <td><%= u.follows_count %></td>
+      <td><%= u.fav_fonts_count %></td>
+      <td><%= u.user_flags_count %></td>
+      <td><%= u.points %></td>
+      <td><%= u.created_dt %></td>
+      <% if @suspend_user %>
+        <td><%= link_to('Suspend', '/admin/suspend_user?id='+u.id.to_s) %></td>
+      <% end %>
+      <% if @unflag_user %>
+        <td><%= link_to('UnFlag', '/admin/unflag_user?id='+u.id.to_s) %></td>
+      <% end %>
+      <% if @activate_user %>
+        <td><%= link_to('Activate', '/admin/activate_user?id='+u.id.to_s) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if params[:search].to_s.blank? %>
+<ul class='pager'>
+  <li class='previous <%= 'disabled' if @page == 1 %>'>
+    <a href='/admin/<%= params[:action] %>?page=<%= @page - 1 %>'>&larr; Previous</a>
+  </li>
+  <li class='next <%= 'disabled' if @page >= @max_page %>'>
+    <a href='/admin/<%= params[:action] %>?page=<%= @page + 1 %>'>Next &rarr;</a>
+  </li>
+</ul>
+<% end %>

@@ -9,12 +9,20 @@ protected
     access_denied unless logged_in?
   end
 
+  def admin_required
+    admin_users = YAML.load_file 'config/admin_creds.yml'
+    authenticate_or_request_with_http_digest do |username|
+      admin_users[username]
+    end
+  end
+
   def set_current_controller
     Thread.current[:current_controller] = self
   end
 
   def access_denied
-    redirect_to login_url(:default), :notice => "Access denied! Please login."
+    msg = "Access denied! Please login."
+    redirect_to login_url(:default), :notice => msg
   end
 
   def current_user

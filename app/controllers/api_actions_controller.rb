@@ -78,6 +78,11 @@ class ApiActionsController < ApiBaseController
     render_response(photo, !photo.nil?, error)
   end
 
+  def flag_user
+    usr, error = User.add_flag_for(@user_id, @current_user.id)
+    render_response(usr, !usr.nil?, error)
+  end
+
   def share_photo
     resp, error = Photo.add_share_for(@photo_id, @current_user.id)
     render_response(resp, !resp.nil?, error)
@@ -85,14 +90,20 @@ class ApiActionsController < ApiBaseController
 
   def comment_photo
     photo, error = Photo.add_comment_for current_api_accepts_map_with_user
-    commnts = photo && photo.comments
+    commnts = photo && photo.comments.asc(:created_at).to_a
     render_response(commnts, !photo.nil?, error)
   end
 
   def comments_list
     foto = Photo[@photo_id]
-    commnts = foto.nil? ? [] : foto.comments.to_a
+    commnts = foto.nil? ? [] : foto.comments.asc(:created_at).to_a
     render_response(commnts)
+  end
+
+  def delete_comment
+    cmt = Comment[@comment_id]
+    resp = !cmt.nil? && cmt.destroy
+    render_response(resp)
   end
 
   def agree_font
@@ -160,6 +171,11 @@ class ApiActionsController < ApiBaseController
 
   def popular_fonts
     fonts = Font.popular.to_a
+    render_response(fonts)
+  end
+
+  def recent_fonts
+    fonts = Font.api_recent
     render_response(fonts)
   end
 

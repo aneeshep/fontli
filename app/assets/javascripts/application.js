@@ -12,7 +12,7 @@
 //= require jquery.ui.autocomplete
 //= require tooltip
 //= require typestry
-//= require application
+//= require_self
 
 var MAX_FILE_SIZE = 5242880;
 var ACCEPT_FILE_TYPE = /image\/(jpg|jpeg|png)/i;

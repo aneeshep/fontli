@@ -1,6 +1,6 @@
 class Font
   include Mongoid::Document
-  include Mongoid::Timestamps::Created
+  include Mongoid::Timestamps
   include MongoExtensions
 
   field :family_unique_id, :type => String
@@ -38,7 +38,7 @@ class Font
       fnt = self[fnt_id]
       return [nil, :font_not_found] if fnt.nil?
       agr = fnt.agrees.build(:user_id => usr_id)
-      saved = agr.my_save(true) 
+      saved = agr.my_save(true)
       saved = saved && fnt.photo.update_attribute(:font_help, false) if cls_fnt_help
       saved
     end
@@ -67,6 +67,17 @@ class Font
       return [] if fnts.empty?
       resp = fnts.group_by { |f| f[:family_id] }
       resp = resp.sort_by { |fam_id, dup_fts| -dup_fts.sum(&:tags_count) }
+      resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
+    end
+
+    # fonts with min 3 agrees or a publisher_pick, sorted by updated_at
+    def api_recent
+      lmt = POPULAR_API_LIMIT
+      fnts = self.where(:agrees_count.gte => 3).to_a
+      fnts += self.where(:pick_status.gte => PICK_STATUS_MAP[:publisher_pick]).to_a
+      fnts = fnts.sort_by(&:updated_at).reverse
+      return [] if fnts.empty?
+      resp = fnts.group_by { |f| f[:family_id] }
       resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
     end
   end
@@ -126,7 +137,7 @@ class Font
     request_domain + "/fonts/#{self.id.to_s}.png"
   end
 
-  # Thumb url is set after font creation. 
+  # Thumb url is set after font creation.
   # So its ok to create the image right here.
   def thumb_url=(my_fnts_thumb_url)
     return true if my_fnts_thumb_url.blank?
@@ -151,7 +162,7 @@ class Font
   end
 
   def display_name
-    self.subfont_id.nil? ? self.family_name : self.subfont_name
+    self.subfont_id.blank? ? self.family_name : self.subfont_name
   end
 
 private

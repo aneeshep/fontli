@@ -22,21 +22,25 @@ class User
   field :admin, :type => Boolean, :default => false
   field :expert, :type => Boolean, :default => false
   field :points, :type => Integer, :default => 5
+  field :active, :type => Boolean, :default => true
+  field :suspended_reason, :type => String
   field :fav_fonts_count, :type => Integer, :default => 0
   field :likes_count, :type => Integer, :default => 0
   field :follows_count, :type => Integer, :default => 0
+  field :user_flags_count, :type => Integer, :default => 0
 
   include MongoExtensions::CounterCache
   index :username, :unique => true
   index :email, :unique => true
 
   FOTO_DIR = File.join(Rails.root, 'public/avatars')
-  FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
+  FOTO_PATH = File.join(FOTO_DIR, ':id/:filename_:style.:extension')
   DEFAULT_AVATAR_PATH = File.join(Rails.root, 'public/avatar_missing_:style.png')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   PLATFORMS = ['twitter', 'facebook']
   THUMBNAILS = {:thumb => '75x75', :large => '150x150'}
   LEADERBOARD_LIMIT = 20
+  ALLOWED_FLAGS_COUNT = 3
 
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
@@ -45,6 +49,7 @@ class User
   has_many :follows, :dependent => :destroy
   has_many :likes, :dependent => :destroy
   has_many :comments, :dependent => :destroy
+  has_many :user_flags, :dependent => :destroy
   has_many :invites, :dependent => :destroy
   has_many :sessions, :class_name => 'ApiSession', :dependent => :destroy
 
@@ -60,7 +65,7 @@ class User
   validates :avatar_content_type,
     :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/gif' },
     :if => lambda { has_avatar? }
-  validates :extuid, :presence => true, :if => lambda { PLATFORMS.include? self.platform } 
+  validates :extuid, :presence => true, :if => lambda { PLATFORMS.include? self.platform }
 
   attr_accessor :password, :password_confirmation, :avatar, :avatar_url, :friendship_state, :invite_state
 
@@ -68,7 +73,9 @@ class User
   after_save :save_avatar_to_file, :save_thumbnail
   after_destroy :delete_file
 
+  default_scope where(:active => true, :user_flags_count.lt => ALLOWED_FLAGS_COUNT)
   scope :non_admins, where(:admin => false)
+  scope :experts, where(:expert => true)
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)
 
   class << self
@@ -144,6 +151,23 @@ class User
       usr_ids = foto.likes.only(:user_id).collect(&:user_id)
       offst = (page.to_i - 1) * lmt
       self.where(:_id.in => usr_ids).skip(offst).limit(lmt)
+    end
+
+    def add_flag_for(usr_id, frm_usr_id)
+      usr = self.where(:_id => usr_id).only(:user_flags_count).first
+      return [nil, :user_not_found] if usr.nil?
+      obj = usr.send(:user_flags).build :from_user_id => frm_usr_id
+      obj.save ? usr.reload : [nil, obj.errors.full_messages]
+    end
+
+    def all_expert_ids
+      self.unscoped.experts.collect(&:id)
+    end
+
+    def inactive_ids
+      uids = self.unscoped.where(:active => false).only(:id).collect(&:id)
+      uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
+      uids.uniq(&:id)
     end
   end
 
@@ -222,8 +246,9 @@ class User
 
   def path(style = :original)
     return def_avatar_path(style) unless has_avatar?
-    fpath = FOTO_PATH.dup
+    fpath, fname = [FOTO_PATH.dup, self.avatar_filename]
     fpath.sub!(/:id/, self.id.to_s)
+    fpath.sub!(/:filename/, fname.gsub(File.extname(fname), '').to_s)
     fpath.sub!(/:style/, style.to_s)
     fpath.sub!(/:extension/, extension)
     fpath
@@ -415,9 +440,20 @@ class User
 
   def my_updates(pge = 1, lmt = 20)
     offst  = (pge.to_i - 1) * lmt
-    notifs = self.notifications.skip(offst).limit(lmt).to_a
-    # mark these notifs as read
-    Notification.where(:_id.in => notifs.collect(&:id), :unread => true).update_all(:unread => false)
+    # find out all possible inactive (notifiable) items
+    inactv_uids = User.inactive_ids
+    inactv_pids = Photo.flagged_ids
+    inactv_lids = Like.where(:photo_id.in => inactv_pids).only(&:id).collect(&:id)
+    inactv_cids = Comment.where(:photo_id.in => inactv_pids).only(&:id).collect(&:id)
+    inactv_mids = Mention.where(:mentionable_id.in => inactv_pids + inactv_cids).only(&:id).collect(&:id)
+    inactv_fids = Font.where(:photo_id.in => inactv_pids).only(&:id).collect(&:id)
+    inactv_ftids = FontTag.where(:font_id.in => inactv_fids).only(&:id).collect(&:id)
+    inactv_aids = Agree.where(:font_id.in => inactv_fids).only(&:id).collect(&:id)
+    blacklst_ids = inactv_pids + inactv_lids + inactv_cids + inactv_mids + inactv_ftids + inactv_aids
+
+    notifs = self.notifications.where(:from_user_id.nin => inactv_uids, :notifiable_id.nin => blacklst_ids).skip(offst).limit(lmt).to_a
+    # mark all notifications as read, on page 1
+    self.notifications.unread.update_all(:unread => false)
     notifs
   end
 
@@ -425,15 +461,17 @@ class User
   def network_updates
     frn_ids, tspan = [self.friend_ids, 1.week.ago]
     return [] if frn_ids.empty?
+    blacklst_uids = User.inactive_ids
 
-    opts = { :user_id.in => frn_ids, :created_at.gt => tspan }
+    opts = { :user_id.in => frn_ids - blacklst_uids, :created_at.gt => tspan }
     # filter out activity on current_user photos.
     foto_ids = self.photo_ids
     fnt_ids = Font.where(:photo_id.in => foto_ids).only(:id).collect(&:id)
 
-    liks = Like.where(opts.merge(:photo_id.nin => foto_ids)).desc(:created_at).to_a
+    blacklst_fids = (foto_ids + Photo.flagged_ids).uniq
+    liks = Like.where(opts.merge(:photo_id.nin => blacklst_fids)).desc(:created_at).to_a
     ftgs = FontTag.where(opts.merge(:font_id.nin => fnt_ids)).desc(:created_at).to_a
-    flls = Follow.where(opts.merge(:follower_id.ne => self.id)).desc(:created_at).to_a
+    flls = Follow.where(opts.merge(:follower_id.nin => [self.id] + blacklst_uids)).desc(:created_at).to_a
     favs = FavFont.where(opts).desc(:created_at).to_a
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end
@@ -489,7 +527,7 @@ private
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 100 -strip #{self.path(style)}`
+      `convert #{self.path} -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
     end
     true
   end
@@ -517,7 +555,7 @@ private
   def send_welcome_mail!
     AppMailer.welcome_mail(self).deliver
   end
-    
+
   def me?
     current_user.id.to_s == self.id.to_s
   end
