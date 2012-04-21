@@ -14,7 +14,7 @@ namespace :fontli do
 
       img_url = dets.match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
       puts "Image url from API is empty!" if img_url.blank?
-      next if img_url == f.img_url
+      #next if img_url == f.img_url
       f.update_attribute(:img_url, img_url) && updated_fnts_cnt += 1
     end
     puts "Done. Updated #{updated_fnts_cnt} font image urls."
