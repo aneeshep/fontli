@@ -128,7 +128,7 @@ class ApiActionsController < ApiBaseController
 
   def unfav_font
     fav = @current_user.fav_fonts.where(:font_id => @font_id)
-    resp, error = [fav.destroy, :unable_to_save] 
+    resp, error = [fav.destroy, :unable_to_save]
     render_response(resp, resp, error)
   end
 
@@ -298,14 +298,14 @@ class ApiActionsController < ApiBaseController
     @page ||= 1
     @notifications = @current_user.my_updates(@page)
   end
-  
+
   def network_updates
     updts = @current_user.network_updates
     @updates_by_user = updts.group_by(&:user_id)
     # updates grouped by item takes precedence over the individuals. Ex, abc and def liked photo1.
     @updates_by_item = updts.group_by { |u| u.klass_sym }
     return if updts.empty?
-    
+
     # preload datasets for usernames, photo#url_large and font#family_name, img_url
     lik_foto_ids = (@updates_by_item[:like] || []).collect(&:photo_id)
     tag_fnt_ids = (@updates_by_item[:font_tag] || []).collect(&:font_id)
@@ -314,7 +314,7 @@ class ApiActionsController < ApiBaseController
     tag_foto_ids = tag_fotos.collect(&:photo_id)
     @photos_map = Photo.where(:_id.in => lik_foto_ids + tag_foto_ids).only(:id, :data_filename).group_by(&:id)
     fav_fnt_ids = (@updates_by_item[:fav_font] || []).collect(&:font_id)
-    @fonts_map = Font.where(:_id.in => fav_fnt_ids).only(:id, :family_name, :family_id, :family_unique_id, :subfont_id, :img_url).group_by(&:id)
+    @fonts_map = Font.where(:_id.in => fav_fnt_ids).only(:id, :family_name, :family_id, :family_unique_id, :subfont_id, :subfont_name, :img_url).group_by(&:id)
     usr_ids = @updates_by_user.keys + (@updates_by_item[:follow] || []).collect(&:follower_id)
     @users_map = User.where(:_id.in => usr_ids).only(:id, :username, :avatar_filename).group_by(&:id)
   end
