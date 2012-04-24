@@ -56,7 +56,7 @@ class Font
       fids = self.where(opts).only(:photo_id).to_a
       return [] if fids.empty?
       offst = (page.to_i - 1) * lmt
-      Photo.where(:_id.in => fids.collect(&:photo_id)).only(:id, :data_filename).skip(offst).limit(lmt)
+      Photo.where(:_id.in => fids.collect(&:photo_id)).desc(:created_at).only(:id, :data_filename).skip(offst).limit(lmt)
     end
 
     # get 20(max) popular family fonts(grouped) based on total tags_count, for a month
