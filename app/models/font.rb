@@ -19,6 +19,7 @@ class Font
   belongs_to :user, :index => true
   has_many :agrees, :dependent => :destroy
   has_many :font_tags, :autosave => true, :dependent => :destroy
+  has_many :fav_fonts, :dependent => :destroy
 
   validates :family_unique_id, :family_name, :family_id, :presence => true
   validates :photo_id, :user_id, :presence => true

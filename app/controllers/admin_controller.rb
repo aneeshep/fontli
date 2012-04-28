@@ -82,14 +82,12 @@ class AdminController < ApplicationController
 
   def unflag_photo
     @res = Photo.unscoped.where(:_id => params[:id]).first.flags.destroy_all
-    opts = @res ? {:notice => 'Photo has been unflagged.'} : {:alert => 'Couldn\'t unflag. Please try again!'}
-    redirect_to '/admin/flagged_photos', opts
   end
 
   def sos
     @page, @lmt = [(params[:page] || 1).to_i, 10]
     offst = (@page - 1) * @lmt
-    @title, conds = ['SoS photos', {:font_help => true}]
+    @title, conds = ['SoS photos', {:font_help => true, :sos_approved => true}]
     if params[:req] == 'true'
       @title = 'SoS photos waiting for approval'
       conds = conds.merge(:sos_approved => false)
@@ -109,14 +107,10 @@ class AdminController < ApplicationController
 
   def approve_sos
     @res = Photo[params[:photo_id]].update_attribute(:sos_approved, true) rescue false
-    opts = @res ? {:notice => 'SoS Approved.'} : {:alert => 'Couldn\'t approve. Please try again!'}
-    redirect_to '/admin/sos', opts
   end
 
   def delete_photo
     @res = Photo.unscoped.where(:_id => params[:id]).first.destroy rescue false
-    opts = @res ? {:notice => 'Photo deleted.'} : {:alert => 'Couldn\'t delete. Please try again!'}
-    redirect_to '/admin/photos', opts
   end
 
 end
