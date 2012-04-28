@@ -127,7 +127,7 @@ class ApiActionsController < ApiBaseController
   end
 
   def unfav_font
-    fav = @current_user.fav_fonts.where(:font_id => @font_id)
+    fav = @current_user.fav_fonts.where(:font_id => @font_id).first
     resp, error = [fav.destroy, :unable_to_save]
     render_response(resp, resp, error)
   end
