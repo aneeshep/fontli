@@ -1,0 +1,5 @@
+<% if @res %>
+  $('#foto_<%= params[:photo_id] %>').html('<td colspan=3>Approved.</td>')
+<% else %>
+  alert('Couldn\'t Approve!');
+<% end %>

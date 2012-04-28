@@ -1,0 +1,5 @@
+<% if @res %>
+  $('#foto_<%= params[:id] %>').html('<td colspan=3>Unflagged.</td>')
+<% else %>
+  alert('Couldn\'t Unflag!');
+<% end %>

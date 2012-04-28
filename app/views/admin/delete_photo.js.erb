@@ -1,0 +1,5 @@
+<% if @res %>
+  $('#foto_<%= params[:id] %>').html('<td colspan=3>Deleted.</td>')
+<% else %>
+  alert('Couldn\'t Delete!');
+<% end %>
