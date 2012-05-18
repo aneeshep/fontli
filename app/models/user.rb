@@ -42,6 +42,7 @@ class User
   LEADERBOARD_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 3
 
+  has_many :workbooks, :dependent => :destroy
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
@@ -384,6 +385,11 @@ class User
     offst = (page.to_i - 1) * lmt
     self.photos.only(:id, :data_filename).recent(lmt).offset(offst).to_a
   end
+
+  def my_workbooks(page = 1, lmt = 20)
+    offst = (page.to_i - 1) * lmt
+    self.workbooks.only(:id, :title).recent(lmt).offset(offst).to_a
+  end  
 
   def fav_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
