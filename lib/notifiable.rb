@@ -24,16 +24,22 @@ module Notifiable
     group_notify_class? ? can_group_notify? : true # by default
   end
 
-  # Acts like FB. Group notifications for similar events. 
+  # Acts like FB. Group notifications for similar events.
   # Ex.,Create a new notification only for the first like for a given foto.
   # From then, just mark the existing notification as unread.
   def can_group_notify?
-    tgt_id = self.notif_target_user_id
-    return false if self.user_id == tgt_id
+    tgt_id, src_id = [self.notif_target_user_id, self.notif_source_user_id]
+    return false if src_id == tgt_id
     notif = Notification.find_for(tgt_id, self.notif_extid, self.class.to_s)
     return true if notif.nil?
     # force the update query to set the updated_at.
-    notif.update_attributes(:unread => true, :updated_at => Time.now.utc) == false
+    status = notif.update_attributes(:unread => true, :updated_at => Time.now.utc) == false
+    # Trigger the apn notification for every single activity.
+    Notification.new(
+      :from_user_id => src_id,
+      :to_user_id => tgt_id,
+      :notifiable => self
+    ).send(:send_apn) && status
   end
 
 private

@@ -167,7 +167,7 @@ class User
     def inactive_ids
       uids = self.unscoped.where(:active => false).only(:id).collect(&:id)
       uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
-      uids.uniq(&:id)
+      uids.uniq
     end
   end
 
