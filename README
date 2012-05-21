@@ -34,3 +34,9 @@ Deployment:
 ===========
 cap deploy
 COMPILE_ASSETS=true cap deploy
+
+Restart push notifications:
+---------------------------
+./script/apn_sender --environment=development --cert-pass=1234 --verbose start
+or
+./script/apn_sender --environment=production --cert-pass=1234 --verbose start
