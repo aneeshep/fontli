@@ -16,10 +16,17 @@ class HashTag
       hsh_tags = self.where(:name => /^#{name}.*/i).to_a
       resp = hsh_tags.group_by(&:name)
       resp.collect do |tag_name, hsh_tags|
-        foto_ids = hsh_tags.collect{ |ht| ht.hashable.photo_ids}.flatten.uniq
-        fotos_cnt = foto_ids.length
+        fotos_cnt = self.photo_ids(hsh_tags).length
         OpenStruct.new(:name => tag_name, :photos_count => fotos_cnt)
       end
     end
+    
+    def photo_ids(hsh_tags)
+      hsh_tags.collect{ |ht| ht.photo_ids}.flatten.uniq
+    end
+  end
+
+  def photo_ids
+    self.hashable.photo_ids
   end
 end
