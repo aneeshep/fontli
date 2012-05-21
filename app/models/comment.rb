@@ -65,6 +65,7 @@ class Comment
   end
 
   def fotos
+    return [] if self.foto_ids.blank?
     Photo.where(:_id.in => self.foto_ids).only(:id, :data_filename).to_a
   end
 
