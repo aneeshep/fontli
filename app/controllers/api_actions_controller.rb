@@ -41,7 +41,7 @@ class ApiActionsController < ApiBaseController
     resp, error = Photo.save_data(current_api_accepts_map_with_user)
     render_response(resp, !resp.nil?, error)
   end
-
+  
   def publish_photo
     resp, error = Photo.publish(current_api_accepts_map)
     render_response(resp, !resp.nil?, error)
@@ -354,5 +354,28 @@ class ApiActionsController < ApiBaseController
     foto = Photo.where(:_id => @feed_id).first
     foto && foto.populate_liked_commented_users
     render_response(foto, !foto.nil?, :photo_not_found)
+  end
+
+  def add_workbook
+    opts = current_api_accepts_map_with_user
+    resp, error = Workbook.new(opts).my_save
+    render_response(resp, !resp.nil?, error)
+  end
+
+  def update_workbook
+    wb, opts = [Workbook[@workbook_id], current_api_valid_accepts_map]
+    resp = wb.update_attributes(opts)
+    render_response(resp, resp, wb.errors.full_messages)
+  end
+  
+  def list_workbooks
+    usr = @user_id ? User.by_id(@user_id) : @current_user
+    workbooks = usr.workbooks
+    render_response(workbooks)
+  end
+
+  def workbook_photos
+    fotos = Workbook[@workbook_id].photos.to_a
+    render_response(fotos)
   end
 end

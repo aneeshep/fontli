@@ -44,15 +44,16 @@ module ApiHelper
                          :returns => [:user_flags_count] },
     :share_photo    => { :accepts => [:photo_id],
                          :returns => true },
-    :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags, :hashes]],
+    :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags, :hashes, :foto_ids]],
                          :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
                          :collection => {:font_tags => [:family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :coords],
                                          :hashes => [:name]},
                          :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged] },
 
     :comments_list  => { :accepts => [:photo_id],
-                         :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
-                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged] },
+                         :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts, :fotos],
+                         :fonts   => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged],
+                         :fotos   => [:id, :url_thumbs] },
     :delete_comment => { :accepts => [:comment_id],
                          :returns => true },
     :agree_font     => { :accepts => [:font_id, [:close_help]],
@@ -135,7 +136,16 @@ module ApiHelper
     :follow_user      => { :accepts => [:user_id],
                            :returns => true },
     :add_suggestion   => { :accepts => [:text, :platform, :os_version, :sugg_type, :app_version],
-                           :returns => true }
+                           :returns => true },
+    :add_workbook     => { :accepts => [:title, [:description, :hashes, :foto_ids]],
+                           :returns => [:id, :title] },
+    :update_workbook  => { :accepts => [:workbook_id, [:title, :description, :hashes, :foto_ids, :removed_foto_ids]],
+                           :returns => [:id, :title] },
+    :list_workbooks   => { :accepts => [[:user_id]],
+                           :returns => [:id, :title, :description] },
+    :workbook_photos  => { :accepts => [:workbook_id],
+                           :returns => [:id, :url_thumb] }
+    
   }
 
   GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos]

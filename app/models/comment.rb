@@ -6,6 +6,7 @@ class Comment
 
   field :body, :type => String
   field :font_tag_ids, :type => Array
+  field :foto_ids, :type => Array  #mentioned photo_ids
 
   belongs_to :photo, :index => true
   belongs_to :user, :index => true
@@ -61,6 +62,10 @@ class Comment
 
   def notif_context
     ['has commented']
+  end
+
+  def fotos
+    Photo.where(:_id.in => self.foto_ids).only(:id, :url_thumbs)
   end
 
 private
