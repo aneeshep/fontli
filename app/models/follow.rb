@@ -12,7 +12,8 @@ class Follow
   validates :follower_id, :uniqueness => { :scope => :user_id, :message => 'is already a friend!' }
 
   def scorable_target_user
-    self.follower
+    User.unscoped.where(:_id => self.follower_id).first
+    #self.follower
   end
 
   def notif_target_user_id
