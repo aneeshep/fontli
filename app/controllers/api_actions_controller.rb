@@ -332,7 +332,7 @@ class ApiActionsController < ApiBaseController
 
     usr_ids = (foto_lks.collect(&:user_id) + foto_cmts.collect(&:user_id))
     in_actve_ids = User.inactive_ids
-    usr_ids = usr_ids.flatten.uniq - in_actve_ids
+    usr_ids = usr_ids.flatten.compact.uniq - in_actve_ids
     usrs_map = [] if usr_ids.empty?
     usrs_map ||= User.where(:_id.in => usr_ids).only(:id, :username).to_a
 
