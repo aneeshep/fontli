@@ -28,7 +28,8 @@ class FontTag
   end
 
   def scorable_target_user
-    self.font.photo.user
+    User.unscoped.where(:_id => self.font.photo.user_id).first
+    #self.font.photo.user
   end
 
   def notif_extid

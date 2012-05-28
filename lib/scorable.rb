@@ -22,11 +22,13 @@ module Scorable
       after_destroy :negate_user_points
 
       def scorable_source_user
-        self.user
+        User.unscoped.where(:_id => self.user_id).first #unscoped bec. getting inactive users
+        #self.user
       end
 
       def scorable_target_user
-        self.photo.user
+        User.unscoped.where(:_id => self.photo.user_id).first #unscoped bec. getting inactive users
+        #self.photo.user
       end
     end
   end
