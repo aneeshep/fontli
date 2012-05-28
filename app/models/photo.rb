@@ -316,11 +316,11 @@ class Photo
   def populate_liked_commented_users(opts = {})
     lkd_usr_ids = [] if opts[:only_comments]
     cmt_usr_ids = [] if opts[:only_likes]
-    lkd_usr_ids ||= self.likes.desc(:created_at).limit(5).only(:user_id).collect(&:user_id)
+    inactve_usr_ids = User.inactive_ids
+    lkd_usr_ids ||= self.likes.where(:user_id.nin => inactve_usr_ids).desc(:created_at).limit(5).only(:user_id).collect(&:user_id)
     cur_usr_id = lkd_usr_ids.delete(current_user.id)
-    cmt_usr_ids ||= self.comments.desc(:created_at).limit(2).only(:user_id).collect(&:user_id)
+    cmt_usr_ids ||= self.comments.where(:user_id.nin => inactve_usr_ids).desc(:created_at).limit(2).only(:user_id).collect(&:user_id)
     unless (lkd_usr_ids + cmt_usr_ids).empty?
-      inactve_usr_ids = User.inactive_ids
       usrs = User.where(:_id.in => (lkd_usr_ids + cmt_usr_ids - inactve_usr_ids)).only(:id, :username).to_a
       usrs = usrs.group_by(&:id)
       self.liked_user = (cur_usr_id.nil? ? '' : 'You||') + lkd_usr_ids.collect { |uid| usrs[uid].first.username }.join('||')
