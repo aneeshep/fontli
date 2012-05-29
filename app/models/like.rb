@@ -4,13 +4,14 @@ class Like
   include MongoExtensions
   include Scorable
   include Notifiable
+  include MongoExtensions::DynamicScope
 
   belongs_to :user, :index => true
   belongs_to :photo, :index => true
 
   validates :user_id, :uniqueness => { :scope => :photo_id, :message => "has already liked!" }
 
-  default_scope lambda { where(:user_id.nin => User.inactive_ids) }
+  default_scope lambda { {:where => { :user_id.nin => User.inactive_ids }} }
 
   def notif_extid
     self.photo_id.to_s
