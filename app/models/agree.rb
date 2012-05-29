@@ -31,7 +31,8 @@ class Agree
   end
 
   def scorable_target_user
-    self.font.user
+    User.unscoped.where(:_id => self.font.user_id).first
+    #self.font.user
   end
 
   def active_points
