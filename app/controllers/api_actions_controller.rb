@@ -327,12 +327,11 @@ class ApiActionsController < ApiBaseController
     return render_response([]) if photos.empty?
     foto_ids = photos.collect(&:id)
 
-    in_actve_ids = User.inactive_ids
-    foto_lks = Like.where(:photo_id.in => foto_ids, :user_id.nin => in_actve_ids).desc(:created_at).to_a
-    foto_cmts = Comment.where(:photo_id.in => foto_ids, :user_id.nin => in_actve_ids).desc(:created_at).to_a
+    foto_lks = Like.where(:photo_id.in => foto_ids).desc(:created_at).to_a
+    foto_cmts = Comment.where(:photo_id.in => foto_ids).desc(:created_at).to_a
 
     usr_ids = (foto_lks.collect(&:user_id) + foto_cmts.collect(&:user_id))
-    usr_ids = usr_ids.flatten.uniq - in_actve_ids
+    usr_ids = usr_ids.flatten.uniq
     usrs_map = [] if usr_ids.empty?
     usrs_map ||= User.where(:_id.in => usr_ids).only(:id, :username).to_a
 
