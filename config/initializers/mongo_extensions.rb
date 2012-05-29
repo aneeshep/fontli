@@ -115,3 +115,23 @@ module Mongoid
     end
   end
 end
+
+#patch from https://github.com/mongoid/mongoid/issues/797
+module MongoExtensions
+  module DynamicScope
+    extend ActiveSupport::Concern
+
+    module ClassMethods
+      def default_scope(conditions = {}, &block)
+        puts "scoping..."
+        self.default_scoping = Mongoid::Scope.new(conditions, &block)
+      end
+
+      def criteria(embedded = false, scoped = true)
+        scope_stack.last || Mongoid::Criteria.new(self, embedded).tap do |crit|
+          return crit.fuse(default_scoping.conditions.scoped) if default_scoping && scoped
+        end
+      end
+    end # ClassMethods
+  end # DynamicScope
+end
