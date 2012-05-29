@@ -170,7 +170,7 @@ class Photo
     def all_by_hash_tag(tag_name, pge = 1, lmt = 20)
       return [] if tag_name.blank?
       hsh_tags = HashTag.where(:name => tag_name).only(:hashable_id, :hashable_type)
-      foto_ids = hsh_tags.to_a.collect{ |ht| ht.hashable.photo_ids}.flatten.uniq
+      foto_ids = HasTag.photo_ids(hsh_tags)
       offst = (pge.to_i - 1) * lmt
       self.where(:_id.in => foto_ids).desc(:created_at).only(:id, :data_filename).skip(offst).limit(lmt).to_a
     end

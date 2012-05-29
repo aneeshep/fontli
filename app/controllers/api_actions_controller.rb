@@ -41,7 +41,7 @@ class ApiActionsController < ApiBaseController
     resp, error = Photo.save_data(current_api_accepts_map_with_user)
     render_response(resp, !resp.nil?, error)
   end
-  
+
   def publish_photo
     resp, error = Photo.publish(current_api_accepts_map)
     render_response(resp, !resp.nil?, error)
@@ -367,7 +367,7 @@ class ApiActionsController < ApiBaseController
     resp = wb.update_attributes(opts)
     render_response(resp, resp, wb.errors.full_messages)
   end
-  
+
   def list_workbooks
     usr = @user_id ? User.by_id(@user_id) : @current_user
     workbooks = usr.workbooks

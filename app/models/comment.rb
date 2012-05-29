@@ -67,7 +67,8 @@ class Comment
   end
 
   def fotos
-    Photo.where(:_id.in => self.foto_ids).only(:id, :url_thumbs)
+    return [] if self.foto_ids.blank?
+    Photo.where(:_id.in => self.foto_ids).only(:id, :data_filename).to_a
   end
 
 private
