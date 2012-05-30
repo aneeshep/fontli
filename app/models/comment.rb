@@ -29,6 +29,11 @@ class Comment
     end
   end
 
+  #Overriding the notification method
+  def notif_target_user_id
+    self.photo.comments.only(:user_id).collect(&:user_id)
+  end
+
   # return a custom font collection(w/ coords) tagged with this comment.
   def fonts
     return [] if self.font_tag_ids.blank?
