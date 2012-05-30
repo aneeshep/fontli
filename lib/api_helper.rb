@@ -137,14 +137,19 @@ module ApiHelper
                            :returns => true },
     :add_suggestion   => { :accepts => [:text, :platform, :os_version, :sugg_type, :app_version],
                            :returns => true },
-    :add_workbook     => { :accepts => [:title, [:description, :hashes, :foto_ids]],
+    :add_workbook     => { :accepts => [:title, [:description, :hashes, :foto_ids, :cover_photo_id, :ordered_foto_ids]],
                            :returns => [:id, :title] },
-    :update_workbook  => { :accepts => [:workbook_id, [:title, :description, :hashes, :foto_ids, :removed_foto_ids]],
+    :update_workbook  => { :accepts => [:workbook_id, [:title, :description, :hashes, :foto_ids, :removed_foto_ids, :cover_photo_id, :ordered_foto_ids]],
                            :returns => [:id, :title] },
     :list_workbooks   => { :accepts => [[:user_id]],
                            :returns => [:id, :title, :description] },
     :workbook_photos  => { :accepts => [:workbook_id],
-                           :returns => [:id, :url_thumb] }
+                           :returns => [:id, :url_thumb, :cover, :position] },
+    :fav_workbook     => { :accepts => [:workbook_id],
+                           :returns => true },
+    :unfav_workbook   => { :accepts => [:workbook_id],
+                           :returns => true },
+
     
   }
 

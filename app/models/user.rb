@@ -25,6 +25,7 @@ class User
   field :active, :type => Boolean, :default => true
   field :suspended_reason, :type => String
   field :fav_fonts_count, :type => Integer, :default => 0
+  field :fav_workbooks_count, :type => Integer, :default => 0
   field :likes_count, :type => Integer, :default => 0
   field :follows_count, :type => Integer, :default => 0
   field :user_flags_count, :type => Integer, :default => 0
@@ -46,6 +47,7 @@ class User
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
+  has_many :fav_workbooks, :dependent => :destroy
   has_many :notifications, :foreign_key => :to_user_id, :dependent => :destroy
   has_many :follows, :dependent => :destroy
   has_many :likes, :dependent => :destroy

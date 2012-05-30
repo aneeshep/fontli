@@ -375,7 +375,26 @@ class ApiActionsController < ApiBaseController
   end
 
   def workbook_photos
-    fotos = Workbook[@workbook_id].photos.to_a
+    workbook = Workbook[@workbook_id]
+    fotos = workbook.photos.to_a
+    fotos.each do |f|
+      f.cover = (workbook.cover_photo_id == f.id)
+    end
     render_response(fotos)
   end
+
+  def fav_workbook
+    workbook = Workbook[@workbook_id]
+    @workbook_id = nil if workbook.nil? # hack to avoid invalid fonts
+    fav = @current_user.fav_workbooks.build(:workbook_id => @workbook_id)
+    resp, error = fav.my_save(true)
+    render_response(resp, !resp.nil?, error)
+  end
+
+  def unfav_workbook
+    fav = @current_user.fav_workbooks.where(:workbook_id => @workbook_id).first
+    resp, error = [fav.destroy, :unable_to_save]
+    render_response(resp, resp, error)
+  end
+
 end

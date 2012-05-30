@@ -18,6 +18,7 @@ class Photo
   field :flags_count, :type => Integer, :default => 0
   field :fonts_count, :type => Integer, :default => 0
   field :created_at, :type => Time
+  field :position, :type => Integer
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
@@ -47,7 +48,7 @@ class Photo
     :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/png' },
     :allow_blank => true
 
-  attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user
+  attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user, :cover
 
   default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
