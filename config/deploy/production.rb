@@ -5,8 +5,8 @@ set :branch, "master"
 #	Servers
 #############################################################
 
-role :app, "107.22.125.70"
-role :web, "107.22.125.70"
-role :db,  "107.22.125.70", :primary => true
+role :app, "23.21.21.101"
+role :web, "23.21.21.101"
+role :db,  "23.21.21.101", :primary => true
 
 

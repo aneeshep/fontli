@@ -62,10 +62,11 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     #do nothing. This is to avoid restart before callbacks. Task deploy, does a restart
   end
-  
+
   desc "Restarting passenger with restart.txt"
   task :my_restart, :roles => :app, :except => { :no_release => true } do
-    run "sudo /etc/init.d/httpd restart"
+    #run "sudo /etc/init.d/httpd restart"
+    run "cd #{deploy_to}/current; touch tmp/restart.txt;"
   end
 
   desc "Running bundle install"
@@ -77,15 +78,15 @@ namespace :deploy do
     desc "#{t} task is a no-op with mod_rails"
     task t, :roles => :app do ; end
   end
-  
+
 end
 
-namespace :rake do  
-  desc "Run a task on a remote server."  
-  # run like: cap rake:invoke task=db:populate 
-  task :invoke do  
-    run("cd #{deploy_to}/current; rake #{ENV['task']} RAILS_ENV=#{rails_env}")  
-  end  
+namespace :rake do
+  desc "Run a task on a remote server."
+  # run like: cap rake:invoke task=db:populate
+  task :invoke do
+    run("cd #{deploy_to}/current; rake #{ENV['task']} RAILS_ENV=#{rails_env}")
+  end
 end
 
 before "deploy:symlink", "deploy:assets"
