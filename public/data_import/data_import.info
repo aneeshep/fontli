@@ -1,0 +1,59 @@
+Process Started ...
+------------------------------------------
+Importing User -- Count 21 
+User - 4fc6434a05aa175bd9000007 data is invalid Password can't be blank 
+User - 4fc5d5f605aa172f50000001 data is invalid Password can't be blank 
+User - 4fc65a7d05aa176525000008 data is invalid Password can't be blank 
+User obj already available jjinz84@gmail.com | zin084 
+User - 4fc6134805aa174859000001 data is invalid Password can't be blank 
+User obj already available joaoppeixoto@gmail.com | joaoppeixoto 
+User - 4fc6580805aa176525000001 data is invalid Password can't be blank 
+User - 4fc6655905aa176819000011 data is invalid Password can't be blank 
+User - 4fc6169605aa1745e2000003 data is invalid Password can't be blank 
+User - 4fc6235805aa174e1f00000b data is invalid Password can't be blank 
+User - 4fc6235c05aa174b7a000039 data is invalid Password can't be blank 
+User - 4fc644d705aa175d1000000b data is invalid Password can't be blank 
+User obj already available me@torrdeforce.com | torrduer 
+User - 4fc68db305aa17770b000016 data is invalid Password can't be blank 
+User - 4fc692b705aa177acc000012 data is invalid Password can't be blank 
+User - 4fc6948405aa177acc000018 data is invalid Password can't be blank 
+User - 4fc6b09405aa170b06000001 data is invalid Password can't be blank 
+User - 4fc6c26305aa170ef0000034 data is invalid Password can't be blank 
+User - 4fc6c77605aa171303000009 data is invalid Password can't be blank 
+User obj already available andy@fr8yrd.com | andyo 
+User - 4fc6ee4205aa171c91000014 data is invalid Password can't be blank 
+------------------------------------------
+Importing Photo -- Count 47 
+------------------------------------------
+Importing Font -- Count 7 
+------------------------------------------
+Importing FontTag -- Count 6 
+------------------------------------------
+Importing Comment -- Count 35 
+------------------------------------------
+Importing HashTag -- Count 26 
+------------------------------------------
+Importing Agree -- Count 7 
+Agree - 4fc67cf205aa1773be000001 data is invalid User has already accepted! 
+------------------------------------------
+Importing Follow -- Count 135 
+Follow - 4fc686ed05aa177886000005 data is invalid Follower is already a friend! 
+Follow -  data is invalid Follower is already a friend! 
+Follow - 4fc5e24c05aa172f5000000d data is invalid Follower is already a friend! 
+Follow - 4fc6039c05aa1741b5000005 data is invalid Follower is already a friend! 
+Follow - 4fc6039c05aa1741b5000007 data is invalid Follower is already a friend! 
+Follow - 4fc6170e05aa1745e200000a data is invalid Follower is already a friend! 
+Follow - 4fc6170e05aa1745e200000c data is invalid Follower is already a friend! 
+Follow - 4fc625ff05aa174e1f00001c data is invalid Follower is already a friend! 
+Follow - 4fc68c5205aa17770b00000d data is invalid Follower is already a friend! 
+Follow - 4fc68c5205aa17770b00000f data is invalid Follower is already a friend! 
+Follow - 4fc6d96505aa171758000020 data is invalid Follower is already a friend! 
+Follow - 4fc6d96505aa171758000022 data is invalid Follower is already a friend! 
+------------------------------------------
+Importing FavFont -- Count 2 
+FavFont -  data is invalid User has already favorited! 
+------------------------------------------
+Importing Invite -- Count 0 
+------------------------------------------
+Importing Mention -- Count 11 
+ID MAP : ---> {"User"=>{"4fc6039b05aa1741b5000004"=>BSON::ObjectId('4fcaefbd74d3157a58000024'), "4fc6170d05aa1745e2000009"=>BSON::ObjectId('4fc911da74d31560f9000001'), "4fc68c5205aa17770b00000c"=>BSON::ObjectId('4fc9061b74d3155ce1000001'), "4fc6d96505aa17175800001f"=>BSON::ObjectId('4fc98e0f74d3150b65000009')}, "Photo"=>{"4fc5d0a005aa172e00000004"=>"4fcf59d374d3150470000001"}, "Font"=>{}, "FontTag"=>{}, "Comment"=>{}, "HashTag"=>{}, "Agree"=>{}, "Follow"=>{}, "FavFont"=>{}, "Invite"=>{}, "Mention"=>{}}

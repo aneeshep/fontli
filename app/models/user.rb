@@ -101,11 +101,14 @@ class User
       u ||= self.where(:email => val).first
     end
 
-    def search(uname)
+    def search(uname,sort = nil,dir = nil)
       return [] if uname.blank?
       res = self.where(:username => /^#{uname}.*/i).to_a
       res << self.where(:full_name => /^#{uname}.*/i).to_a
-      res.flatten.uniq(&:id)
+      res = res.flatten.uniq(&:id)
+      res = res.sort{|a,b| a.send(sort) <=> b.send(sort)} if sort
+      res = res.reverse if dir == "asc"
+      res
     end
 
     # uname can be username or email

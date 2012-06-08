@@ -12,15 +12,15 @@
     <tr>
       <th>&nbsp;</th>
       <th>Avatar</th>
-      <th>Username</th>
-      <th>Full Name</th>
-      <th>Email</th>
-      <th>Photos</th>
-      <th>Follows</th>
-      <th>Fav fonts</th>
-      <th>Flags</th>
-      <th>Points</th>
-      <th>Created</th>
+      <th><%=sortable("username")%></th>
+      <th><%=sortable("full_name","Full Name")%></th>
+      <th><%=sortable("email")%></th>
+      <th><%=sortable("photos_count","Photos")%></th>
+      <th><%=sortable("follows_count","Follows")%></th>
+      <th><%=sortable("fav_fonts_count","Fav Fonts")%></th>
+      <th><%=sortable("user_flags_count", "Flag Count")%></th>
+      <th><%=sortable("points")%></th>
+      <th><%=sortable("created_at","Created")%></th>
       <%= '<th>Actions</th>'.html_safe if cta_req? %>
     </tr>
   </thead>

@@ -1,7 +1,8 @@
 class AdminController < ApplicationController
-
+  
   skip_before_filter :login_required # skip the regular login check
   before_filter :admin_required # use http basic auth
+  helper_method :sort_column, :sort_direction
 
   def index
     @users_count = User.count
@@ -11,10 +12,11 @@ class AdminController < ApplicationController
   def users
     @page, @lmt = [(params[:page] || 1).to_i, 10]
     offst       = (@page - 1) * @lmt
+    params[:sort] ||= "points"
     unless params[:search].to_s.strip.blank?
-      @users = User.search(params[:search])
+      @users = User.search(params[:search], sort_column, sort_direction)
     else
-      @users = User.non_admins.desc(:points).skip(offst).limit(@lmt)
+      @users = User.order_by(sort_column => sort_direction).non_admins.skip(offst).limit(@lmt)
       @users_cnt = User.non_admins.count
       @max_page  = (@users_cnt / @lmt.to_f).ceil
     end
@@ -29,7 +31,7 @@ class AdminController < ApplicationController
 
   def suspended_users
     @page, @lmt = [1, 10]
-    @users = User.unscoped.where(:active => false).desc(:created_at).to_a
+    @users = User.unscoped.where(:active => false).order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Suspended Users', 'Not Implemented']
     @activate_user = true
     render :users
@@ -45,12 +47,14 @@ class AdminController < ApplicationController
     @page, @lmt = [(params[:page] || 1).to_i, 10]
     offst = (@page - 1) * @lmt
     if !params[:search].to_s.strip.blank?
-      @fotos = Photo.where(:caption => /^#{params[:search]}.*/i).to_a
+      @fotos = Photo.where(:caption => /^#{params[:search]}.*/i).order_by(sort_column => sort_direction).to_a
     elsif !params[:user_id].to_s.strip.blank?
-      @fotos = Photo.where(:user_id => params[:user_id]).desc(:likes_count).to_a
+      params[:sort] ||='likes_count'
+      @fotos = Photo.where(:user_id => params[:user_id]).order_by(sort_column => sort_direction).to_a
       params[:search] = 'Not Implemented'
     else
-      @fotos = Photo.all.desc(:likes_count).skip(offst).limit(@lmt)
+      params[:sort] ||='likes_count'
+      @fotos = Photo.all.order_by(sort_column => sort_direction).skip(offst).limit(@lmt)
       @fotos_cnt = Photo.count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
     end
@@ -59,7 +63,8 @@ class AdminController < ApplicationController
 
   def flagged_users
     @page, @lmt = [1, 10]
-    @users = User.unscoped.where(:user_flags_count.gte => User::ALLOWED_FLAGS_COUNT).desc(:user_flags_count).to_a
+    params[:sort] ||= 'user_flags_count'
+    @users = User.unscoped.where(:user_flags_count.gte => User::ALLOWED_FLAGS_COUNT).order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Flagged Users', 'Not Implemented']
     @unflag_user = true
     render :users
@@ -73,7 +78,8 @@ class AdminController < ApplicationController
 
   def flagged_photos
     @page, @lmt = [1, 10]
-    @fotos = Photo.unscoped.where(:flags_count.gte => Photo::ALLOWED_FLAGS_COUNT).desc(:flags_count).to_a
+    params[:sort] ||='flags_count' 
+    @fotos = Photo.unscoped.where(:flags_count.gte => Photo::ALLOWED_FLAGS_COUNT).order_by(sort_column => sort_direction).desc(:flags_count).to_a
     @title, params[:search] = ['Flagged Photos', 'Not Implemented']
     @unflag_photo = true
     @delete_photo = true
@@ -95,9 +101,9 @@ class AdminController < ApplicationController
     end
     unless params[:search].to_s.strip.blank?
       conds = conds.merge(:caption => /^#{params[:search]}.*/i)
-      @fotos = Photo.where(conds).to_a
+      @fotos = Photo.where(conds).order_by(sort_column => sort_direction).to_a
     else
-      @fotos = Photo.where(conds).desc(:created_at).skip(offst).limit(@lmt)
+      @fotos = Photo.where(conds).order_by(sort_column => sort_direction).skip(offst).limit(@lmt)
       @fotos_cnt = Photo.where(conds).count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
     end
@@ -113,4 +119,12 @@ class AdminController < ApplicationController
     @res = Photo.unscoped.where(:_id => params[:id]).first.destroy rescue false
   end
 
+  private
+  def sort_column
+    params[:sort].blank? ? "created_at" : params[:sort]
+  end
+  
+  def sort_direction
+    params[:direction].blank? ? "desc" : params[:direction]
+  end
 end
