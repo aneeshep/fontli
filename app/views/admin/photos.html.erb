@@ -13,13 +13,13 @@
     <tr>
       <th>&nbsp;</th>
       <th>Image</th>
-      <th>Caption</th>
-      <th>Likes</th>
-      <th>Comments</th>
-      <th>Fonts</th>
-      <th>Flags</th>
+      <th><%=sortable("caption")%></th>
+      <th><%=sortable("likes_count","Likes")%></th>
+      <th><%=sortable("comments_count","Comments")%></th>
+      <th><%=sortable("fonts_count","Fonts")%></th>
+      <th><%=sortable("flags_count","Flags")%></th>
       <th>Username</th>
-      <th>Created</th>
+      <th><%=sortable("created_at","Created")%></th>
       <%= '<th>Actions</th>'.html_safe if cta_req? %>
     </tr>
   </thead>
