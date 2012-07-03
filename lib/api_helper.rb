@@ -135,8 +135,23 @@ module ApiHelper
     :follow_user      => { :accepts => [:user_id],
                            :returns => true },
     :add_suggestion   => { :accepts => [:text, :platform, :os_version, :sugg_type, :app_version],
-                           :returns => true }
-  }
+                           :returns => true },
+    :add_workbook     => { :accepts => [:title, [:description, :hashes, :foto_ids, :cover_photo_id, :ordered_foto_ids]],
+                           :returns => [:id, :title] },
+    :update_workbook  => { :accepts => [:workbook_id, [:title, :description, :hashes, :foto_ids, :removed_foto_ids, :cover_photo_id, :ordered_foto_ids]],
+                           :returns => [:id, :title] },
+    :list_workbooks   => { :accepts => [[:user_id]],
+                           :returns => [:id, :title, :description] },
+    :workbook_photos  => { :accepts => [:workbook_id],
+                           :returns => [:id, :url_thumb, :cover, :position] },
+    :fav_workbook     => { :accepts => [:workbook_id],
+                           :returns => true },
+    :unfav_workbook   => { :accepts => [:workbook_id],
+                           :returns => true },
+    :recommented_users => { :accepts => [] ,
+                            :returns => [:id, :username, :full_name, :points, :url_thumb, :photos_count, :fonts_count, :created_dt, :friendship_state ] }
+
+ }
 
   GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos]
   AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check]

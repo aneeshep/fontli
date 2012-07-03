@@ -355,4 +355,52 @@ class ApiActionsController < ApiBaseController
     foto && foto.populate_liked_commented_users
     render_response(foto, !foto.nil?, :photo_not_found)
   end
+
+  def add_workbook
+    opts = current_api_accepts_map_with_user
+    resp, error = Workbook.new(opts).my_save
+    render_response(resp, !resp.nil?, error)
+  end
+
+  def update_workbook
+    wb, opts = [Workbook[@workbook_id], current_api_valid_accepts_map]
+    resp = wb.update_attributes(opts)
+    render_response(resp, resp, wb.errors.full_messages)
+  end
+
+  def list_workbooks
+    usr = @user_id ? User.by_id(@user_id) : @current_user
+    workbooks = usr.workbooks
+    render_response(workbooks)
+  end
+
+  def workbook_photos
+    workbook = Workbook[@workbook_id]
+    fotos = workbook.photos.to_a
+    fotos.each do |f|
+      f.cover = (workbook.cover_photo_id == f.id)
+    end
+    render_response(fotos)
+  end
+
+  def fav_workbook
+    workbook = Workbook[@workbook_id]
+    @workbook_id = nil if workbook.nil? # hack to avoid invalid fonts
+    fav = @current_user.fav_workbooks.build(:workbook_id => @workbook_id)
+    resp, error = fav.my_save(true)
+    render_response(resp, !resp.nil?, error)
+  end
+
+  def unfav_workbook
+    fav = @current_user.fav_workbooks.where(:workbook_id => @workbook_id).first
+    resp, error = [fav.destroy, :unable_to_save]
+    render_response(resp, resp, error)
+  end
+
+  def recommented_users 
+    users = @current_user.recommented_users
+    render_response(users)
+  end
+
+>>>>>>> d36d6ee... Recommented Users api is added based on last one week.
 end
