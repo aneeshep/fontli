@@ -149,9 +149,10 @@ module ApiHelper
                            :returns => true },
     :unfav_workbook   => { :accepts => [:workbook_id],
                            :returns => true },
+    :recommented_users => { :accepts => [] ,
+                            :returns => [:id, :username, :full_name, :points, :url_thumb, :photos_count, :fonts_count, :created_dt, :friendship_state ] }
 
-    
-  }
+ }
 
   GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos]
   AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check]

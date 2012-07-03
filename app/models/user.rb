@@ -175,6 +175,7 @@ class User
       uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
       uids.uniq
     end
+    
   end
 
   # Signup using FB/Twitter will not carry password. Also handle users
@@ -487,6 +488,22 @@ class User
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end
 
+  def recommented_users
+    ordered_user_ids = Photo.where(:created_at.gte => (self.created_at.to_date - 7)).only(:user_id).group_by(&:user_id).sort_by{|k,v| v.length}.collect{|a| a[0]}
+    users = User.find(ordered_user_ids)
+    ordered_users = []
+    ordered_user_ids.each do |user_id|
+      users.each do |user|
+        ordered_users << user if user.id == user_id
+      end
+    end
+    if ordered_users.length < 20
+      ordered_users = ordered_users + User.leaders.where(:id.nin => ordered_user_ids).limit(20 - ordered_user_ids.length)
+    end
+    ordered_users[0..19]
+  end
+
+
 private
 
   def generate_rand(length = 8)
@@ -582,4 +599,5 @@ private
   def extension
     File.extname(self.avatar_filename).gsub(/\.+/, '')
   end
+
 end
