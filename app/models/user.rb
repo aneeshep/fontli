@@ -490,7 +490,7 @@ class User
 
   def recommented_users
     ordered_user_ids = Photo.where(:created_at.gte => (self.created_at.to_date - 7)).only(:user_id).group_by(&:user_id).sort_by{|k,v| v.length}.collect{|a| a[0]}
-    users = User.find(ordered_user_ids)
+    users = User.non_admins.where(:id.nin=>[self.id]).find(ordered_user_ids)
     ordered_users = []
     ordered_user_ids.each do |user_id|
       users.each do |user|
@@ -598,6 +598,10 @@ private
 
   def extension
     File.extname(self.avatar_filename).gsub(/\.+/, '')
+  end
+
+  def recent_photos
+    self.photos.limit(8).to_a
   end
 
 end
