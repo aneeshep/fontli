@@ -36,6 +36,11 @@ class Photo
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
+  AWS_SECRET_ACCESS_KEY = "jK74wMTnLg/qqa6o4gdE68WFe5pJh52Rphvu43wQ"
+  AWS_SECRET_ACCESS_KEY_ID = "AKIAJXGG7DHKI6QUGBQQ"
+  AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new( :provider => 'AWS', :aws_secret_access_key => AWS_SECRET_ACCESS_KEY, :aws_access_key_id => AWS_SECRET_ACCESS_KEY_ID)
+  AWS_CONNECTION =  Fog::Storage.new( :provider => 'AWS', :aws_secret_access_key => AWS_SECRET_ACCESS_KEY, :aws_access_key_id => AWS_SECRET_ACCESS_KEY_ID)
+  AWS_STORAGE = true
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
@@ -219,6 +224,10 @@ class Photo
     pth = pth.sub("#{Rails.root}/public", "")
     File.join(request_domain, pth)
   end
+  
+  def aws_url
+    
+  end
 
   def url_thumb
     url(:thumb)
@@ -355,11 +364,26 @@ private
   end
 
   def save_data_to_file
-    return true if self.data.nil?
-    ensure_dir(FOTO_DIR)
-    ensure_dir(File.join(FOTO_DIR, self.id.to_s))
-    Rails.logger.info "Saving file: #{self.path}"
-    FileUtils.cp(self.data, self.path)
+    if AWS_STORAGE == true
+      save_data_to_aws
+    else
+      return true if self.data.nil?
+      ensure_dir(FOTO_DIR)
+      ensure_dir(File.join(FOTO_DIR, self.id.to_s))
+      Rails.logger.info "Saving file: #{self.path}"
+      FileUtils.cp(self.data, self.path)
+      true
+    end
+  end
+
+  def save_data_to_aws
+   return true if self.data.nil?
+    #ensure_dir(FOTO_DIR)
+    #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
+    Rails.logger.info "Saving file in AWS S3: #{self.path}"
+    #dir = AWS_CONNECTIVITY.directories.create(:key => "/photos/#{self.id}/", :public => true)
+    aws_path = self.path 
+    AWS_CONNECTIVITY.files.create(:key => self.path, :body => self.data, :public => true, :content_type => self.data.content_type)
     true
   end
 
