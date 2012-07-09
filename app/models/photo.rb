@@ -236,8 +236,7 @@ class Photo
   end
 
   def aws_url(style)
-    pth = self.aws_path(style)
-    "#{AWS_SERVER_PATH}#{pth}"
+    return "#{AWS_SERVER_PATH}#{id}_#{style}.#{extension}"
   end
   
   def aws_path(style= :original)
