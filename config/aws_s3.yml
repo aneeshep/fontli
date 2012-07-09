@@ -1,0 +1,17 @@
+defaults: &defaults
+  provider: 'AWS'
+  aws_secret_access_key: "jK74wMTnLg/qqa6o4gdE68WFe5pJh52Rphvu43wQ" 
+  aws_access_key_id: "AKIAJXGG7DHKI6QUGBQQ"
+
+development:
+  <<: *defaults
+  bucket: "fontli_dev"
+
+staging:
+  <<: *defaults
+  bucket: "fontli_dev"
+  
+production:
+  <<: *defaults
+  bucket: "fontli_production"
+
