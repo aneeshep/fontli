@@ -36,12 +36,11 @@ class Photo
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
-  AWS_BUCKET = "fontli_dev"
+ 
+  AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
+  AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
   AWS_PATH = ":id_:style.:extension"
-  AWS_SECRET_ACCESS_KEY = "jK74wMTnLg/qqa6o4gdE68WFe5pJh52Rphvu43wQ"
-  AWS_SECRET_ACCESS_KEY_ID = "AKIAJXGG7DHKI6QUGBQQ"
-  AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new( :provider => 'AWS', :aws_secret_access_key => AWS_SECRET_ACCESS_KEY, :aws_access_key_id => AWS_SECRET_ACCESS_KEY_ID)
-  AWS_CONNECTION =  Fog::Storage.new( :provider => 'AWS', :aws_secret_access_key => AWS_SECRET_ACCESS_KEY, :aws_access_key_id => AWS_SECRET_ACCESS_KEY_ID)
+  AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new(AWS_API_CONFIG)
   AWS_STORAGE = true
   AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
 
