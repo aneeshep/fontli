@@ -36,11 +36,14 @@ class Photo
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
+  AWS_BUCKET = "fontli_dev"
+  AWS_PATH = ":id_:style.:extension"
   AWS_SECRET_ACCESS_KEY = "jK74wMTnLg/qqa6o4gdE68WFe5pJh52Rphvu43wQ"
   AWS_SECRET_ACCESS_KEY_ID = "AKIAJXGG7DHKI6QUGBQQ"
   AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new( :provider => 'AWS', :aws_secret_access_key => AWS_SECRET_ACCESS_KEY, :aws_access_key_id => AWS_SECRET_ACCESS_KEY_ID)
   AWS_CONNECTION =  Fog::Storage.new( :provider => 'AWS', :aws_secret_access_key => AWS_SECRET_ACCESS_KEY, :aws_access_key_id => AWS_SECRET_ACCESS_KEY_ID)
   AWS_STORAGE = true
+  AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
 
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
@@ -202,6 +205,7 @@ class Photo
 
   def data=(file)
     return nil if file.blank?
+    @file_obj = file
     @data = file.path # temp file path
     self.data_filename = file.original_filename.to_s
     self.data_content_type = file.content_type.to_s
@@ -219,14 +223,27 @@ class Photo
 
   # returns original url, if thumb/large doesn't exist
   def url(style = :original)
-    pth = self.path(style)
-    pth = File.exist?(pth) ? pth : self.path
-    pth = pth.sub("#{Rails.root}/public", "")
-    File.join(request_domain, pth)
+    if AWS_STORAGE
+      aws_url(style)
+    else
+      pth = self.path(style)
+      pth = File.exist?(pth) ? pth : self.path
+      pth = pth.sub("#{Rails.root}/public", "")
+      File.join(request_domain, pth)
+    end
+  end
+
+  def aws_url(style)
+    pth = self.aws_path(style)
+    "#{AWS_SERVER_PATH}#{pth}"
   end
   
-  def aws_url
-    
+  def aws_path(style= :original)
+    fpath = AWS_PATH
+    fpath.sub!(/:id/, self.id.to_s)
+    fpath.sub!(/:style/, style.to_s)
+    fpath.sub!(/:extension/, extension)
+    fpath
   end
 
   def url_thumb
@@ -377,15 +394,15 @@ private
   end
 
   def save_data_to_aws
-   return true if self.data.nil?
+    return true if self.data.nil?
     #ensure_dir(FOTO_DIR)
     #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
     Rails.logger.info "Saving file in AWS S3: #{self.path}"
     #dir = AWS_CONNECTIVITY.directories.create(:key => "/photos/#{self.id}/", :public => true)
-    aws_path = self.path 
-    AWS_CONNECTIVITY.files.create(:key => self.path, :body => self.data, :public => true, :content_type => self.data.content_type)
+    AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => self.aws_path, :body => @file_obj, :public => true, :content_type => @file_obj.content_type)
     true
   end
+
 
   def delete_file
     Rails.logger.info "Deleting thumbnails.."
