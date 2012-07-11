@@ -64,7 +64,7 @@ class Photo
 
   before_save :crop_file
   after_create :populate_mentions
-  after_save :save_data_to_file, :save_thumbnail
+  after_save :save_data_to_file, :save_thumbnail,:save_data_to_aws
   after_destroy :delete_file
 
   class << self
@@ -231,13 +231,13 @@ class Photo
       File.join(request_domain, pth)
     end
   end
-
+  
   def aws_url(style)
     return "#{AWS_SERVER_PATH}#{id}_#{style}.#{extension}"
   end
   
   def aws_path(style= :original)
-    fpath = AWS_PATH
+    fpath = AWS_PATH.dup
     fpath.sub!(/:id/, self.id.to_s)
     fpath.sub!(/:style/, style.to_s)
     fpath.sub!(/:extension/, extension)
@@ -379,25 +379,28 @@ private
   end
 
   def save_data_to_file
-    if AWS_STORAGE == true
-      save_data_to_aws
-    else
       return true if self.data.nil?
       ensure_dir(FOTO_DIR)
       ensure_dir(File.join(FOTO_DIR, self.id.to_s))
       Rails.logger.info "Saving file: #{self.path}"
       FileUtils.cp(self.data, self.path)
       true
-    end
   end
 
   def save_data_to_aws
-    return true if self.data.nil?
-    #ensure_dir(FOTO_DIR)
-    #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
-    Rails.logger.info "Saving file in AWS S3: #{self.path}"
-    #dir = AWS_CONNECTIVITY.directories.create(:key => "/photos/#{self.id}/", :public => true)
-    AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => self.aws_path, :body => @file_obj, :public => true, :content_type => @file_obj.content_type)
+    if AWS_STORAGE
+      return true if self.data.nil?
+      #ensure_dir(FOTO_DIR)
+      #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
+      Rails.logger.info "Saving file in AWS S3: #{self.path}"
+      #dddir = AWS_CONNECTIVITY.directories.create(:key => "/photos/#{self.id}/", :public => true)
+      file_data = [:original] + THUMBNAILS.keys
+      file_data.each do |filepath|
+        debugger
+        file_obj = File.open(self.path(filepath))
+        AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => aws_path(filepath), :body => file_obj, :public => true, :content_type => @file_obj.content_type)
+      end
+    end
     true
   end
 
