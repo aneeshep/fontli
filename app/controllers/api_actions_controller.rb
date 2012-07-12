@@ -402,5 +402,4 @@ class ApiActionsController < ApiBaseController
     render_response(users)
   end
 
->>>>>>> d36d6ee... Recommented Users api is added based on last one week.
 end
