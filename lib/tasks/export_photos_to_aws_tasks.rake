@@ -6,8 +6,9 @@ namespace :export_photos_to_aws do
     AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
     AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new(AWS_API_CONFIG)
     THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
+    logger = Logger.new("#{Rails.root}/log/aws_storage.log")
 
-    Photo.all.limit(5).each do |photo|
+    Photo.all.order("created_at asc").each do |photo|
       extension =     File.extname(photo.data_filename).gsub(/\.+/, '')
       file_data = [:original] + THUMBNAILS.keys
       file_data.each do |filepath|
@@ -16,6 +17,7 @@ namespace :export_photos_to_aws do
           AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => photo.aws_path(filepath), :body => file_obj, :public => true, :content_type => extension)
         end
       end
+      logger.info("Photo - #{photo.id} - moved to S3 at #{photo.created_at}")
     end
   end
 
