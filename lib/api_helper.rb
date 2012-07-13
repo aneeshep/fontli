@@ -150,7 +150,7 @@ module ApiHelper
     :unfav_workbook   => { :accepts => [:workbook_id],
                            :returns => true },
     :recommented_users => { :accepts    => [] ,
-                            :returns    => [:id, :username, :url_thumb, :created_dt, :recent_photos, :description],
+                            :returns    => [:id, :username, :url_thumb, :created_dt, :recent_photos, :description, :full_name, :friendship_state],
                             :recent_photos => [:id, :url_thumb] }
 
  }
