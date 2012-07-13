@@ -41,7 +41,7 @@ class Photo
   AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
   AWS_PATH = ":id_:style.:extension"
   AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new(AWS_API_CONFIG)
-  AWS_STORAGE = false
+  AWS_STORAGE = true
   AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
 
   validates :caption, :length => 2..500, :allow_blank => true
@@ -388,7 +388,7 @@ private
   end
 
   def save_data_to_aws
-    #if AWS_STORAGE
+    if AWS_STORAGE
       return true if self.data.nil?
       #ensure_dir(FOTO_DIR)
       #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
@@ -399,7 +399,7 @@ private
         file_obj = File.open(self.path(filepath))
         AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => aws_path(filepath), :body => file_obj, :public => true, :content_type => @file_obj.content_type)
       end
-    #end
+    end
     true
   end
 
