@@ -155,7 +155,7 @@ module ApiHelper
 
  }
 
-  GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail]
+  GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail, :comments_list, :likes_list]
   AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check]
 
   ERROR_MESSAGE_MAP =
