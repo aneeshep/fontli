@@ -46,14 +46,22 @@ class User
   has_many :workbooks, :dependent => :destroy
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
+  has_many :font_tags, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
   has_many :fav_workbooks, :dependent => :destroy
   has_many :notifications, :foreign_key => :to_user_id, :dependent => :destroy
+  has_many :sent_notifications, :class_name => 'Notification', :foreign_key => :from_user_id, :dependent => :destroy
   has_many :follows, :dependent => :destroy
+  has_many :my_followers, :class_name => 'Follow', :foreign_key => :follower_id, :dependent => :destroy
   has_many :likes, :dependent => :destroy
   has_many :comments, :dependent => :destroy
+  has_many :mentions, :dependent => :destroy
+  has_many :agrees, :dependent => :destroy
+  has_many :flags, :dependent => :destroy
   has_many :user_flags, :dependent => :destroy
   has_many :invites, :dependent => :destroy
+  has_many :shares, :dependent => :destroy
+  has_many :suggestions, :dependent => :destroy
   has_many :sessions, :class_name => 'ApiSession', :dependent => :destroy
 
   validates :email, :username, :presence => true, :uniqueness => { :case_sensitive => false }
@@ -175,7 +183,7 @@ class User
       uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
       uids.uniq
     end
-    
+
   end
 
   # Signup using FB/Twitter will not carry password. Also handle users
@@ -395,7 +403,7 @@ class User
   def my_workbooks(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     self.workbooks.only(:id, :title).recent(lmt).offset(offst).to_a
-  end  
+  end
 
   def fav_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt

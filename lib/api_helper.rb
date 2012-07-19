@@ -6,6 +6,8 @@ module ApiHelper
   COMMON_RESPONSE_ATTRS  = [:notifications_count]
   SIGNATURE_MAP =
   {
+    :stats       => { :accepts => [],
+                      :returns => [:app_version] },
     :signin      => { :accepts => [:username, :password, :device_id],
                       :returns => 'Auth Token' },
     :signup      => { :accepts => [:username, :email, :password, [:full_name, :description, :website, :platform, :extuid, :avatar]],
@@ -156,7 +158,7 @@ module ApiHelper
  }
 
   GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail, :comments_list, :likes_list]
-  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check]
+  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check, :stats]
 
   ERROR_MESSAGE_MAP =
   {
