@@ -9,7 +9,7 @@ module ApiHelper
     :signin      => { :accepts => [:username, :password, :device_id],
                       :returns => 'Auth Token' },
     :signup      => { :accepts => [:username, :email, :password, [:full_name, :description, :website, :platform, :extuid, :avatar]],
-                      :returns => [:username, :email, :password, :url_thumb] },
+                      :returns => [:id, :username, :email, :password, :url_thumb] },
     :signout     => { :accepts => [],
                       :returns => true },
     :forgot_pass => { :accepts => [:email_or_uname],
@@ -155,7 +155,7 @@ module ApiHelper
 
  }
 
-  GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos]
+  GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail]
   AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check]
 
   ERROR_MESSAGE_MAP =
