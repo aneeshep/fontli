@@ -496,7 +496,7 @@ class User
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end
 
-  def recommented_users
+  def recommended_users
     ordered_user_ids = Photo.where(:created_at.gte => (self.created_at.to_date - 7)).only(:user_id).group_by(&:user_id).sort_by{|k,v| v.length}.collect{|a| a[0]}
     users = User.non_admins.where(:id.nin=>[self.id]).find(ordered_user_ids)
     ordered_users = []

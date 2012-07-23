@@ -402,8 +402,8 @@ class ApiActionsController < ApiBaseController
     render_response(resp, resp, error)
   end
 
-  def recommented_users
-    users = @current_user.recommented_users
+  def recommended_users
+    users = @current_user.recommended_users
     render_response(users)
   end
 
