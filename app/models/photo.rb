@@ -38,7 +38,7 @@ class Photo
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
- 
+
   AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
   AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
   AWS_PATH = ":id_:style.:extension"
@@ -233,11 +233,11 @@ class Photo
       File.join(request_domain, pth)
     end
   end
-  
+
   def aws_url(style)
     return "#{AWS_SERVER_PATH}#{id}_#{style}.#{extension}"
   end
-  
+
   def aws_path(style= :original)
     fpath = AWS_PATH.dup
     fpath.sub!(/:id/, self.id.to_s)
@@ -390,7 +390,7 @@ private
   end
 
   def save_data_to_aws
-    #if AWS_STORAGE
+    if AWS_STORAGE
       return true if self.data.nil?
       #ensure_dir(FOTO_DIR)
       #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
@@ -402,7 +402,7 @@ private
         file_obj = File.open(self.path(filepath))
         AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => aws_path(filepath), :body => file_obj, :public => true, :content_type => @file_obj.content_type)
       end
-    #end
+    end
     true
   end
 
@@ -452,13 +452,13 @@ private
   def extension
     File.extname(self.data_filename).gsub(/\.+/, '')
   end
-  
+
   #changes for hashsable polymorphic associations
   def photos_count
     1
   end
-  
+
   def photo_ids
    [self.id]
-  end 
+  end
 end
