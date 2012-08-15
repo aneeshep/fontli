@@ -123,7 +123,6 @@ module MongoExtensions
 
     module ClassMethods
       def default_scope(conditions = {}, &block)
-        puts "scoping..."
         self.default_scoping = Mongoid::Scope.new(conditions, &block)
       end
 

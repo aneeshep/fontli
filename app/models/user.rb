@@ -496,21 +496,27 @@ class User
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end
 
+  # users with highest no. of posts within last 15 days.
+  # ideally, this should be a class method.
   def recommended_users
-    ordered_user_ids = Photo.where(:created_at.gte => (self.created_at.to_date - 7)).only(:user_id).group_by(&:user_id).sort_by{|k,v| v.length}.collect{|a| a[0]}
-    users = User.non_admins.where(:id.nin=>[self.id]).find(ordered_user_ids)
+    usr_ids = Photo.where(:created_at.gte => (Time.now - 15.days)).only(:user_id).to_a
+    usr_ids = usr_ids.group_by(&:user_id).sort_by {|uid, fotos| fotos.length }.reverse
+    # users should have a minimum of 4 posts.
+    usr_ids = usr_ids.collect {|uid, fotos| uid if fotos.length > 4}.compact
+
+    users = User.non_admins.where(:_id.in => usr_ids).to_a
+    # HACK: sort the users list based on order of usr_ids.
     ordered_users = []
-    ordered_user_ids.each do |user_id|
-      users.each do |user|
-        ordered_users << user if user.id == user_id
-      end
+    usr_ids.each do |uid|
+      ordered_users << users.detect {|usr| usr.id == uid }
     end
+
     if ordered_users.length < 20
-      ordered_users = ordered_users + User.leaders.where(:id.nin => ordered_user_ids).limit(20 - ordered_user_ids.length)
+      limit_left = 20 - usr_ids.length
+      ordered_users += User.leaders.where(:_id.nin => usr_ids).limit(limit_left).to_a
     end
     ordered_users[0..19]
   end
-
 
 private
 

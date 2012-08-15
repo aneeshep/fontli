@@ -7,7 +7,10 @@ class HashTag
   belongs_to :hashable, :polymorphic => true, :index => true
 
   validates :name, :hashable_id, :hashable_type, :presence => true
-  
+
+  SOS_REQUEST_HASH_TAG = 'turnonsos'
+  after_create :check_for_sos_request
+
   class << self
     # matches all hash_tags that starts with 'name' and
     # returns an array #OpenStruct with 'name' and 'photos_count'
@@ -20,7 +23,7 @@ class HashTag
         OpenStruct.new(:name => tag_name, :photos_count => fotos_cnt)
       end
     end
-    
+
     def photo_ids(hsh_tags)
       hsh_tags.collect{ |ht| ht.photo_ids}.flatten.uniq
     end
@@ -28,5 +31,14 @@ class HashTag
 
   def photo_ids
     self.hashable.photo_ids
+  end
+
+private
+
+  def check_for_sos_request
+    return true unless self.name.downcase == SOS_REQUEST_HASH_TAG
+    return true unless self.hashable.respond_to?(:font_help)
+    self.hashable.update_attribute(:font_help, true)
+    true
   end
 end

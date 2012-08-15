@@ -404,6 +404,7 @@ class ApiActionsController < ApiBaseController
 
   def recommended_users
     users = @current_user.recommended_users
+    users = @current_user.populate_friendship_state(users)
     render_response(users)
   end
 
