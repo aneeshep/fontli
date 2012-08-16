@@ -62,7 +62,7 @@ class Photo
   scope :unpublished, where(:caption => DEFAULT_TITLE)
   scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:created_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
-  scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 48.hours.ago).desc(:likes_count) }
+  scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
 
   before_save :crop_file
   after_create :populate_mentions

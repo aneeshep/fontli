@@ -8,7 +8,7 @@ class HashTag
 
   validates :name, :hashable_id, :hashable_type, :presence => true
 
-  SOS_REQUEST_HASH_TAG = 'turnonsos'
+  SOS_REQUEST_HASH_TAG = 'needtypehelp'
   after_create :check_for_sos_request
 
   class << self
