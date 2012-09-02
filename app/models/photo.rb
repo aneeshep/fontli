@@ -18,16 +18,18 @@ class Photo
   field :flags_count, :type => Integer, :default => 0
   field :fonts_count, :type => Integer, :default => 0
   field :created_at, :type => Time
+  field :position, :type => Integer
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
+  belongs_to :workbook, :index => true
   has_many :fonts, :autosave => true, :dependent => :destroy
   has_many :likes, :dependent => :destroy
   has_many :flags, :dependent => :destroy
   has_many :shares, :dependent => :destroy
   has_many :comments, :autosave => true, :dependent => :destroy
   has_many :mentions, :as => :mentionable, :autosave => true, :dependent => :destroy
-  has_many :hash_tags, :autosave => true, :dependent => :destroy
+  has_many :hash_tags, :as => :hashable, :autosave => true, :dependent => :destroy
 
   FOTO_DIR = File.join(Rails.root, 'public/photos')
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
@@ -36,7 +38,14 @@ class Photo
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
- 
+
+  AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
+  AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
+  AWS_PATH = ":id_:style.:extension"
+  AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new(AWS_API_CONFIG)
+  AWS_STORAGE = true
+  AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
+
   AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
   AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
   AWS_PATH = ":id_:style.:extension"
@@ -53,14 +62,14 @@ class Photo
     :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/png' },
     :allow_blank => true
 
-  attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user
+  attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user, :cover
 
   default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
   scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:created_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
-  scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 48.hours.ago).desc(:likes_count) }
+  scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
 
   before_save :crop_file
   after_create :populate_mentions
@@ -175,8 +184,8 @@ class Photo
 
     def all_by_hash_tag(tag_name, pge = 1, lmt = 20)
       return [] if tag_name.blank?
-      hsh_tags = HashTag.where(:name => tag_name).only(:photo_id)
-      foto_ids = hsh_tags.to_a.collect(&:photo_id)
+      hsh_tags = HashTag.where(:name => tag_name).only(:hashable_id, :hashable_type)
+      foto_ids = HashTag.photo_ids(hsh_tags)
       offst = (pge.to_i - 1) * lmt
       self.where(:_id.in => foto_ids).desc(:created_at).only(:id, :data_filename).skip(offst).limit(lmt).to_a
     end
@@ -231,11 +240,11 @@ class Photo
       File.join(request_domain, pth)
     end
   end
-  
+
   def aws_url(style)
     return "#{AWS_SERVER_PATH}#{id}_#{style}.#{extension}"
   end
-  
+
   def aws_path(style= :original)
     fpath = AWS_PATH.dup
     fpath.sub!(/:id/, self.id.to_s)
@@ -448,5 +457,14 @@ private
 
   def extension
     File.extname(self.data_filename).gsub(/\.+/, '')
+  end
+
+  #changes for hashsable polymorphic associations
+  def photos_count
+    1
+  end
+
+  def photo_ids
+   [self.id]
   end
 end

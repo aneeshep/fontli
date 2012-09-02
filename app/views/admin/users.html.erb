@@ -52,6 +52,9 @@
       <% if @activate_user %>
         <td><%= link_to('Activate', '/admin/activate_user?id='+u.id.to_s) %></td>
       <% end %>
+      <% if @delete_user %>
+        <td><%= link_to('Delete', '/admin/delete_user?id='+u.id.to_s) %></td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>

@@ -7,6 +7,7 @@ class Comment
 
   field :body, :type => String
   field :font_tag_ids, :type => Array
+  field :foto_ids, :type => Array  #mentioned photo_ids
 
   belongs_to :photo, :index => true
   belongs_to :user, :index => true
@@ -26,6 +27,11 @@ class Comment
     def [](cmt_id)
       self.where(:_id => cmt_id).first
     end
+  end
+
+  #Overriding the notification method
+  def notif_target_user_id
+    self.photo.comments.only(:user_id).collect(&:user_id)
   end
 
   # return a custom font collection(w/ coords) tagged with this comment.
@@ -64,6 +70,11 @@ class Comment
 
   def notif_context
     ['has commented']
+  end
+
+  def fotos
+    return [] if self.foto_ids.blank?
+    Photo.where(:_id.in => self.foto_ids).only(:id, :data_filename).to_a
   end
 
 private

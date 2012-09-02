@@ -78,5 +78,8 @@
         $(this).replaceWith('<strong>Loading..</strong>');
       });
     <% end %>
+    <script defer="defer" type="text/javascript">
+      <%= yield(:custom_js) %>
+    </script>
   </body>
 </html>

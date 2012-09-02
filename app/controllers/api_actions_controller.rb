@@ -1,6 +1,11 @@
 # API methods. Hit /doc for details.
 class ApiActionsController < ApiBaseController
 
+  def stats
+    stat = Stat.current
+    render_response(stat, !stat.new_record?, :record_not_found)
+  end
+
   def signin
     token, error = User.api_login(@username, @password, @device_id)
     reset_current_user_and_session # reset to use the new token
@@ -397,8 +402,9 @@ class ApiActionsController < ApiBaseController
     render_response(resp, resp, error)
   end
 
-  def recommented_users 
-    users = @current_user.recommented_users
+  def recommended_users
+    users = @current_user.recommended_users
+    users = @current_user.populate_friendship_state(users)
     render_response(users)
   end
 

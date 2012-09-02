@@ -25,6 +25,7 @@ class User
   field :active, :type => Boolean, :default => true
   field :suspended_reason, :type => String
   field :fav_fonts_count, :type => Integer, :default => 0
+  field :fav_workbooks_count, :type => Integer, :default => 0
   field :likes_count, :type => Integer, :default => 0
   field :follows_count, :type => Integer, :default => 0
   field :user_flags_count, :type => Integer, :default => 0
@@ -42,15 +43,25 @@ class User
   LEADERBOARD_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 3
 
+  has_many :workbooks, :dependent => :destroy
   has_many :photos, :dependent => :destroy
   has_many :fonts, :dependent => :destroy
+  has_many :font_tags, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
+  has_many :fav_workbooks, :dependent => :destroy
   has_many :notifications, :foreign_key => :to_user_id, :dependent => :destroy
+  has_many :sent_notifications, :class_name => 'Notification', :foreign_key => :from_user_id, :dependent => :destroy
   has_many :follows, :dependent => :destroy
+  has_many :my_followers, :class_name => 'Follow', :foreign_key => :follower_id, :dependent => :destroy
   has_many :likes, :dependent => :destroy
   has_many :comments, :dependent => :destroy
+  has_many :mentions, :dependent => :destroy
+  has_many :agrees, :dependent => :destroy
+  has_many :flags, :dependent => :destroy
   has_many :user_flags, :dependent => :destroy
   has_many :invites, :dependent => :destroy
+  has_many :shares, :dependent => :destroy
+  has_many :suggestions, :dependent => :destroy
   has_many :sessions, :class_name => 'ApiSession', :dependent => :destroy
 
   validates :email, :username, :presence => true, :uniqueness => { :case_sensitive => false }
@@ -172,7 +183,7 @@ class User
       uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
       uids.uniq
     end
-    
+
   end
 
   # Signup using FB/Twitter will not carry password. Also handle users
@@ -389,6 +400,11 @@ class User
     self.photos.only(:id, :data_filename).recent(lmt).offset(offst).to_a
   end
 
+  def my_workbooks(page = 1, lmt = 20)
+    offst = (page.to_i - 1) * lmt
+    self.workbooks.only(:id, :title).recent(lmt).offset(offst).to_a
+  end
+
   def fav_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     foto_ids = self.fav_photo_ids
@@ -480,21 +496,27 @@ class User
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
   end
 
-  def recommented_users
-    ordered_user_ids = Photo.where(:created_at.gte => (self.created_at.to_date - 7)).only(:user_id).group_by(&:user_id).sort_by{|k,v| v.length}.collect{|a| a[0]}
-    users = User.non_admins.where(:id.nin=>[self.id]).find(ordered_user_ids)
+  # users with highest no. of posts within last 15 days.
+  # ideally, this should be a class method.
+  def recommended_users
+    usr_ids = Photo.where(:created_at.gte => (Time.now - 15.days)).only(:user_id).to_a
+    usr_ids = usr_ids.group_by(&:user_id).sort_by {|uid, fotos| fotos.length }.reverse
+    # users should have a minimum of 4 posts.
+    usr_ids = usr_ids.collect {|uid, fotos| uid if fotos.length > 4}.compact
+
+    users = User.non_admins.where(:_id.in => usr_ids).to_a
+    # HACK: sort the users list based on order of usr_ids.
     ordered_users = []
-    ordered_user_ids.each do |user_id|
-      users.each do |user|
-        ordered_users << user if user.id == user_id
-      end
+    usr_ids.each do |uid|
+      ordered_users << users.detect {|usr| usr.id == uid }
     end
+
     if ordered_users.length < 20
-      ordered_users = ordered_users + User.leaders.where(:id.nin => ordered_user_ids).limit(20 - ordered_user_ids.length)
+      limit_left = 20 - usr_ids.length
+      ordered_users += User.leaders.where(:_id.nin => usr_ids).limit(limit_left).to_a
     end
     ordered_users[0..19]
   end
-
 
 private
 

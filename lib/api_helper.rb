@@ -6,10 +6,12 @@ module ApiHelper
   COMMON_RESPONSE_ATTRS  = [:notifications_count]
   SIGNATURE_MAP =
   {
+    :stats       => { :accepts => [],
+                      :returns => [:app_version] },
     :signin      => { :accepts => [:username, :password, :device_id],
                       :returns => 'Auth Token' },
     :signup      => { :accepts => [:username, :email, :password, [:full_name, :description, :website, :platform, :extuid, :avatar]],
-                      :returns => [:username, :email, :password, :url_thumb] },
+                      :returns => [:id, :username, :email, :password, :url_thumb] },
     :signout     => { :accepts => [],
                       :returns => true },
     :forgot_pass => { :accepts => [:email_or_uname],
@@ -44,15 +46,16 @@ module ApiHelper
                          :returns => [:user_flags_count] },
     :share_photo    => { :accepts => [:photo_id],
                          :returns => true },
-    :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags, :hashes]],
+    :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags, :hashes, :foto_ids]],
                          :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
                          :collection => {:font_tags => [:family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :coords],
                                          :hashes => [:name]},
                          :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged] },
 
     :comments_list  => { :accepts => [:photo_id],
-                         :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
-                         :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged] },
+                         :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts, :fotos],
+                         :fonts   => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged],
+                         :fotos   => [:id, :url_thumbs] },
     :delete_comment => { :accepts => [:comment_id],
                          :returns => true },
     :agree_font     => { :accepts => [:font_id, [:close_help]],
@@ -148,14 +151,14 @@ module ApiHelper
                            :returns => true },
     :unfav_workbook   => { :accepts => [:workbook_id],
                            :returns => true },
-    :recommented_users => { :accepts    => [] ,
-                            :returns    => [:id, :username, :url_thumb, :created_dt, :recent_photos, :description],
+    :recommended_users => { :accepts    => [] ,
+                            :returns    => [:id, :username, :url_thumb, :created_dt, :recent_photos, :description, :full_name, :friendship_state],
                             :recent_photos => [:id, :url_thumb] }
 
  }
 
-  GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos]
-  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check]
+  GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail, :comments_list, :likes_list]
+  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check, :stats]
 
   ERROR_MESSAGE_MAP =
   {

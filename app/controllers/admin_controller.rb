@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  
+
   skip_before_filter :login_required # skip the regular login check
   before_filter :admin_required # use http basic auth
   helper_method :sort_column, :sort_direction
@@ -7,6 +7,7 @@ class AdminController < ApplicationController
   def index
     @users_count = User.count
     @fotos_count = Photo.count
+    @stat = Stat.current
   end
 
   def users
@@ -21,6 +22,7 @@ class AdminController < ApplicationController
       @max_page  = (@users_cnt / @lmt.to_f).ceil
     end
     @suspend_user = true
+    @delete_user = true
   end
 
   def suspend_user
@@ -29,11 +31,18 @@ class AdminController < ApplicationController
     redirect_to '/admin/users', opts
   end
 
+  def delete_user
+    @res = User.unscoped.where(:_id => params[:id]).first.destroy
+    opts = @res ? {:notice => 'User account deleted.'} : {:alert => 'Couldn\'t delete. Please try again!'}
+    redirect_to '/admin/users', opts
+  end
+
   def suspended_users
     @page, @lmt = [1, 10]
     @users = User.unscoped.where(:active => false).order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Suspended Users', 'Not Implemented']
     @activate_user = true
+    @delete_user = true
     render :users
   end
 
@@ -67,6 +76,7 @@ class AdminController < ApplicationController
     @users = User.unscoped.where(:user_flags_count.gte => User::ALLOWED_FLAGS_COUNT).order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Flagged Users', 'Not Implemented']
     @unflag_user = true
+    @delete_user = true
     render :users
   end
 
@@ -78,7 +88,7 @@ class AdminController < ApplicationController
 
   def flagged_photos
     @page, @lmt = [1, 10]
-    params[:sort] ||='flags_count' 
+    params[:sort] ||='flags_count'
     @fotos = Photo.unscoped.where(:flags_count.gte => Photo::ALLOWED_FLAGS_COUNT).order_by(sort_column => sort_direction).desc(:flags_count).to_a
     @title, params[:search] = ['Flagged Photos', 'Not Implemented']
     @unflag_photo = true
@@ -119,11 +129,16 @@ class AdminController < ApplicationController
     @res = Photo.unscoped.where(:_id => params[:id]).first.destroy rescue false
   end
 
-  private
+  def update_stat
+    Stat.current.update_attributes(:app_version => params[:version])
+    redirect_to :action => :index
+  end
+
+private
   def sort_column
     params[:sort].blank? ? "created_at" : params[:sort]
   end
-  
+
   def sort_direction
     params[:direction].blank? ? "desc" : params[:direction]
   end

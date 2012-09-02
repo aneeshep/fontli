@@ -1,7 +1,7 @@
 module AdminHelper
 
   def cta_req?
-    @approve_sos || @suspend_user || @unflag_user || @unflag_photo || @activate_user || @delete_photo
+    @approve_sos || @suspend_user || @unflag_user || @unflag_photo || @activate_user || @delete_photo || @delete_user
   end
 
   def sortable(column, title = nil)

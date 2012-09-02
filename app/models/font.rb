@@ -20,6 +20,7 @@ class Font
   has_many :agrees, :dependent => :destroy
   has_many :font_tags, :autosave => true, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
+  has_many :hash_tags, :as => :hashable, :autosave => true, :dependent => :destroy
 
   validates :family_unique_id, :family_name, :family_id, :presence => true
   validates :photo_id, :user_id, :presence => true
@@ -80,6 +81,13 @@ class Font
       return [] if fnts.empty?
       resp = fnts.group_by { |f| f[:family_id] }
       resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
+    end
+  end
+
+  def hashes=(hshs)
+    return true if hshs.blank?
+    hshs.each do |h|
+      self.hash_tags.build(h)
     end
   end
 
@@ -166,6 +174,10 @@ class Font
   def display_name
     self.subfont_id.blank? ? self.family_name : self.subfont_name
   end
+
+  def photo_ids
+    [self.photo_id]
+  end 
 
 private
 

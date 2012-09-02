@@ -1,6 +1,44 @@
+<% content_for :custom_js do %>
+  $('#update_stat_link').live('click', function(e) {
+    $(this).hide();
+    $('#update_stat_cancel').show();
+    $('#update_stat_form .submit').show();
+    $('#status').html('');
+    $('#update_stat_form').slideDown();
+  });
+
+  $('#update_stat_form').live('ajax:before', function(e) {
+    $('#status').html('Updating...');
+    $('#update_stat_cancel').hide();
+    $('#update_stat_form .submit').hide();
+  });
+
+  $('#update_stat_form').live('ajax:success', function(data, status, xhr) {
+    $('#app_version').html(data['app_version']);
+    $('#app_version').fadeIn();
+    $('#status').html('Updated.');
+    $('#update_stat_form').hide();
+  });
+
+  $('#update_stat_cancel').live('click', function(e) {
+    $('#update_stat_form').hide();
+    $('#update_stat_link').show();
+  });
+<% end %>
+
 <h3>Current Statistics</h3>
 
 <ul>
   <li>Total Users: <%= @users_count %></li>
   <li>Total Photos: <%= @fotos_count %></li>
+  <li>
+    App Version: <span id="app_version"><%= @stat.app_version %></span>&nbsp;&nbsp;
+    <%= link_to 'Change', 'javascript:void(0);', :id => 'update_stat_link' %>
+    <%= form_tag '/admin/update_stat', :id => "update_stat_form", :method => "post", :class => "form-inline", :style => "display:none; margin-top:10px;" do %>
+      <input class="span1" name="version" type="text" size="10" value='<%= @stat.app_version %>' />
+      <input type="submit" class="submit btn btn-primary" value="Update" />
+      <%= link_to 'Cancel', 'javascript:void(0);', :id => 'update_stat_cancel' %>
+    <% end %>
+    <span id="status">&nbsp;</span>
+  </li>
 </ul>
