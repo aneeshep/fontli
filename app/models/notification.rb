@@ -30,7 +30,9 @@ class Notification
     when /Like/
       "#{frm_usr.username} liked your post."
     when /Comment/
-      "#{frm_usr.username} commented on your post."
+      to_usr = self.to_user
+      cntxt = self.notifiable.photo.user_id == to_usr.id ? 'your' : "#{to_usr.username}'s"
+      "#{frm_usr.username} commented on #{cntxt} post."
     when /Mention/
       cntxt = self.notifiable.mentionable_type == 'Comment' ? 'comment' : 'post'
       "#{frm_usr.username} mentioned you in a #{cntxt}."

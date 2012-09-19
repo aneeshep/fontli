@@ -30,8 +30,13 @@ class Comment
   end
 
   #Overriding the notification method
+  #notify the publisher, all users in comment thread
+  #make sure the mentioned usrs are ignored.
   def notif_target_user_id
-    self.photo.comments.only(:user_id).collect(&:user_id)
+    owner = [self.photo.user_id]
+    commented_usrs = self.photo.comments.only(:user_id).collect(&:user_id)
+    mentioned_usrs = self.mentions.only(:user_id).collect(&:user_id)
+    (owner + commented_usrs - mentioned_usrs).flatten.uniq
   end
 
   # return a custom font collection(w/ coords) tagged with this comment.
@@ -61,11 +66,6 @@ class Comment
   def user_url_thumb
     @usr ||= self.user
     @usr.url_thumb
-  end
-
-  # don't notify for a comment, if the photo publisher is also mentioned.
-  def can_notify?
-    self.mentions.where(:user_id => notif_target_user_id).first.nil?
   end
 
   def notif_context

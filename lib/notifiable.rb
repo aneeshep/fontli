@@ -51,7 +51,7 @@ private
   def create_app_notification
     return true unless can_notify?
     src_usr_id = self.notif_source_user_id
-    tgt_usr_ids = [self.notif_target_user_id].flatten
+    tgt_usr_ids = [self.notif_target_user_id].flatten.uniq
     extid = self.respond_to?(:notif_extid) ? self.notif_extid : nil
     # handle cases like users commenting to their own photo.
     tgt_usr_ids -= [src_usr_id]
