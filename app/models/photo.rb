@@ -46,13 +46,6 @@ class Photo
   AWS_STORAGE = true
   AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
 
-  AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
-  AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
-  AWS_PATH = ":id_:style.:extension"
-  AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new(AWS_API_CONFIG)
-  AWS_STORAGE = true
-  AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
-
   validates :caption, :length => 2..500, :allow_blank => true
   validates :data_filename, :presence => true
   validates :data_size,
