@@ -3,6 +3,7 @@ class AdminController < ApplicationController
   skip_before_filter :login_required # skip the regular login check
   before_filter :admin_required # use http basic auth
   helper_method :sort_column, :sort_direction
+  #Add option to send generic push notifications.
 
   def index
     @users_count = User.count
@@ -107,6 +108,7 @@ class AdminController < ApplicationController
     if params[:req] == 'true'
       @title = 'SoS photos waiting for approval'
       conds = conds.merge(:sos_approved => false)
+      params[:sort] ||= 'sos_requested_at'
       @approve_sos = true
     end
     unless params[:search].to_s.strip.blank?
@@ -132,6 +134,22 @@ class AdminController < ApplicationController
   def update_stat
     Stat.current.update_attributes(:app_version => params[:version])
     redirect_to :action => :index
+  end
+
+  # TODO: batch process and or add more criterias to user search.
+  def send_push_notifications
+    if params[:message].blank?
+      flash.now[:alert] = 'Message can\'t be blank' if request.post?
+      return
+    end
+
+    usrs = User.non_admins.where(:iphone_token.ne => nil).to_a
+    usrs.each do |u|
+      notif_cnt = u.notifications.unread.count
+      opts = { :badge => notif_cnt, :alert => params[:message], :sound => true }
+      APN.notify(to_usr.iphone_token, opts)
+    end
+    redirect_to '/admin', :notice => "Notified #{usrs.length} users."
   end
 
 private

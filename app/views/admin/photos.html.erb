@@ -27,7 +27,11 @@
     <% @fotos.each_with_index do |f, i| %>
     <tr id='foto_<%= f.id.to_s %>'>
       <td><%= (@page - 1) * @lmt + i + 1 %></td>
-      <td><img src='<%= f.url_thumb %>' /></td>
+      <td>
+        <a href='/<%= f.perma %>' target='_new'>
+          <img src='<%= f.url_thumb %>' />
+        </a>
+      </td>
       <td><%= f.caption %></td>
       <td><%= f.likes_count %></td>
       <td><%= f.comments_count %></td>

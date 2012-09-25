@@ -26,6 +26,8 @@
   });
 <% end %>
 
+<%= render 'flash_notices' %>
+
 <h3>Current Statistics</h3>
 
 <ul>
@@ -41,4 +43,9 @@
     <% end %>
     <span id="status">&nbsp;</span>
   </li>
+</ul><br/>
+
+<h3>Utilities</h3>
+<ul>
+  <li><%= link_to 'Send Push notifications', '/admin/send_push_notifications' %> to all users.</li>
 </ul>
