@@ -1,9 +1,9 @@
 class HashTag
   include Mongoid::Document
   include Mongoid::Timestamps::Created
+  include MongoExtensions
 
   field :name, :type => String
-  belongs_to :photo, :index => true # TODO:: remove this after migration
   belongs_to :hashable, :polymorphic => true, :index => true
 
   validates :name, :hashable_id, :hashable_type, :presence => true
@@ -33,12 +33,21 @@ class HashTag
     self.hashable.photo_ids
   end
 
+  # BC patch after removing belongs_to :photo
+  def photo
+    self.hashable.is_a?(Photo) ? self.hashable : nil
+  end
+
 private
 
   def check_for_sos_request
     return true unless self.name.downcase == SOS_REQUEST_HASH_TAG
-    return true unless self.hashable.respond_to?(:font_help)
-    self.hashable.update_attribute(:font_help, true)
+    return true unless self.photo # might be a workbook
+    self.hashable.update_attributes(
+      :font_help        => true,
+      :sos_requested_by => current_user.id.to_s,
+      :sos_requested_at => current_time
+    )
     true
   end
 end

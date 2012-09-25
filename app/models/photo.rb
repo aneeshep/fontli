@@ -19,6 +19,8 @@ class Photo
   field :fonts_count, :type => Integer, :default => 0
   field :created_at, :type => Time
   field :position, :type => Integer
+  field :sos_requested_at, :type => Time
+  field :sos_requested_by, :type => Integer
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
@@ -100,6 +102,10 @@ class Photo
       foto = self.unpublished.where(:_id => opts.delete(:photo_id)).first
       return [nil, :photo_not_found] if foto.nil?
       opts[:created_at] = Time.now.utc
+      if opts[:font_help].to_s == 'true'
+        opts[:sos_requested_at] = current_time
+        opts[:sos_requested_by] = current_user.id.to_s
+      end
       resp = foto.update_attributes(opts)
       resp ? foto : [nil, foto.errors.full_messages]
     end

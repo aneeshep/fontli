@@ -18,8 +18,13 @@ class Agree
     ['has accepted']
   end
 
+  # consider an agree from sos_requestor as publisher pick.
   def publisher_pick?
-    self.user_id == self.font.photo.user_id
+    (self.user_id == self.font.photo.user_id) || sos_requestor_pick?
+  end
+
+  def sos_requestor_pick?
+    self.user_id == self.font.photo.sos_requested_by
   end
 
   def expert_pick?
@@ -63,6 +68,7 @@ private
     fnt, sts_map = [self.font, Font::PICK_STATUS_MAP.dup]
     exp_pik, pub_pik = [ sts_map[:expert_pick], sts_map[:publisher_pick] ]
     return true if expert_pick? && fnt.agrees.any?(&:expert_pick?) # some other expert has also agreed
+    return true if sos_requestor_pick? && fnt.agrees.any?(&:publisher_pick?) # its still a publisher pick
     fnt.inc(:pick_status, -(expert_pick? ? exp_pik : pub_pik))
     true
   end
