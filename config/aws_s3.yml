@@ -2,6 +2,7 @@ defaults: &defaults
   provider: 'AWS'
   aws_secret_access_key: "MBezRoYXOnjTyFvywKg7mTWRdNEo5CqS16znqsSP"
   aws_access_key_id: "AKIAJQBIDH42VBXOSRBQ"
+  use_s3: false
 
 development:
   <<: *defaults
@@ -14,4 +15,4 @@ staging:
 production:
   <<: *defaults
   bucket: "new_fontli_production"
-
+  use_s3: true

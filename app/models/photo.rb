@@ -42,10 +42,10 @@ class Photo
   ALLOWED_FLAGS_COUNT = 5
 
   AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
+  AWS_STORAGE = AWS_API_CONFIG.delete(:use_s3) || Rails.env.to_s == 'production'
   AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
   AWS_PATH = ":id_:style.:extension"
   AWS_STORAGE_CONNECTIVITY =  Fog::Storage.new(AWS_API_CONFIG)
-  AWS_STORAGE = true
   AWS_SERVER_PATH = "http://s3.amazonaws.com/#{AWS_BUCKET}/"
 
   validates :caption, :length => 2..500, :allow_blank => true
@@ -103,7 +103,7 @@ class Photo
       return [nil, :photo_not_found] if foto.nil?
       opts[:created_at] = Time.now.utc
       if opts[:font_help].to_s == 'true'
-        opts[:sos_requested_at] = current_time
+        opts[:sos_requested_at] = Time.now.utc
         opts[:sos_requested_by] = current_user.id.to_s
       end
       resp = foto.update_attributes(opts)
