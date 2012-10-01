@@ -48,7 +48,7 @@ class ApiActionsController < ApiBaseController
   end
 
   def publish_photo
-    resp, error = Photo.publish(current_api_accepts_map)
+    resp, error = Photo.publish(current_api_accepts_map_with_user)
     render_response(resp, !resp.nil?, error)
   end
 

@@ -101,10 +101,11 @@ class Photo
     def publish(opts)
       foto = self.unpublished.where(:_id => opts.delete(:photo_id)).first
       return [nil, :photo_not_found] if foto.nil?
+      usr_id = opts.delete(:user_id)
       opts[:created_at] = Time.now.utc
       if opts[:font_help].to_s == 'true'
         opts[:sos_requested_at] = Time.now.utc
-        opts[:sos_requested_by] = current_user.id.to_s
+        opts[:sos_requested_by] = usr_id.to_s
       end
       resp = foto.update_attributes(opts)
       resp ? foto : [nil, foto.errors.full_messages]
