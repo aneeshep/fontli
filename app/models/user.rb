@@ -168,8 +168,10 @@ class User
     end
 
     def add_flag_for(usr_id, frm_usr_id)
-      usr = self.where(:_id => usr_id).only(:user_flags_count).first
+      usr = self.where(:_id => usr_id).only(:user_flags_count, :username).first
       return [nil, :user_not_found] if usr.nil?
+      # don't let any user to flag the 'fontli' account
+      return usr if usr.username == self.fontli.username
       obj = usr.send(:user_flags).build :from_user_id => frm_usr_id
       obj.save ? usr.reload : [nil, obj.errors.full_messages]
     end
