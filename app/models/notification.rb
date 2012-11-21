@@ -1,3 +1,6 @@
+require 'uri'
+require 'net/http'
+
 class Notification
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -52,10 +55,39 @@ private
   # sends push notification for every new notification
   def send_apn
     to_usr = self.to_user
-    return true if to_usr.iphone_token.blank?
+    # check for windows toast url if iphone_token is blank.
+    return send_wp_toast_notif if to_usr.iphone_token.blank?
     notif_cnt = to_usr.notifications.unread.count
     opts = { :badge => notif_cnt, :alert => self.message, :sound => true }
     APN.notify(to_usr.iphone_token, opts)
+    true
+  end
+
+  # TODO: Background this.
+  def send_wp_toast_notif
+    wp_url = self.to_user.wp_toast_url
+    return true if wp_url.blank?
+
+    u = URI.parse(wp_url)
+    req = Net::HTTP::Post.new(u.path)
+
+    req_xml = '<?xml version="1.0" encoding="utf-8"?>'
+    req_xml << '<wp:Notification xmlns:wp="WPNotification">'
+    req_xml << '<wp:Toast>'
+    req_xml << '<wp:Text1>Fontli</wp:Text1>'
+    req_xml << "<wp:Text2>#{self.message}</wp:Text2>"
+    req_xml << "<wp:Param>/UserProfile/UserUpdate.xaml</wp:Param>"
+    req_xml << '</wp:Toast>'
+    req_xml << '</wp:Notification>'
+
+    req.content_type = 'text/xml'
+    req['X-WindowsPhone-Target'] = 'toast'
+    req['X-NotificationClass'] = '2'
+    req.body = req_xml
+
+    resp = Net::HTTP.start(u.host, u.port) do |http|
+      http.request(req)
+    end
     true
   end
 end

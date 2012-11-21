@@ -1,6 +1,15 @@
 # API methods. Hit /doc for details.
 class ApiActionsController < ApiBaseController
 
+  CRASH_LOG_PATH = File.expand_path(File.join(Rails.root.to_s, '/log/app_crash_log.txt'))
+
+  def log_crash
+    fp = File.open(CRASH_LOG_PATH, 'a+')
+    fp.puts @content
+    fp.close
+    render_response(true)
+  end
+
   def stats
     stat = Stat.current
     render_response(stat, !stat.new_record?, :record_not_found)
@@ -216,8 +225,16 @@ class ApiActionsController < ApiBaseController
 
   def update_profile
     attrs = current_api_valid_accepts_map
+    # a user should have either an active iphone_token or wp_url
+    # because we send notifications only to recent device the user has logged in.
     if attrs.keys.include?(:iphone_token)
       attrs[:iphone_token_updated_at] = Time.zone.now
+      attrs[:wp_toast_url] = nil
+    elsif attrs.keys.include?(:wp_toast_url)
+      # only windows mob would send 'nil' for toast url
+      # when the user opts to disable toast notification.
+      val = attrs[:wp_toast_url]
+      attrs[:iphone_token] = nil unless val.blank?
     end
     resp = @current_user.update_attributes(attrs)
     render_response(resp, resp, @current_user.errors.full_messages)

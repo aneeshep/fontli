@@ -19,6 +19,7 @@ class User
   field :platform, :type => String, :default => 'default'
   field :iphone_token, :type => String
   field :iphone_token_updated_at, :type => DateTime
+  field :wp_toast_url, :type => String
   field :admin, :type => Boolean, :default => false
   field :expert, :type => Boolean, :default => false
   field :points, :type => Integer, :default => 5

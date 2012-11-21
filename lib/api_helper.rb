@@ -6,6 +6,8 @@ module ApiHelper
   COMMON_RESPONSE_ATTRS  = [:notifications_count]
   SIGNATURE_MAP =
   {
+    :log_crash   => { :accepts => [:content],
+                      :returns => true },
     :stats       => { :accepts => [],
                       :returns => [:app_version] },
     :signin      => { :accepts => [:username, :password, :device_id],
@@ -111,7 +113,7 @@ module ApiHelper
     :user_profile   => { :accepts => [[:user_id, :username]],
                          :returns => [:id, :username, :email, :full_name, :description, :website, :url, :url_large, :url_thumb, :created_dt, :likes_count, :follows_count, :followers_count, :photos_count, :fonts_count, :my_photos, :my_friend?],
                          :my_photos => [:id, :url_thumb]},
-    :update_profile => { :accepts => [[:email, :full_name, :description, :website, :iphone_token, :avatar]],
+    :update_profile => { :accepts => [[:email, :full_name, :description, :website, :iphone_token, :wp_toast_url, :avatar]],
                          :returns => true },
     :user_friends   => { :accepts => [[:user_id, :page]],
                          :returns => [:url_thumb, :username, :full_name, :email, :id, :friendship_state] },
@@ -158,7 +160,7 @@ module ApiHelper
  }
 
   GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail, :comments_list, :likes_list]
-  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check, :stats]
+  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check, :stats, :log_crash]
 
   ERROR_MESSAGE_MAP =
   {
