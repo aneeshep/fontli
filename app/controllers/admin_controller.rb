@@ -14,7 +14,6 @@ class AdminController < ApplicationController
   def users
     @page, @lmt = [(params[:page] || 1).to_i, 10]
     offst       = (@page - 1) * @lmt
-    params[:sort] ||= "points"
     unless params[:search].to_s.strip.blank?
       @users = User.search(params[:search], sort_column, sort_direction)
     else
@@ -59,11 +58,9 @@ class AdminController < ApplicationController
     if !params[:search].to_s.strip.blank?
       @fotos = Photo.where(:caption => /^#{params[:search]}.*/i).order_by(sort_column => sort_direction).to_a
     elsif !params[:user_id].to_s.strip.blank?
-      params[:sort] ||='likes_count'
       @fotos = Photo.where(:user_id => params[:user_id]).order_by(sort_column => sort_direction).to_a
       params[:search] = 'Not Implemented'
     else
-      params[:sort] ||='likes_count'
       @fotos = Photo.all.order_by(sort_column => sort_direction).skip(offst).limit(@lmt)
       @fotos_cnt = Photo.count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
