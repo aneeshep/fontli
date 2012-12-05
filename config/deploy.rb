@@ -1,4 +1,5 @@
 require 'capistrano/ext/multistage'
+require 'new_relic/recipes'
 
 #############################################################
 #	Application
@@ -95,3 +96,4 @@ after :deploy, "deploy:symlink_shared_paths"
 after "deploy:symlink_shared_paths", "deploy:cleanup"
 after "deploy:cleanup", "deploy:bundle_install"
 after "deploy:bundle_install", "deploy:my_restart"
+after "deploy:my_restart", "newrelic:notice_deployment"
