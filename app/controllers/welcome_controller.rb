@@ -3,6 +3,11 @@ require 'auth_client'
 class WelcomeController < ApplicationController
   include AuthClient
   skip_before_filter :login_required, :except => [:logout]
+  skip_before_filter :set_current_controller, :only => [:keepalive]
+
+  def keepalive
+    render :text => 'Success'
+  end
 
   def index
     if logged_in?
