@@ -10,7 +10,7 @@ protected
   end
 
   def admin_required
-    admin_users = YAML.load_file 'config/admin_creds.yml'
+    admin_users = Fontli.load_erb_config('admin_creds.yml')
     authenticate_or_request_with_http_digest do |username|
       admin_users[username]
     end

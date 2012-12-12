@@ -41,7 +41,7 @@ class Photo
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
 
-  AWS_API_CONFIG = YAML::load_file(File.join(Rails.root, 'config/aws_s3.yml'))[Rails.env].symbolize_keys
+  AWS_API_CONFIG = Fontli.load_erb_config('aws_s3.yml')[Rails.env].symbolize_keys
   AWS_STORAGE = AWS_API_CONFIG.delete(:use_s3) || Rails.env.to_s == 'production'
   AWS_BUCKET = AWS_API_CONFIG.delete(:bucket)
   AWS_PATH = ":id_:style.:extension"

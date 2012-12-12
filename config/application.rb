@@ -15,6 +15,9 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+require 'yaml'
+SECURE_TREE = YAML::load_file('/var/local/config/fontli.yml')
+
 module Fontli
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -58,9 +61,18 @@ module Fontli
       :port                 => 587,
       :domain               => 'fontli.com',
       :user_name            => 'admin@fontli.com',
-      :password             => 'Type5try',
+      :password             => SECURE_TREE['email_pass'],
       :authentication       => 'plain',
       :enable_starttls_auto => true
     }
+  end
+
+  # loads any yml file under config, parsed through ERB and YAML
+  def self.load_erb_config(fpath)
+    fpath = 'config/' + fpath
+    raise "Missing file at '#{fpath}'" unless File.exists?(fpath)
+
+    file_contents_erb = ERB.new(File.read(fpath)).result
+    YAML::load(file_contents_erb)
   end
 end

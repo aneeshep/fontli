@@ -1,7 +1,7 @@
 defaults: &defaults
   provider: 'AWS'
-  aws_secret_access_key: "MBezRoYXOnjTyFvywKg7mTWRdNEo5CqS16znqsSP"
-  aws_access_key_id: "AKIAJQBIDH42VBXOSRBQ"
+  aws_secret_access_key: <%= SECURE_TREE['aws_s3_secret'] %>
+  aws_access_key_id: <%= SECURE_TREE['aws_s3_key'] %>
   use_s3: false
 
 development:

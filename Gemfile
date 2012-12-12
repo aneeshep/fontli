@@ -11,7 +11,7 @@ gem 'airbrake', '3.0.9'
 gem 'redis', '2.2.2'
 gem 'resque', '1.19.0'
 gem 'apn_sender', '1.0.5', :require => 'apn'
-gem 'newrelic_rpm', '3.3.2'
+gem 'newrelic_rpm', '3.5.3.25'
 
 gem 'fog'
 
@@ -34,6 +34,9 @@ gem 'unicorn'
 # Deploy with Capistrano
 gem 'capistrano', '2.6.0'
 gem 'capistrano-ext', '1.2.1'
+
+# Web page scrapper
+gem 'hpricot', '0.8.6'
 
 # To use debugger
 gem 'ruby-debug19', :require => 'ruby-debug'
