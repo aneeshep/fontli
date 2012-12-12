@@ -51,8 +51,6 @@ namespace :deploy do
   task :symlink_shared_paths do
     run "rm #{release_path}/config/mongoid.yml"
     run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
-    run "rm #{release_path}/config/admin_creds.yml"
-    run "ln -nfs #{shared_path}/config/admin_creds.yml #{release_path}/config/admin_creds.yml"
     run "ln -nfs #{shared_path}/public/assets #{release_path}/public/assets"
     run "ln -nfs #{shared_path}/public/photos #{release_path}/public/photos"
     run "ln -nfs #{shared_path}/public/avatars #{release_path}/public/avatars"
