@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rake', '0.9.2'
-gem 'rails', '3.1.1'
+gem 'rake', '10.0.3'
+gem 'rails', '3.1.10'
 gem 'therubyracer', '0.9.9'
 gem 'mongoid', '2.3.3'
 gem 'bson_ext' #Version should be same as 'mongo' gem
