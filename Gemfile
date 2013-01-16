@@ -7,7 +7,7 @@ gem 'mongoid', '2.3.3'
 gem 'bson_ext' #Version should be same as 'mongo' gem
 gem 'fbgraph', '1.9.0'
 gem 'twitter_oauth', '0.4.3'
-gem 'airbrake', '3.0.9'
+gem 'airbrake', '3.1.6'
 gem 'redis', '2.2.2'
 gem 'resque', '1.19.0'
 gem 'apn_sender', '1.0.5', :require => 'apn'
