@@ -250,9 +250,9 @@ class ApiActionsController < ApiBaseController
     render_response(invites)
   end
 
-  def my_invites_fb
+  def my_invites_opt
     frnds = JSON.parse(@friends)
-    frnds = @current_user.invites_and_friends_fb(frnds)
+    frnds = @current_user.populate_invite_state(frnds, @platform)
     render_response(frnds)
   end
 

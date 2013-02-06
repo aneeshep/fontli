@@ -352,22 +352,28 @@ class User
     self.invites.to_a + all_usrs
   end
 
-  # for FB alone, we return only the valid list of FB friends
-  # with invite state(Friend/User/Invited) populated for them
-  def invites_and_friends_fb(fb_frnds)
-    invits = self.invites.only(:extuid).to_a.group_by(&:extuid)
-    frnds = self.friends.only(:extuid).to_a.group_by(&:extuid)
-    all_usrs = User.where(:admin => false).only(:extuid).to_a.group_by(&:extuid)
+  # get a collection of FB/Twitter friends hash and populate
+  # the invite state(Friend/User/Invited/None) for each of them
+  def populate_invite_state(frnds, platform)
+    conds = { :platform => platform, :extuid.in => frnds.collect { |f| f['extuid'] } }
+    invits = self.invites.where(conds).only(:extuid).to_a.group_by(&:extuid)
+    frn_ids = self.friend_ids
+    all_usrs = User.where(conds.merge(:admin => false)).only(:extuid).to_a.group_by(&:extuid)
 
-    # populate invite_state for all my FB friends
-    fb_frnds.each do |f|
+    # populate invite_state for the friends collection
+    frnds.each do |f|
       extid = f['extuid']
-      f['invite_state'] = 'Invited' if invits[extid]
-      f['invite_state'] = 'Friend' if frnds[extid]
-      f['invite_state'] = 'User' if all_usrs[extid]
-      f['invite_state'] ||= 'None'
+      if all_usrs[extid].nil?
+        f['invite_state'] = 'None'
+      elsif invits[extid]
+        f['invite_state'] = 'Invited'
+      elsif u=all_usrs[extid]
+        state = frn_ids.include?(u.first.id) ? 'Friend' : 'User'
+        f['invite_state'] = state
+      end
+      f['invite_state'] ||= '' # fallback
     end
-    fb_frnds
+    frnds
   end
 
   def friend_ids
