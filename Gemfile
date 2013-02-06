@@ -39,7 +39,7 @@ gem 'capistrano-ext', '1.2.1'
 gem 'hpricot', '0.8.6'
 
 # To use debugger
-gem 'ruby-debug19', :require => 'ruby-debug'
+# gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
 # Pretty printed test output

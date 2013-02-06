@@ -352,6 +352,24 @@ class User
     self.invites.to_a + all_usrs
   end
 
+  # for FB alone, we return only the valid list of FB friends
+  # with invite state(Friend/User/Invited) populated for them
+  def invites_and_friends_fb(fb_frnds)
+    invits = self.invites.only(:extuid).to_a.group_by(&:extuid)
+    frnds = self.friends.only(:extuid).to_a.group_by(&:extuid)
+    all_usrs = User.where(:admin => false).only(:extuid).to_a.group_by(&:extuid)
+
+    # populate invite_state for all my FB friends
+    fb_frnds.each do |f|
+      extid = f['extuid']
+      f['invite_state'] = 'Invited' if invits[extid]
+      f['invite_state'] = 'Friend' if frnds[extid]
+      f['invite_state'] = 'User' if all_usrs[extid]
+      f['invite_state'] ||= 'None'
+    end
+    fb_frnds
+  end
+
   def friend_ids
     @follws ||= self.follows.to_a
     @follws.collect(&:follower_id)

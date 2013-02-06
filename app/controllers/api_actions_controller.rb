@@ -250,6 +250,12 @@ class ApiActionsController < ApiBaseController
     render_response(invites)
   end
 
+  def my_invites_fb
+    frnds = JSON.parse(@friends)
+    frnds = @current_user.invites_and_friends_fb(frnds)
+    render_response(frnds)
+  end
+
   def user_friends
     usr = @user_id ? User.by_id(@user_id) : @current_user
     offst = ((@page || 1).to_i - 1) * 20
