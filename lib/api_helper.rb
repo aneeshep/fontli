@@ -137,7 +137,7 @@ module ApiHelper
                            :returns => [:email, :extuid, :platform, :invite_state, :id] },
     :my_invites_opt   => { :accepts => [:friends, :platform],
                            :returns => true,
-                           :collection => {:friends => [:full_name, :extuid] } },
+                           :collection => {:friends => [:name, :id] } },
     :unfollow_friend  => { :accepts => [:friend_id],
                            :returns => true },
     :follow_user      => { :accepts => [:user_id],

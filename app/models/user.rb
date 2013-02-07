@@ -352,17 +352,17 @@ class User
     self.invites.to_a + all_usrs
   end
 
-  # get a collection of FB/Twitter friends hash and populate
-  # the invite state(Friend/User/Invited/None) for each of them
+  # get a collection of FB/Twitter friends hash(id, name) and
+  # populate the invite state(Friend/User/Invited/None) for each of them
   def populate_invite_state(frnds, platform)
-    conds = { :platform => platform, :extuid.in => frnds.collect { |f| f['extuid'] } }
+    conds = { :platform => platform, :extuid.in => frnds.collect { |f| f['id'] } }
     invits = self.invites.where(conds).only(:extuid).to_a.group_by(&:extuid)
     frn_ids = self.friend_ids
     all_usrs = User.where(conds.merge(:admin => false)).only(:extuid).to_a.group_by(&:extuid)
 
     # populate invite_state for the friends collection
     frnds.each do |f|
-      extid = f['extuid']
+      extid = f['id']
       if all_usrs[extid].nil?
         f['invite_state'] = 'None'
       elsif invits[extid]
