@@ -358,18 +358,19 @@ class User
     conds = { :platform => platform, :extuid.in => frnds.collect { |f| f['id'] } }
     invits = self.invites.where(conds).only(:extuid).to_a.group_by(&:extuid)
     frn_ids = self.friend_ids
-    all_usrs = User.where(conds.merge(:admin => false)).only(:extuid).to_a.group_by(&:extuid)
+    all_usrs = User.where(conds.merge(:admin => false)).only(:extuid, :id).to_a.group_by(&:extuid)
 
     # populate invite_state for the friends collection
     frnds.each do |f|
       extid = f['id']
-      if all_usrs[extid].nil?
-        f['invite_state'] = 'None'
-      elsif invits[extid]
+      if invits[extid]
         f['invite_state'] = 'Invited'
+      elsif all_usrs[extid].nil?
+        f['invite_state'] = 'None'
       elsif u=all_usrs[extid]
         state = frn_ids.include?(u.first.id) ? 'Friend' : 'User'
         f['invite_state'] = state
+        f['user_id'] = u.first.id
       end
       f['invite_state'] ||= '' # fallback
     end
