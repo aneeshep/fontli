@@ -25,7 +25,7 @@ module ApiHelper
     :check_token => { :accepts => [],
                       :returns => true },
 
-    :upload_data    => { :accepts => [:data, [:crop_x, :crop_y, :crop_w, :crop_h]],
+    :upload_data    => { :accepts => [:data],
                          :returns => [:id] },
     :publish_photo  => { :accepts => [:photo_id, :caption, [:latitude, :longitude, :address, :font_help, :font_tags, :hashes]],
                          :returns => [:id, :user_id, :caption, :created_dt, :url, :permalink],

@@ -37,6 +37,7 @@ class Photo
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   DEFAULT_TITLE = 'Yet to publish'
+  # We don't need large thumbnails anymore
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
@@ -66,9 +67,9 @@ class Photo
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
 
-  before_save :crop_file
+  #before_save :crop_file # we receive only the cropped images from client.
   after_create :populate_mentions
-  after_save :save_data_to_file, :save_thumbnail,:save_data_to_aws
+  after_save :save_data_to_file, :save_thumbnail, :save_data_to_aws
   after_destroy :delete_file
 
   class << self
@@ -257,8 +258,9 @@ class Photo
     url(:thumb)
   end
 
+  # url(:original) is same as large
   def url_large
-    url(:large)
+    url
   end
 
   def url_medium
@@ -388,26 +390,31 @@ private
   end
 
   def save_data_to_file
-      return true if self.data.nil?
-      ensure_dir(FOTO_DIR)
-      ensure_dir(File.join(FOTO_DIR, self.id.to_s))
-      Rails.logger.info "Saving file: #{self.path}"
-      FileUtils.cp(self.data, self.path)
-      true
+    return true if self.data.nil?
+    ensure_dir(FOTO_DIR)
+    ensure_dir(File.join(FOTO_DIR, self.id.to_s))
+    # skip storing original locally, when aws_storage is enabled
+    # but we need to ensure_dir with self.id, for storing thumbnails
+    return true if AWS_STORAGE
+
+    Rails.logger.info "Saving file: #{self.path}"
+    FileUtils.cp(self.data, self.path)
+    true
   end
 
   def save_data_to_aws
     if AWS_STORAGE
       return true if self.data.nil?
-      #ensure_dir(FOTO_DIR)
-      #ensure_dir(File.join(FOTO_DIR, self.id.to_s))
-      Rails.logger.info "Saving file in AWS S3: #{self.path}"
-      #dddir = AWS_CONNECTIVITY.directories.create(:key => "/photos/#{self.id}/", :public => true)
-      file_data = [:original] + THUMBNAILS.keys
-      file_data.each do |filepath|
-        file_obj = File.open(self.path(filepath))
-        AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET).files.create(:key => aws_path(filepath), :body => file_obj, :public => true, :content_type => @file_obj.content_type)
+      Rails.logger.info "Saving file in AWS S3: #{self.aws_path}"
+      aws_dir = AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET)
+      aws_dir.files.create(:key => aws_path, :body => @file_obj, :public => true, :content_type => @file_obj.content_type)
+
+      # ensure thumbnails are generate before this step
+      (THUMBNAILS.keys - [:large]).each do |style|
+        fp = File.open(self.path(style))
+        aws_dir.files.create(:key => aws_path(style), :body => fp, :public => true, :content_type => @file_obj.content_type)
       end
+      delete_file # cleanup the local thumbnails
     end
     true
   end
@@ -447,10 +454,12 @@ private
   def save_thumbnail
     return true if self.data.nil?
     THUMBNAILS.each do |style, size|
+      next if style == :large # we don't need large anymore. original is same as large
+
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
-      `convert #{self.path} -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
+      `convert #{self.data} -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
     end
     true
   end
