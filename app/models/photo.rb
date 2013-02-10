@@ -37,7 +37,6 @@ class Photo
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   DEFAULT_TITLE = 'Yet to publish'
-  # We don't need large thumbnails anymore
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
@@ -233,6 +232,7 @@ class Photo
   # returns original url, if thumb/large doesn't exist
   def url(style = :original)
     if AWS_STORAGE
+      style = :large if style == :original # we don't store original in aws
       aws_url(style)
     else
       pth = self.path(style)
@@ -243,10 +243,10 @@ class Photo
   end
 
   def aws_url(style)
-    return "#{AWS_SERVER_PATH}#{id}_#{style}.#{extension}"
+    "#{AWS_SERVER_PATH}#{id}_#{style}.#{extension}"
   end
 
-  def aws_path(style= :original)
+  def aws_path(style= :large)
     fpath = AWS_PATH.dup
     fpath.sub!(/:id/, self.id.to_s)
     fpath.sub!(/:style/, style.to_s)
@@ -258,9 +258,8 @@ class Photo
     url(:thumb)
   end
 
-  # url(:original) is same as large
   def url_large
-    url
+    url(:large)
   end
 
   def url_medium
@@ -405,12 +404,12 @@ private
   def save_data_to_aws
     if AWS_STORAGE
       return true if self.data.nil?
-      Rails.logger.info "Saving file in AWS S3: #{self.aws_path}"
+      Rails.logger.info "Saving file in AWS S3: #{self.aws_path(:large)}"
       aws_dir = AWS_STORAGE_CONNECTIVITY.directories.get(AWS_BUCKET)
-      aws_dir.files.create(:key => aws_path, :body => @file_obj, :public => true, :content_type => @file_obj.content_type)
+      #aws_dir.files.create(:key => aws_path, :body => @file_obj, :public => true, :content_type => @file_obj.content_type)
 
       # ensure thumbnails are generate before this step
-      (THUMBNAILS.keys - [:large]).each do |style|
+      THUMBNAILS.keys.each do |style|
         fp = File.open(self.path(style))
         aws_dir.files.create(:key => aws_path(style), :body => fp, :public => true, :content_type => @file_obj.content_type)
       end
@@ -418,7 +417,6 @@ private
     end
     true
   end
-
 
   def delete_file
     Rails.logger.info "Deleting thumbnails.."
@@ -454,8 +452,6 @@ private
   def save_thumbnail
     return true if self.data.nil?
     THUMBNAILS.each do |style, size|
-      next if style == :large # we don't need large anymore. original is same as large
-
       Rails.logger.info "Saving #{style.to_s}.."
       frame_w, frame_h = size.split('x')
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
