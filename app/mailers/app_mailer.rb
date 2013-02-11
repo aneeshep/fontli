@@ -1,17 +1,18 @@
 class AppMailer < ActionMailer::Base
+  include Resque::Mailer # sent mails async
 
   default_url_options[:host] = APP_HOST_URL
   default from: "noreply@fontli.com"
 
   def welcome_mail(user)
     @user = user
-    mail(:to => user.email,
+    mail(:to => user['email'],
          :subject => "Welcome to Fontli")
   end
 
   def forgot_pass_mail(user)
     @user = user
-    mail(:to => user.email,
+    mail(:to => user['email'],
          :subject => "Fontli: New password")
   end
 

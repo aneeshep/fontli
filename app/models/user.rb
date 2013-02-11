@@ -599,6 +599,9 @@ private
       size = self.aspect_fit(frame_w.to_i, frame_h.to_i).join('x')
       `convert #{self.path} -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 #{self.path(style)}`
     end
+    # reset the avatar so that any save on this object
+    # will not trigger the thumbnail creation twice.
+    @avatar = nil
     true
   end
 

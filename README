@@ -35,8 +35,16 @@ Deployment:
 cap deploy
 COMPILE_ASSETS=true cap deploy
 
-Restart push notifications:
+Start push notifications:
 ---------------------------
 ./script/apn_sender --environment=development --cert-pass=1234 --verbose start
 or
 ./script/apn_sender --environment=production --cert-pass=1234 --verbose start
+
+Start Mailer Daemon:
+--------------------
+QUEUE=mailer rake environment resque:work
+
+Start Resque Web:
+-----------------
+RAILS_ENV=production resque-web -L config/initializers/resque.rb
