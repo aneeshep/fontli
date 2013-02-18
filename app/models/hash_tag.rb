@@ -17,7 +17,7 @@ class HashTag
     def search(name)
       return [] if name.blank?
       hsh_tags = self.where(:name => /^#{name}.*/i).to_a
-      resp = hsh_tags.group_by(&:name)
+      resp = hsh_tags.group_by { |ht| ht.name.downcase } # case insensitive grouping
       resp.collect do |tag_name, hsh_tags|
         fotos_cnt = self.photo_ids(hsh_tags).length
         OpenStruct.new(:name => tag_name, :photos_count => fotos_cnt)

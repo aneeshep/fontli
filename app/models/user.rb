@@ -146,7 +146,10 @@ class User
       u = self.by_uname_or_email(email_or_uname)
       return [nil, :user_not_found] if u.nil?
       (u.password = rand_s) && u.hash_password
-      (saved = u.my_save(true)) && AppMailer.forgot_pass_mail(u).deliver
+      saved = u.my_save(true)
+
+      mail_params = {'username' => u.username, 'email' => u.email, 'password' => u.password}
+      AppMailer.forgot_pass_mail(mail_params).deliver if saved
       saved
     end
 

@@ -10,9 +10,9 @@ class AppMailer < ActionMailer::Base
          :subject => "Welcome to Fontli")
   end
 
-  def forgot_pass_mail(user)
-    @user = user
-    mail(:to => user['email'],
+  def forgot_pass_mail(params)
+    @params = params
+    mail(:to => params['email'],
          :subject => "Fontli: New password")
   end
 
