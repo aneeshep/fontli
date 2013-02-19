@@ -107,7 +107,10 @@ class AdminController < ApplicationController
       conds = conds.merge(:sos_approved => false)
       params[:sort] ||= 'sos_requested_at'
       @approve_sos = true
+    else
+      params[:sort] ||= 'sos_approved_at'
     end
+
     unless params[:search].to_s.strip.blank?
       conds = conds.merge(:caption => /^#{params[:search]}.*/i)
       @fotos = Photo.where(conds).order_by(sort_column => sort_direction).to_a

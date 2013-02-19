@@ -21,6 +21,7 @@ class Photo
   field :position, :type => Integer
   field :sos_requested_at, :type => Time
   field :sos_requested_by, :type => Integer
+  field :sos_approved_at, :type => Time
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
@@ -62,11 +63,12 @@ class Photo
   default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
-  scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:created_at)
+  scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:sos_requested_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
 
   #before_save :crop_file # we receive only the cropped images from client.
+  before_save :set_sos_approved_at
   after_create :populate_mentions
   after_save :save_data_to_file, :save_thumbnail, :save_data_to_aws
   after_destroy :delete_file
@@ -193,7 +195,7 @@ class Photo
     def sos(pge = 1, lmt = 20)
       return [] if pge.to_i > 2
       offst = (pge.to_i - 1) * lmt
-      self.where(:font_help => true, :sos_approved => true).desc(:created_at).skip(offst).limit(lmt).to_a
+      self.where(:font_help => true, :sos_approved => true).desc(:sos_approved_at).skip(offst).limit(lmt).to_a
     end
 
     def check_mentions_in(val)
@@ -413,7 +415,13 @@ private
         fp = File.open(self.path(style))
         aws_dir.files.create(:key => aws_path(style), :body => fp, :public => true, :content_type => @file_obj.content_type)
       end
-      delete_file # cleanup the local thumbnails
+      # cleanup the assets on local storage
+      delete_file 
+
+      # store only the original file
+      ensure_dir(FOTO_DIR)
+      ensure_dir(File.join(FOTO_DIR, self.id.to_s))
+      FileUtils.cp(self.data, self.path)
     end
     true
   end
@@ -462,6 +470,13 @@ private
 
   def extension
     File.extname(self.data_filename).gsub(/\.+/, '')
+  end
+
+  def set_sos_approved_at
+    if self.sos_approved_changed? && self.sos_approved?
+      self.sos_approved_at = Time.now.utc
+    end
+    true
   end
 
   #changes for hashsable polymorphic associations
