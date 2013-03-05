@@ -168,9 +168,10 @@ class ApiActionsController < ApiBaseController
   end
 
   def leaderboard
-    users = User.leaders.to_a
-    users = @current_user.populate_friendship_state(users)
-    render_response(users)
+    #users = User.leaders.to_a
+    #users = @current_user.populate_friendship_state(users)
+    #render_response(users)
+    recommended_users
   end
 
   def popular_photos
