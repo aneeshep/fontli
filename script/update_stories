@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require File.expand_path('../../config/environment', __FILE__)
+require 'storify_client'
+
+stories = StorifyClient.fetch_story
+if stories.length > 1 # success
+  StorifyStory.delete_all
+
+  stories.each do |s|
+    StorifyStory.create! s
+  end
+end
+puts "done."
