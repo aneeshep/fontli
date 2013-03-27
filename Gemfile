@@ -12,7 +12,7 @@ gem 'redis', '2.2.2'
 gem 'resque', '1.23.0'
 gem 'resque_mailer', '2.2.2'
 gem 'apn_sender', '1.0.5', :require => 'apn'
-gem 'newrelic_rpm', '3.5.3.25'
+gem 'newrelic_rpm', '3.6.0.78'
 
 gem 'fog'
 
