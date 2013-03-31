@@ -1,9 +1,9 @@
 facebook:
-  app_key: 113587155421623
-  app_secret: ee9387a73db3c15a8236f77439745c9c
-  callback_url: http://staging.fontli.com/auth/facebook/callback
+  app_key: <%= SECURE_TREE['fb_app_key'] %>
+  app_secret: <%= SECURE_TREE['fb_app_secret'] %>
+  callback_url: <%= SECURE_TREE['fb_callback'] %>
 
 twitter:
-  app_key: 8VyrrgmMd3vT5nd8qulsvA
-  app_secret: 7N8vUH6Sd1ZabIP9ixn7kaiHKk5YXZseo1Ru2D5vlTo
-  callback_url: http://staging.fontli.com/auth/twitter/callback
+  app_key: <%= SECURE_TREE['twt_app_key'] %>
+  app_secret: <%= SECURE_TREE['twt_app_secret'] %>
+  callback_url: <%= SECURE_TREE['twt_callback'] %>

@@ -1,0 +1,11 @@
+<% half = @users.length / 2 %>
+<table class="flt-left">
+  <% @users.first(half).each do |u| %>
+    <%= render '/shared/account', :u => u %>
+  <% end %>
+</table>
+<table class="flt-right">
+  <% @users[(half+1)..-1].each do |u| %>
+    <%= render '/shared/account', :u => u %>
+  <% end %>
+</table>

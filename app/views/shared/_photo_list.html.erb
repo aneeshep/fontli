@@ -1,0 +1,12 @@
+<% usr = @photos.first.try(:user) if @users_map.nil? # for user profile %>
+<% @photos.each do |f| %>
+  <div rel='popitup' href='<%= show_feed_path %>' data-id=<%= f.id %>>
+    <section>
+      <%= render 'shared/photo_list_section', :f => f %>
+    </section>
+    <% u = usr || @users_map[f.user_id].first %>
+    <footer>
+      <%= render 'shared/photo_list_footer', :u => u, :f => f %>
+    </footer>
+  </div>
+<% end %>

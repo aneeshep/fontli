@@ -1,23 +1,8 @@
-<% if @status %>
-<%= render "publish_foto_form", :foto => @photo %>
-<% else %>
-<%= render "upload_foto_form", :errors => (@photo && @photo.errors.full_messages) || [] %>
-<%  end %>
-<% unless @feeds.blank?%>
-<article id="list_view">
-  <% @feeds.in_groups_of(2,false).each_with_index do |feed,ind| %>
-  <div class="two_column<%= ind > 0 ? ' secondary' : ''%>">
-    <% feed.each_with_index do |foto,index| %>
-    <%= render "feed_content", :foto => foto, :index => index %>
-    <% end %>
-    <br class="clear_both">
-  </div>
-  <% end %>
-  <br class="clear_both">
-  <div id="load_more" class="secondary">
-    <a href="#">Load More</a>
-  </div>
-</article>
-<%else%> <h3>No Photos found.</h3>
-<%end%>
-
+<section id="stream">
+  <header class="wrapper">
+    <span>Feeds</span>
+  </header>
+  <section>
+    <%= render '/shared/photo_list' %>
+  </section>
+</section>

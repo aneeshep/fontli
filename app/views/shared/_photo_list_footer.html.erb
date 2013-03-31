@@ -1,0 +1,14 @@
+<a href="<%= profile_path(:user_id => u.id) %>" class="profile-img">
+  <img src="<%= u.url_thumb %>" />
+</a>
+<ul>
+  <li class="profile-name">
+    <span><%= u.username %></span>
+  </li>
+  <li class="profile-detail">
+    <%= photo_details_li(f) %>
+  </li>
+  <li class="profile-location">
+    <span><%= f.address %></span>
+  </li>
+</ul>

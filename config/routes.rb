@@ -5,11 +5,20 @@ Fontli::Application.routes.draw do
 
   # feeds controller
   match 'feeds' => 'feeds#index', :as => :feeds
+  match 'feeds/show' => 'feeds#show', :as => :show_feed
   match 'post-feed' => 'feeds#post_feed', :as => :post_feed
   match 'publish-feed/:id' => 'feeds#publish_feed', :as => :publish_feed
   match 'socialize-feed/:id' => 'feeds#socialize_feed', :as => :socialize_feed
   match 'detail_view' => 'feeds#detail_view', :as => :detail_view
   match 'get_mentions_list' => 'feeds#get_mentions_list', :as => :get_mentions_list
+
+  # new web routes
+  match 'sos' => 'feeds#sos', :as => :sos
+  match 'recent-fonts' => 'feeds#recent_fonts', :as => :recent_fonts
+  match 'profile' => 'feeds#profile', :as => :profile
+  match 'popular' => 'feeds#popular', :as => :popular
+  match 'my-updates' => 'feeds#my_updates', :as => :my_updates
+  match 'network-updates' => 'feeds#network_updates', :as => :network_updates
 
   # fonts controller
   match 'tag_font' => 'fonts#tag_font', :as => :tag_font

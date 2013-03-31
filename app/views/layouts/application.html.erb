@@ -3,70 +3,54 @@
   <head>
     <title>Fontli</title>
     <meta  content="charset=utf-8">
-    <meta name = "viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="target-densitydpi=device-dpi">
-    <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black" />
-    <%= stylesheet_link_tag    "application", params[:controller] %>
-    <%= javascript_include_tag "application", params[:controller] %>
+    <meta name="description" content="Fontli lets designers and type-enthusiasts discover new fonts and great Typography. Using Fontli, you can capture interesting Typography from everyday life and share it with a vibrant community of type lovers." />
+    <meta name="keywords" content="typography,fontli,type love,font sharing" />
+
+    <link href="/web-assets/css/reset-grid.css" rel="stylesheet" type="text/css" />
+    <link href="/web-assets/css/style.css"  rel="stylesheet/less" type="text/css" />
+    <link href="/web-assets/css/jquery.mCustomScrollbar.css"  rel="stylesheet" type="text/css" />
+    <script src="/web-assets/js/less.js" type="text/javascript"></script>
+    <script type="text/javascript" src="//use.typekit.net/ita3rwh.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <script src="/web-assets/js/jquery-1.7.min.js" type="text/javascript"></script>
+    <script src="/web-assets/js/jquery-ui.min.js" type="text/javascript"></script>
+
+    <% slider_height = logged_in? ? 148 : 305 %>
+    <style type="text/css" media="screen">
+      body div.slider    { overflow:hidden; position:relative; width:100%; }
+      body div.slider ul { margin:0; padding:0; height:<%= slider_height %>px;}
+      body div.slider li { float:left; list-style:none; cursor:pointer; }
+      body div.slider li { text-align:center; line-height:160px; font-size:25px; }
+      .wrap ul li div{height:<%= slider_height %>px;}
+    </style>
+
     <%= yield(:head) %>
     <%= csrf_meta_tags %>
   </head>
+
   <body>
-    <div id="wrapper">
-      <div id="content" class="clear_both">
-        <div id="main_bar">
-          <%= render 'shared/header'%>
-          <%= flash_notices %>
-          <%= yield%>
+    <div id='popup_container'>&nbsp;</div>
+    <div id='ajax_loader'><img src='/web-assets/images/ajax-loader.gif' alt='Loading...' /></div>
+    <div id="masterWrapper" style="opacity:0.9">
+      <header class="main">
+        <div class="wrapper">
+          <%= render 'shared/header' %>
         </div>
-        <% if logged_in? %>
-        <div id="side_bar">
-          <div id="profile" class="clear">
-            <%= image_tag(current_user.url, :size => "33x33", :class => "float_left")%>
-            <div>
-              <%= link_to current_user.username %>
-              <br />
-              <%= link_to 'Signout', logout_path, :class=>"small_text" %>
-            </div>
-          </div>
-          <%= image_tag "banner.png", :id => "banner"%>
-          <% if params[:controller] == "feeds" and params[:action] == "index"%>
-          <%= render "shared/most_tagged"%>
-          <%= render "shared/leaderboard"%>
-          <%end%>
-          <div id="app_meta">
-            <div class="meta">
-              <p>
-                Fontli brewed by
-              </p>
-              <div id="company">
-                <%= link_to "Imaginea", {}, {:href => "http://www.imaginea.com/", :target => "_blank"}%>
-              </div>
-            </div>
-            <div class="meta">
-              <p>
-                Fontli support from
-              </p>
-              <%= link_to(image_tag("support_logo.png"), {}, {:href => "http://new.myfonts.com/", :target => "_blank"}) %>
-              <div class="meta" id="meta_detail">
-                <p class="secondary_color">
-                  More info
-                </p>
-                <a href="mailto:feedback@fontli.com">feedback@fontli.com</a>
-                <p>
-                  Copyright Pramati Technologies Pvt Ltd. All Rights Reserved.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <%end%>
-      </div>
-      <br class="clear_both">
+      </header>
+
+      <%= render 'shared/navigation' if logged_in? %>
+      <%= yield %>
+
+      <footer class="main">
+        <%= render 'shared/footer' %>
+      </footer>
     </div>
-    <script type="text/javascript" src="/assets/jquery.easing.1.3.min.js"></script>
-    <script type="text/javascript" src="/assets/slider.js"></script>
-    <script type="text/javascript" src="/assets/custom.js"></script>
+
+    <script type="text/javascript" src="/web-assets/js/lemmon-slider.js"></script>
+    <script src="/web-assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/web-assets/js/custom-ghoda.js" type="text/javascript"></script>
+    <script type="text/javascript">$(window).load(function() { <%= yield(:custom_js) %> });</script>
+    <script src="/web-assets/js/jquery.mousewheel.min.js" type="text/javascript"></script>
+    <script src="/web-assets/js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
   </body>
 </html>

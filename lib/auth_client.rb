@@ -2,7 +2,7 @@
 # using fbgraph and twitter_oauth gems resp.
 # Designed to be included to any controller.
 module AuthClient
-  SOCIAL_API_CREDS_MAP = YAML::load_file File.join(Rails.root, 'config/social_api.yml')
+  SOCIAL_API_CREDS_MAP = Fontli.load_erb_config 'social_api.yml'
 
   #FB methods
   def fb_client(reload = false)

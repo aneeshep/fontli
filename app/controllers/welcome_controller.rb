@@ -1,9 +1,12 @@
 require 'auth_client'
+require 'storify_client'
 
 class WelcomeController < ApplicationController
   include AuthClient
   skip_before_filter :login_required, :except => [:logout]
   skip_before_filter :set_current_controller, :only => [:keepalive]
+
+  layout :select_layout
 
   def keepalive
     render :text => 'Success'
@@ -12,10 +15,10 @@ class WelcomeController < ApplicationController
   def index
     if logged_in?
       redirect_to feeds_url
-    else
-      #redirect_to login_url(:default)
-      render 'index', :layout => false
+      return
     end
+    @story   = StorifyStory.random_story
+    @popular = Photo.popular
   end
 
   def splash
@@ -36,6 +39,7 @@ class WelcomeController < ApplicationController
     @user = User.new params[:user]
     return if request.get?
     if @user.save
+      @user.send :send_welcome_mail!
       session[:user_id] = @user.id.to_s # login
       redirect_to feeds_url
     end
@@ -47,7 +51,7 @@ class WelcomeController < ApplicationController
 
   def logout
     session[:user_id] = nil
-    redirect_to login_url(:default), :notice => 'Logged out.'
+    redirect_to root_url
   end
 
   def api_doc
@@ -153,7 +157,7 @@ private
         :website => usr_hsh['url']
       )
       @avatar_url = usr_hsh['profile_image_url']
-      render :signup
+      render :signup, :layout => 'old'
     else
       session[:user_id] = usr.id
       redirect_to feeds_url
@@ -172,10 +176,19 @@ private
         :website => usr_obj.link
       )
       @avatar_url = fb_client.selection.me.picture
-      render :signup
+      render :signup, :layout => 'old'
     else
       session[:user_id] = usr.id
       redirect_to feeds_url
+    end
+  end
+
+  def select_layout
+    old_layout_actions = [:login, :signup]
+    if old_layout_actions.include? params[:action].to_sym
+      'old'
+    else
+      'application'
     end
   end
 end

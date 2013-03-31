@@ -334,6 +334,10 @@ class Photo
     top_picks + top_agreed
   end
 
+  def most_agreed_font
+    self.fonts.desc(:agrees_count).first
+  end
+
   # order fonts by top; pick_status -> agrees_count -> tags_count
   def fonts_ord
     fnts = self.fonts.to_a
@@ -348,13 +352,16 @@ class Photo
     current_user.commented_photo_ids.include?(self.id)
   end
 
-  # populate last 5/2 two usernames who liked/commented on this foto.
+  # populate recent 5 liked and 2 commented usernames for a foto.
   def populate_liked_commented_users(opts = {})
     lkd_usr_ids = [] if opts[:only_comments]
     cmt_usr_ids = [] if opts[:only_likes]
-    lkd_usr_ids ||= self.likes.desc(:created_at).limit(5).only(:user_id).collect(&:user_id)
+    lks_lmt = opts[:likes_limit] || 5
+    cmts_lmt = opts[:comments_limit] || 2
+
+    lkd_usr_ids ||= self.likes.desc(:created_at).limit(lks_lmt).only(:user_id).collect(&:user_id)
     cur_usr_id = lkd_usr_ids.delete(current_user.id)
-    cmt_usr_ids ||= self.comments.desc(:created_at).limit(2).only(:user_id).collect(&:user_id)
+    cmt_usr_ids ||= self.comments.desc(:created_at).limit(cmts_lmt).only(:user_id).collect(&:user_id)
     unless (lkd_usr_ids + cmt_usr_ids).empty?
       usrs = User.where(:_id.in => (lkd_usr_ids + cmt_usr_ids)).only(:id, :username).to_a
       usrs = usrs.group_by(&:id)

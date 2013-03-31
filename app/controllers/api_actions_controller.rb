@@ -22,6 +22,7 @@ class ApiActionsController < ApiBaseController
   end
 
   def signup
+    @extuid = '' if @extuid == '(null)' # weird case
     user, error = User.new(current_api_accepts_map).api_signup
     render_response(user, !user.nil?, error)
   end

@@ -48,11 +48,39 @@ module ApplicationHelper
   end
 
   def timestamp(dattime)
-    if (Time.now - dattime) < 15.minutes
+    if (Time.now - dattime) < 5.minutes
       'Just now'
     else
-      str = distance_of_time_in_words_to_now(dattime) + ' ago'
-      str.gsub(/about /i, '')
+      str = distance_of_time_in_words_to_now(dattime)
+      # truncate almost/about or any kind of prefix
+      str.gsub(/^[a-zA-Z]*\s/, '') + ' ago'
+    end
+  end
+
+  def profile_image(usr=nil, size=:small)
+    u = usr || @user || current_user
+    src = size == :small ? u.url_thumb : u.url_large
+    style = size == :small ? 'width:50px;height:50px' : 'width:inherit;height:inherit'
+    content_tag(:img, nil, :src => src, :style => style)
+  end
+
+  def photo_details_li(foto=nil)
+    foto ||= @photo
+
+    content_tag(:span, timestamp(foto.created_at)) +
+    content_tag(:a, pluralize(foto.likes_count, 'like'), :href => "#") +
+    content_tag(:a, pluralize(foto.comments_count, 'comment'), :href => "#")
+  end
+
+  # returns {font_tag_id1 => #font1, font_tag_id2 => #font2, .. }
+  def fonts_map_for_comments(cmts)
+    fnt_tag_ids = cmts.collect(&:font_tag_ids).flatten.uniq
+    fnt_tags = FontTag.where(:_id.in => fnt_tag_ids).only(:id,:font_id).to_a
+    fnt_ids = fnt_tags.collect(&:font_id).uniq
+    fnts_by_id = Font.where(:_id.in => fnt_ids).to_a.group_by(&:id)
+
+    fnt_tags.inject({}) do |hsh, ft|
+      hsh.update(ft.id => fnts_by_id[ft.font_id].first)
     end
   end
 end

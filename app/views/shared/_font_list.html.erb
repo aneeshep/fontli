@@ -1,0 +1,20 @@
+<ul class="font-list wrapper">
+  <% @fonts.each do |f| %>
+  <li>
+    <img class="font-img-bg" src="<%= f.img_url %>">
+    <div class="div-a">
+      <a href="#" class="font-name"><%= f.display_name %></a>
+      <a href="#" class="font-owner">by MyFonts</a>
+    </div>
+    <div class="div-b">
+      <% Font.tagged_photos_for({:family_id => f.family_id}, 6).each do |p| %>
+        <img class="font-sample-img" src="<%= p.url_thumb %>">
+      <% end %>
+    </div>
+  </li>
+  <% end %>
+
+  <% if @fonts.empty? %>
+    <li><div class='div-a'>No fonts</div></li>
+  <% end %>
+</ul>

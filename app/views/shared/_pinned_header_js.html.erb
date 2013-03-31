@@ -1,0 +1,28 @@
+<% content_for :custom_js do %>
+var header = $('.pro-header-c');
+var pinnedHeader = $('.pro-header-a');
+var blackBar = $('.black-bar');
+var didScroll = false;
+
+$(window).scroll(function() {
+  didScroll = true;
+});
+
+setInterval(function() {
+  if ( didScroll ) {
+    didScroll = false;
+    var docHeight = getDocHeight();
+    var winHeight = $(window).height();
+    var winScroll = $(window).scrollTop();
+    var elemOffset = header.position().top + header.innerHeight() + 2 // 2px buffer
+
+    if ( winScroll > elemOffset ) {
+      blackBar.show();
+      pinnedHeader.slideDown();
+    } else {
+      pinnedHeader.hide();
+      blackBar.hide();
+    }
+  }
+}, 250);
+<% end %>

@@ -1,0 +1,9 @@
+<% contents = if params[:type] == 'fav_font' %>
+  <% render '/shared/font_list' %>
+<% else %>
+  <% render '/shared/photo_list' %>
+<% end %>
+$('#profile_section_container').html('<%= escape_javascript(contents) %>');
+$('.profile-cta').removeClass('selected');
+<% typ = params[:type] || 'post' %>
+$(".profile-cta.<%= typ %>").addClass('selected');

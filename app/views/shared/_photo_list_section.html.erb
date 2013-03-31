@@ -1,0 +1,19 @@
+<img src="<%= f.url_medium %>">
+<i></i>
+<ul class="mat1">
+  <% if f.font_help? %><li class="mat1-a">SOS</li><% end %>
+  <% if f.sos_approved? %><li class="mat1-b">SPOTTED</li><% end %>
+</ul>
+<span class="mat2">
+  <%= f.most_agreed_font.display_name if f.sos_approved? %>
+</span>
+<span class="mat3">
+  <%= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 45) %>
+</span>
+<a href="#" class="mat4 <%= 'selected' if @my_lks.nil? || @my_lks[f.id] %>"></a>
+<span class="mat5">
+  <%= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 40) %>
+</span>
+<span class="mat6">
+  Comment...
+</span>

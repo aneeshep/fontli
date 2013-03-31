@@ -1,0 +1,110 @@
+<% user = @photo.user %>
+<% likes_cnt, comments_cnt = @photo.likes_count, @photo.comments_count %>
+<% fnts_map = fonts_map_for_comments @recent_comments %>
+<div class="popup closed">
+  <div class="left-pop">
+    <div class="bigpic">
+      <img src="<%= @photo.url(:large) %>" style="width:480px;height:480px;"/>
+      <a href="javascript:;" class="set4"></a>
+      <a href="javascript:;" class="set5"></a>
+    </div>
+
+    <ul class="set1">
+      <% ['a', 'b', 'c', 'd'].each do |char| %>
+      <li class="set1-<%= char %>">
+        <i></i>
+        <div class="hover"></div>
+      </li>
+      <% end %>
+    </ul>
+
+    <span class="set2"> By <%= user.display_name %> </span>
+    <ul class="set3">
+      <li class="profile-name">
+        <span><%= user.display_name %></span>
+      </li>
+      <li class="profile-dialog">
+        <span><%= user.description %></span>
+      </li>
+      <li class="profile-detail">
+        <%= photo_details_li %>
+      </li>
+    </ul>
+    <% if @photo.fonts.any? %>
+    <% fnt = @photo.fonts.desc(:agrees_count).first %>
+    <div class="set3b">
+      <h2><%= fnt.display_name %></h2>
+      <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
+    </div>
+    <% end %>
+  </div>
+
+  <div class="right-pop">
+    <header>
+      <%= @photo.caption %>
+      <a href="javascript:;" class="collapse flt-left"></a>
+      <a href="javascript:;" class="cross flt-right"></a>
+      <a href="javascript:;" class="settings flt-right"></a>
+    </header>
+    <div class="content-a">
+      <a class="propic" href="<%= profile_path(:user_id => user.id) %>">
+        <img src="<%= user.url(:thumb) %>">
+      </a>
+      <ul>
+        <li class="a">
+          <a href="<%= profile_path(:user_id => user.id) %>"><span class="name"><%= user.username %></span></a>
+          <span class="time"><%= timestamp(@photo.created_at) %></span>
+        </li>
+        <li class="b">
+          <span><%= user.description %></span>
+        </li>
+        <li class="c">
+          <a href="<%= user.website %>" target='blank'><%= user.website %></a>
+        </li>
+      </ul>
+    </div>
+    <div class="aa content content-b">
+      <div class="like-box">
+        <% @recent_likes.each do |l| %>
+          <% u = @users_map[l.user_id].first %>
+          <a href="<%= profile_path(:user_id => u.id) %>" class="profile-img" style="background:url(<%= u.url_thumb %>)"></a>
+        <% end %>
+        <a href="#" class="likes">
+          <img src="/web-assets/images/heartsmall.png" />
+          <% if likes_cnt - @recent_likes.length > 0 %>
+            </br>+<%= pluralize('like', likes_cnt - @recent_likes.length) %></a>
+          <% end %>
+        </a>
+      </div>
+      <div class="comment-box clr">
+        <% if comments_cnt - @recent_comments.length > 0 %>
+          <a href="#" class="comments">View all <%= comments_cnt %> comments</a></br>
+        <% end %>
+        <% @recent_comments.each do |c| %>
+          <% u = @users_map[c.user_id].first %>
+          <div class="comment">
+            <a class="propic" href="<%= profile_path(:user_id => u.id) %>">
+              <img src="<%= u.url_thumb %>">
+            </a>
+            <ul>
+              <li class="a">
+                <span class="name"><%= u.username %></span>
+                <span class="time"><%= timestamp(c.created_at) %></span>
+              </li>
+              <li class="b">
+                <span><%= c.body %></span>
+                <% c.font_tag_ids.each do |ft_id| %>
+                  <% f = fnts_map[ft_id] %>
+                  <span><b>Tagged</b> <%= f.display_name %></span>
+                <% end %>
+              </li>
+            </ul>
+          </div> <!-- comment -->
+        <% end %>
+      </div> <!-- comment_box -->
+    </div>
+    <div class="content-c">
+      <a href="#">Your comment...</a>
+    </div>
+  </div>
+</div>

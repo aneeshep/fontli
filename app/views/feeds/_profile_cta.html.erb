@@ -1,0 +1,11 @@
+<ul>
+  <li class="profile-cta post <%= 'selected' if params[:type].nil? %>">
+    <a data-href="<%= profile_path(:user_id => @user.id) %>" remote=true>Post</a>
+  </li>
+  <li class="profile-cta like <%= 'selected' if params[:type] == 'like' %>">
+    <a data-href="<%= profile_path(:user_id => @user.id, :type => 'like') %>" remote=true>Likes</a>
+  </li>
+  <li class="profile-cta fav_font <%= 'selected' if params[:type] == 'fav_font' %>">
+    <a data-href="<%= profile_path(:user_id => @user.id, :type => 'fav_font') %>" remote=true>Favourite</a>
+  </li>
+</ul>

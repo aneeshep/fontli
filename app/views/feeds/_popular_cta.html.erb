@@ -1,0 +1,11 @@
+<ul>
+  <li class="popular-cta account <%= 'selected' if params[:type].nil? %>">
+    <a data-href="<%= popular_path() %>" remote=true>Users</a>
+  </li>
+  <li class="popular-cta post <%= 'selected' if params[:type] == 'post' %>">
+    <a data-href="<%= popular_path(:type => 'post') %>" remote=true>Posts</a>
+  </li>
+  <li class="popular-cta font <%= 'selected' if params[:type] == 'font' %>">
+    <a data-href="<%= popular_path(:type => 'font') %>" remote=true>Fonts</a>
+  </li>
+</ul>

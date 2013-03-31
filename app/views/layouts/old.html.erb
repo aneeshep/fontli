@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fontli</title>
+    <meta  content="charset=utf-8">
+    <%= stylesheet_link_tag    "application", params[:controller] %>
+    <%= javascript_include_tag "application", params[:controller] %>
+    <%= yield(:head) %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="content" class="clear_both">
+        <div id="main_bar">
+          <%= flash_notices %>
+          <%= yield %>
+        </div>
+      </div>
+      <br class="clear_both">
+    </div>
+  </body>
+</html>

@@ -481,6 +481,10 @@ class User
     @commted_foto_ids ||= self.comments.only(:photo_id).collect(&:photo_id)
   end
 
+  def comments_count
+    @comments_cnt ||= self.comments.count
+  end
+
   def notifications_count
     self.notifications.unread.count
   end
@@ -547,6 +551,10 @@ class User
       ordered_users += User.leaders.where(:_id.nin => usr_ids).limit(limit_left).to_a
     end
     ordered_users[0..19]
+  end
+
+  def display_name
+    self.full_name || self.username
   end
 
 private
