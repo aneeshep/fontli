@@ -6,11 +6,6 @@
   <% render '/shared/account_list' %>
 <% end %>
 $('#popular_section_container').html('<%= escape_javascript(contents) %>');
-<% if params[:type] #hack %>
-  $('#stream-2').attr('id', 'stream');
-<% else %>
-  $('#stream').attr('id', 'stream-2');
-<% end %>
 $('.popular-cta').removeClass('selected');
 <% typ = params[:type] || 'account' %>
 $(".popular-cta.<%= typ %>").addClass('selected');

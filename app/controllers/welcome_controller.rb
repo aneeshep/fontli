@@ -184,8 +184,10 @@ private
   end
 
   def select_layout
-    old_layout_actions = [:login, :signup]
-    if old_layout_actions.include? params[:action].to_sym
+    case params[:action].to_sym
+    when :login
+      'plain'
+    when :signup
       'old'
     else
       'application'

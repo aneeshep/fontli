@@ -81,6 +81,10 @@ footer.main{
 		}
 	}
 }
+.list-a-expanded{
+padding:20px 0px;
+overflow: auto;
+}
 .list-a-expanded table td{
   padding:10px;
   vertical-align: middle;
@@ -153,6 +157,7 @@ footer.main{
   background-color: #ECECEC;
   overflow: hidden;
 }
+
 .center-ul {
   padding-bottom: 15px;
 }
@@ -189,7 +194,7 @@ footer.main{
 		text-align:center;
 		div{
 			display: inline-block;
-			margin:20px 10px;
+			margin:0px 10px;
 			section{
 				background-color: #f9f9f9;
 				width:320px;
@@ -969,11 +974,8 @@ a.propic{
   }
 }
 .font-list{
-  border-top: 1px solid #fff;
+  
   li{
-    padding:20px;
-    border-bottom: 1px solid #cbcbcb;
-    box-shadow: 0px 1px 0 0 #fff;
     text-align: center;
     .font-name{
       font-size:18px;
@@ -1060,6 +1062,143 @@ div[rel=popitup], li[rel=popitup] { cursor:pointer; }
 #popup_container, #ajax_loader { position:absolute; top:0; left:0; text-align:center; z-index:10; display:none; background:transparent; width:100%; height:100%; }
 #ajax_loader { z-index:100; background-color:#cecece; opacity:0.9; }
 #ajax_loader img { position:absolute; top:0; bottom:0; margin:auto; }
+
+/* Signin page */
+div.signin{
+    margin: 53px 0 58px 82px;
+    width: 828px;
+    background-color: #d50000;
+    border-radius: 4px;
+    -moz-box-shadow:    3px 3px 5px 6px #000;
+    -webkit-box-shadow: 3px 3px 5px 6px #000;
+    box-shadow:         3px 3px 5px 6px #000;
+    text-shadow: 1px 1px 1px #000;
+    a,button{
+        cursor: pointer;
+    }
+    div.innershade{
+    -moz-box-shadow: inset 0 0 95px 22px #a60000;
+    -webkit-box-shadow: inset 0 0 95px 22px #a60000;
+    box-shadow: inset 0 0 95px 22px #a60000;
+    padding-bottom: 105px;
+    }
+    a.img-cross{
+        float: right;
+        padding: 10px 10px 0 0;
+    }
+    div.image-container{
+      margin:0 auto;
+      width: 180px;
+      padding:53px 0 42px 0;
+      h2.signin{
+        color: #fff;
+        font-size: 25px;
+        font-weight: normal;
+        text-align: center;
+        padding-right: 10px;
+      }
+    }
+    div.signin-panel{
+        width: 665px;
+        margin: 0 auto;
+        padding:20px 0 ;
+        overflow:hidden;
+        .networking{
+            float:left;
+            padding-left: 31px;
+            border-left:5px solid #ce0000;
+            a.social{
+            width:255px;
+            height: 50px;
+            background-color: #ff0000;
+            border-radius: 2px;
+            border-top: 2px solid #aa0000;
+            border-left: 2px solid #aa0000;
+            border-right: 2px solid #aa0000;
+            border-bottom: 4px solid #d43f3f;
+            margin-bottom: 23px;
+            display:block;
+            img{
+                border-right: 2px solid #D50000;
+                margin-top: 11px;
+                padding-left: 13px;
+                padding-right: 13px;
+                cursor: pointer;
+            }
+            img.twitter{
+                border-right: 2px solid #D50000;
+                margin-top: 11px;
+                padding-left: 6px;
+                padding-right: 13px;
+            }
+            span{
+                color: #FFFFFF;
+                margin-left: 5px;
+                margin-top: 15px;
+                position: absolute;
+            }
+        }
+        div.membership{
+            float: left;
+            margin:14px 10px 0 0;
+            span{
+              color: #FFFFFF;
+              font-size: 18px;
+              width: 106px;
+            }
+            p{
+                color: #FFFFFF;
+                font-size: 14px;
+                margin-top: 7px;
+            }
+        }
+        div.icons{
+             float:left;
+             margin-top: 14px;
+        }
+
+      }
+      .credential-panel{
+        width:242px;
+        padding-right:70px;
+        border-right:1px solid #be0300;
+        float:left;
+        a{
+            color:#fff;
+            font-size: 14px;
+            margin:-5px -17px 20px 0;
+            float: right;
+        }
+        button{
+            background-color:#ff0000;
+            height: 50px;
+            color: #fff;
+            font-size: 18px;
+            width: 273px;
+            border-bottom: 4px solid #d43f3f;
+            border-top: 2px solid #aa0000;
+            border-left: 2px solid #aa0000;
+            border-right: 2px solid #aa0000;
+        }
+        input.credential{
+          background-color:#a60000;
+          border-bottom: 2px solid #ff0000;
+          border-top: 2px solid #910000;
+          border-left: 2px solid #910000;
+          border-right: 2px solid #910000;
+          padding: 14px;
+          margin-bottom:13px ;
+          margin-top: 10px;
+          width:241px;
+          height:14px;
+          color: #fff;
+          font-size: 18px;
+          box-shadow: 0 -1px 13px 4px #930000 inset;
+        }
+      }
+   }
+}
+
 
 /*---------------------------------------------------
     LESS Elements 0.7
