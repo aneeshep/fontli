@@ -5,11 +5,15 @@
   <li class="<%= 'active' if params[:action] == 'users' %>">
     <a href="/admin/users">Users</a>
   </li>
-  <li class="<%= 'active' if params[:action] == 'photos' %>">
-    <a href="/admin/photos">Photos</a>
+  <li class="dropdown <%= 'active' if params[:action] == 'photos' %>" id="menu1">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">Photos <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a href='/admin/photos'>All</a></li>
+      <li><a href='/admin/photos?home=true'>For homepage</a></li>
+    </ul>
   </li>
-  <li class="dropdown <%= 'active' if params[:action] =~ /flagged/ %>" id="menu1">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">Flagged Content <b class="caret"></b></a>
+  <li class="dropdown <%= 'active' if params[:action] =~ /flagged/ %>" id="menu2">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu2">Flagged Content <b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li><a href='/admin/flagged_users'>Users</a></li>
       <li><a href='/admin/flagged_photos'>Photos</a></li>

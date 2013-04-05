@@ -20,7 +20,7 @@
       <th><%=sortable("flags_count","Flags")%></th>
       <th>Username</th>
       <th><%=sortable("created_at","Created")%></th>
-      <%= '<th>Actions</th>'.html_safe if cta_req? %>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -39,15 +39,23 @@
       <td><%= f.flags_count %></td>
       <td><%= f.user.username rescue 'User Flagged' %></td>
       <td><%= f.created_dt %></td>
-      <% if @approve_sos %>
-        <td><%= link_to('Approve SoS', '/admin/approve_sos?photo_id='+f.id.to_s, :remote => true) %></td>
-      <% end %>
-      <% if @unflag_photo %>
-        <td><%= link_to('Unflag', '/admin/unflag_photo?id='+f.id.to_s, :remote => true) %></td>
-      <% end %>
-      <% if @delete_photo %>
-        <td><%= link_to('Delete', '/admin/delete_photo?id='+f.id.to_s, :remote => true, :confirm => 'Are you sure?') %></td>
-      <% end %>
+      <td>
+        <% if @approve_sos %>
+          <%= link_to('Approve SoS', '/admin/approve_sos?photo_id='+f.id.to_s, :remote => true) %>
+        <% end %>
+        <% if @unflag_photo %>
+          <%= link_to('Unflag', '/admin/unflag_photo?id='+f.id.to_s, :remote => true) %>
+        <% end %>
+        <% if @delete_photo %>
+          <%= link_to('Delete', '/admin/delete_photo?id='+f.id.to_s, :remote => true, :confirm => 'Are you sure?') %>
+        <% end %>
+        <% if @select_photo && !f.show_in_homepage? %>
+          <%= link_to('Select', '/admin/select_photo?id='+f.id.to_s, :remote => true, :title => 'Select for homepage') %>
+        <% end %>
+        <% if @unselect_photo && f.show_in_homepage? %>
+          <%= link_to('Unselect', '/admin/select_photo?id='+f.id.to_s+'&select=false', :remote => true) %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   </tbody>

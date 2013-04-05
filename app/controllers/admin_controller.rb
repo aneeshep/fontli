@@ -8,6 +8,7 @@ class AdminController < ApplicationController
   def index
     @users_count = User.count
     @fotos_count = Photo.count
+    @homepage_fotos_count = Photo.for_homepage.count
     @stat = Stat.current
   end
 
@@ -59,11 +60,18 @@ class AdminController < ApplicationController
       @fotos = Photo.where(:caption => /^#{params[:search]}.*/i).order_by(sort_column => sort_direction).to_a
     elsif !params[:user_id].to_s.strip.blank?
       @fotos = Photo.where(:user_id => params[:user_id]).order_by(sort_column => sort_direction).to_a
+      @select_photo = true
+      params[:search] = 'Not Implemented'
+    elsif params[:home].to_s == 'true'
+      @title = 'Homepage Photos'
+      @fotos = Photo.for_homepage.to_a
+      @unselect_photo = true
       params[:search] = 'Not Implemented'
     else
       @fotos = Photo.all.order_by(sort_column => sort_direction).skip(offst).limit(@lmt)
       @fotos_cnt = Photo.count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
+      @select_photo = true
     end
     @delete_photo = true
   end
@@ -129,6 +137,11 @@ class AdminController < ApplicationController
 
   def delete_photo
     @res = Photo.unscoped.where(:_id => params[:id]).first.destroy rescue false
+  end
+
+  def select_photo
+    unselect = params[:select].to_s == 'false'
+    @res = Photo[params[:id]].update_attribute(:show_in_homepage, !unselect) rescue false
   end
 
   def update_stat

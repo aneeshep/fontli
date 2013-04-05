@@ -31,8 +31,9 @@
 <h3>Current Statistics</h3>
 
 <ul>
-  <li>Total Users: <%= @users_count %></li>
-  <li>Total Photos: <%= @fotos_count %></li>
+  <li>Total Users: <%= link_to @users_count, '/admin/users' %></li>
+  <li>Total Photos: <%= link_to @fotos_count, '/admin/photos' %></li>
+  <li>Homepage Photos: <%= link_to @homepage_fotos_count, '/admin/photos?home=true' %></li>
   <li>
     App Version: <span id="app_version"><%= @stat.app_version %></span>&nbsp;&nbsp;
     <%= link_to 'Change', 'javascript:void(0);', :id => 'update_stat_link' %>

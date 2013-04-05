@@ -1,0 +1,6 @@
+<% if @res %>
+  <% resp_text = params[:select].to_s == 'false' ? 'Unselected' : 'Selected' %>
+  $('#foto_<%= params[:id] %> td:last strong').text('<%= resp_text %>');
+<% else %>
+  alert('Request Failed!');
+<% end %>
