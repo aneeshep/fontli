@@ -148,7 +148,7 @@ class FeedsController < ApplicationController
     foto ||= @photo
     @recent_likes = foto.likes.desc(:created_at).limit(5).to_a
     lkd_usr_ids = @recent_likes.collect(&:user_id)
-    @recent_comments = foto.comments.desc(:created_at).limit(5).to_a
+    @recent_comments = foto.comments.desc(:created_at).to_a
     cmt_usr_ids = @recent_comments.collect(&:user_id)
     
     unless (lkd_usr_ids + cmt_usr_ids).empty?

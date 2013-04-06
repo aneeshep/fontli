@@ -73,11 +73,11 @@
         <% end %>
         <a href="javascript:;" class="likes">
           <!-- <img src="/web-assets/images/heartsmall.png" /> -->
-          <% if likes_cnt > 0 %>
-            </br><%= pluralize(likes_cnt, 'like') %></a>
+          <% if likes_cnt > 0 && likes_cnt < 6 %>
+            <br/><%= pluralize(likes_cnt, 'like') %>
           <% end %>
           <% if likes_cnt - @recent_likes.length > 0 %>
-            </br>+<%= pluralize(likes_cnt - @recent_likes.length, 'like') %></a>
+            <br/>+<%= pluralize(likes_cnt - @recent_likes.length, 'like') %>
           <% end %>
         </a>
       </div>
