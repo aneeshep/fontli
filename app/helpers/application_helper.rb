@@ -83,4 +83,9 @@ module ApplicationHelper
       hsh.update(ft.id => fnts_by_id[ft.font_id].first)
     end
   end
+
+  # HACK: to NOT show any links for V1 launch
+  def profile_path(opts)
+    'javascript:;'
+  end
 end

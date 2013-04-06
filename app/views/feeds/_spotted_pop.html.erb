@@ -1,0 +1,20 @@
+<header>
+  Spotted
+  <a href="javascript:;" class="collapse flt-left"></a>
+  <a href="javascript:;" class="cross flt-right"></a>
+  <!-- <a href="javascript:;" class="settings flt-right"></a> -->
+</header>
+<% @fonts.each do |f| %>
+  <div class="pop-text">
+    <img src="<%= f.img_url %>" width="270" height="64" alt="">
+    <span><%= f.display_name %></span><span><%= pluralize(f.agrees_count, 'Agree') %></span>
+  </div>
+<% end %>
+<div class="bottom-nav">
+  <span>
+    <a href="javascript:;" class='view-typetalk'>
+      <img src="/web-assets/images/arrow-left-nav.png" width="19" height="17" alt="arrow" title="arrow" />
+      Typetalk
+    </a>
+  </span>
+</div>

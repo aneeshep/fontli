@@ -14,6 +14,7 @@ Fontli::Application.routes.draw do
 
   # new web routes
   match 'sos' => 'feeds#sos', :as => :sos
+  match 'feed/:id/fonts' => 'feeds#fonts', :as => :feed_fonts
   match 'recent-fonts' => 'feeds#recent_fonts', :as => :recent_fonts
   match 'profile' => 'feeds#profile', :as => :profile
   match 'popular' => 'feeds#popular', :as => :popular

@@ -10,7 +10,7 @@
     </div>
 
     <ul class="set1">
-      <% ['a', 'b', 'c', 'd'].each do |char| %>
+      <% ([] || ['a', 'b', 'c', 'd']).each do |char| %>
       <li class="set1-<%= char %>">
         <i></i>
         <div class="hover"></div>
@@ -24,27 +24,29 @@
         <span><%= user.display_name %></span>
       </li>
       <li class="profile-dialog">
-        <span><%= user.description %></span>
+        <span><%= @photo.caption %></span>
       </li>
       <li class="profile-detail">
         <%= photo_details_li %>
       </li>
     </ul>
-    <% if @photo.fonts.any? %>
+    <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
       <h2><%= fnt.display_name %></h2>
+      <span class='pop-disclaimer'><%= fnt.display_name %></span>
       <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
     </div>
     <% end %>
   </div>
 
-  <div class="right-pop">
+  <div class="right-pop spotted" style="display:none;"></div>
+  <div class="right-pop typetalk">
     <header>
-      <%= @photo.caption %>
+      Typetalk
       <a href="javascript:;" class="collapse flt-left"></a>
       <a href="javascript:;" class="cross flt-right"></a>
-      <a href="javascript:;" class="settings flt-right"></a>
+      <!--  <a href="javascript:;" class="settings flt-right"></a> -->
     </header>
     <div class="content-a">
       <a class="propic" href="<%= profile_path(:user_id => user.id) %>">
@@ -56,10 +58,10 @@
           <span class="time"><%= timestamp(@photo.created_at) %></span>
         </li>
         <li class="b">
-          <span><%= user.description %></span>
+          <span><%= @photo.caption %></span>
         </li>
         <li class="c">
-          <a href="<%= user.website %>" target='blank'><%= user.website %></a>
+          <a href="#"></a>
         </li>
       </ul>
     </div>
@@ -69,16 +71,19 @@
           <% u = @users_map[l.user_id].first %>
           <a href="<%= profile_path(:user_id => u.id) %>" class="profile-img" style="background:url(<%= u.url_thumb %>)"></a>
         <% end %>
-        <a href="#" class="likes">
-          <img src="/web-assets/images/heartsmall.png" />
+        <a href="javascript:;" class="likes">
+          <!-- <img src="/web-assets/images/heartsmall.png" /> -->
+          <% if likes_cnt > 0 %>
+            </br><%= pluralize(likes_cnt, 'like') %></a>
+          <% end %>
           <% if likes_cnt - @recent_likes.length > 0 %>
-            </br>+<%= pluralize('like', likes_cnt - @recent_likes.length) %></a>
+            </br>+<%= pluralize(likes_cnt - @recent_likes.length, 'like') %></a>
           <% end %>
         </a>
       </div>
       <div class="comment-box clr">
-        <% if comments_cnt - @recent_comments.length > 0 %>
-          <a href="#" class="comments">View all <%= comments_cnt %> comments</a></br>
+        <% if comments_cnt > 0 %>
+          <a href="javascript:;" class="comments"><%= pluralize(comments_cnt, 'comment') %></a></br>
         <% end %>
         <% @recent_comments.each do |c| %>
           <% u = @users_map[c.user_id].first %>
@@ -95,7 +100,7 @@
                 <span><%= c.body %></span>
                 <% c.font_tag_ids.each do |ft_id| %>
                   <% f = fnts_map[ft_id] %>
-                  <span><b>Tagged</b> <%= f.display_name %></span>
+                  <span>Tagged <%= f.display_name %></span>
                 <% end %>
               </li>
             </ul>
@@ -103,8 +108,17 @@
         <% end %>
       </div> <!-- comment_box -->
     </div>
-    <div class="content-c">
-      <a href="#">Your comment...</a>
+   <!-- <div class="content-c">
+      <a href="javascript:;">Your comment...</a>
+    </div> -->
+    <div class="bottom-nav">
+      <% if @photo.fonts_count > 0 %>
+      <span>
+        <a href="javascript:;" class='view-spotted' data-url='<%= feed_fonts_path(:id => @photo.id) %>'>
+          View Spotted
+          <img src="/web-assets/images/arrow-right-nav.png" width="19" height="17" alt="arrow" title="arrow" /></a>
+      </span>
+      <% end %>
     </div>
   </div>
 </div>

@@ -1,3 +1,18 @@
+<% content_for :pre_content do %>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=113587155421623";
+      fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <div id='qr_pop' style='background:none repeat scroll 0 0 rgba(0, 0, 0, 0.8);position:absolute;z-index:10;display:none;width:100%;height:100%'>
+    <%= render 'shared/qr_popup' %>
+  </div>
+<% end %>
+
 <section id="secondaryHeader">
 <div class="wrapper">
   <blockquote>
@@ -9,9 +24,15 @@
     </p>
   </blockquote>
   <aside>
-    <button id="join_fontli" href="<%= signup_path(:default) %>">
-      <span>Join <%= User.count %> nerds...</span>
+    <% if false %><button id="join_fontli" href="<%= signup_path(:default) %>"><% end %>
+    <button style='cursor:default;'>
+      <span><%= User.count %>+ nerds...</span>
     </button>
+    <div class="share" style='margin-top:10px;'>
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.fontli.com" data-text="@fontli, Fontli- discover and share pure type love!" style='margin-bottom:-3px;'>Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      <div class="fb-like" data-href="http://www.fontli.com/" data-send="false" data-layout="button_count" data-show-faces="false" style="margin-top:-2px;"></div>
+    </div>
   </aside>
 </div>
 </section>
@@ -22,8 +43,7 @@
     <ul>
       <% @popular.each do |p| %>
       <li data-id='<%= p.id %>' href='<%= show_feed_path %>' rel='popitup'>
-        <div>
-          <img src="<%= p.url(:medium) %>" />
+        <div style='background: url(<%= p.url(:medium) %>) no-repeat; width:305px;height:305px;'>
         </div>
       </li>
       <% end %>

@@ -18,7 +18,8 @@ class WelcomeController < ApplicationController
       return
     end
     @story   = StorifyStory.random_story
-    @popular = Photo.popular
+    #@popular = Photo.popular
+    @popular = Photo.for_homepage.only(:id,:data_filename).to_a
   end
 
   def splash

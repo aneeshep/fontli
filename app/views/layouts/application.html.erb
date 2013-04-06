@@ -22,6 +22,7 @@
       body div.slider li { float:left; list-style:none; cursor:pointer; }
       body div.slider li { text-align:center; line-height:160px; font-size:25px; }
       .wrap ul li div{height:<%= slider_height %>px;}
+      .twitter-share-button { margin-bottom: -3px; }
     </style>
 
     <%= yield(:head) %>
@@ -31,6 +32,8 @@
   <body>
     <div id='popup_container'>&nbsp;</div>
     <div id='ajax_loader'><img src='/web-assets/images/ajax-loader.gif' alt='Loading...' /></div>
+    <%= yield(:pre_content) %>
+
     <div id="masterWrapper" style="opacity:0.9">
       <header class="main">
         <div class="wrapper">

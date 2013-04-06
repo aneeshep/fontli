@@ -1,5 +1,5 @@
 class FeedsController < ApplicationController
-  skip_before_filter :login_required, :only => [:show]
+  skip_before_filter :login_required, :only => [:show, :fonts]
 
   def index
     @photos = Photo.feeds_for(current_user, (params[:page] || 1)).to_a
@@ -15,6 +15,11 @@ class FeedsController < ApplicationController
   def sos
     @photos = Photo.sos(params[:page] || 1).to_a
     preload_photos_my_likes_comments
+  end
+
+  def fonts
+    @fonts = Photo[params[:id]].fonts.to_a
+    render :partial => 'spotted_pop', :layout => false
   end
 
   def recent_fonts
