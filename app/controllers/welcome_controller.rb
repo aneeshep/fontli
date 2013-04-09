@@ -22,6 +22,10 @@ class WelcomeController < ApplicationController
     @popular = Photo.for_homepage.only(:id,:data_filename).to_a
   end
 
+  def index_old
+    render :action => 'index_old', :layout => false
+  end
+
   def splash
     if request.post?
       regis = Registration.new(:email => params[:email])
@@ -52,7 +56,7 @@ class WelcomeController < ApplicationController
 
   def logout
     session[:user_id] = nil
-    redirect_to root_url
+    redirect_to test_url
   end
 
   def api_doc
