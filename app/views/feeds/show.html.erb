@@ -5,8 +5,8 @@
   <div class="left-pop">
     <div class="bigpic">
       <img src="<%= @photo.url(:large) %>" style="width:480px;height:480px;"/>
-      <a href="javascript:;" class="set4"></a>
-      <a href="javascript:;" class="set5"></a>
+      <a href="javascript:;" data-href='<%= show_feed_path %>' class="set4"></a>
+      <a href="javascript:;" data-href='<%= show_feed_path %>' class="set5"></a>
     </div>
 
     <ul class="set1">
@@ -33,7 +33,7 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <h2><%= fnt.display_name %></h2>
+      <img src='<%= fnt.img_url %>' />
       <span class='pop-disclaimer'><%= fnt.display_name %></span>
       <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
     </div>
@@ -65,7 +65,7 @@
         </li>
       </ul>
     </div>
-    <div class="aa content content-b">
+    <div class="aa-typetalk content content-b">
       <div class="like-box">
         <% @recent_likes.each do |l| %>
           <% u = @users_map[l.user_id].first %>

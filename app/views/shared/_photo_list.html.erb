@@ -1,3 +1,7 @@
+<% content_for :custom_js do %>
+  photoIds = <%= @photos.collect(&:id).to_json.html_safe %>;
+<% end %>
+
 <% usr = @photos.first.try(:user) if @users_map.nil? # for user profile %>
 <% @photos.each do |f| %>
   <div rel='popitup' href='<%= show_feed_path %>' data-id=<%= f.id %>>

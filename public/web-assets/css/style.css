@@ -49,7 +49,7 @@ span 	{color: #fff;padding: 15px 31px;display: block;border-bottom: solid 3px #D
     }
 
 footer.main{
-    overflow: hidden;clear:both;padding:50px 0;
+    overflow: hidden;clear:both;padding:0 0 35px;
 ul{
 li{display:inline;float:left;font-size:14px; color: @white;text-decoration: underline;text-transform: uppercase;margin-right: 20px;cursor: pointer;}
     }
@@ -350,18 +350,21 @@ div.qrcode{
     margin: 0 auto;
 }
 
-.controls-left{
-    float: left;
-    position: relative;
-    top: -180px;
-a{display: inline-block;opacity:0.3; line-height:25px; padding:3px; color: #333;background-color:#ccc;border-radius:20px;width:25px;height: 25px;font-weight: bold;text-decoration: none;}
-a:hover{opacity: 0.9}
-    }
 
 .controls{
     text-align: center;position: relative;top:-36px;
-a{display: inline-block;opacity:0.3; line-height:25px; padding:3px; color: #333;background-color:#ccc;border-radius:20px;width:25px;height: 25px;font-weight: bold;text-decoration: none;}
-a:hover{opacity: 0.9}
+    a:hover{opacity: 0.7}
+a.prev-page{
+   float: left;
+    position: relative;
+    top: -147px;
+}
+
+a.next-page{
+   float: right;
+    position: relative;
+    top: -147px;
+}
     }
 
 .tertiary{
@@ -567,7 +570,7 @@ div{
     text-shadow: 0px 1px #666;
 }
 .set3{
-    margin:20px 10px 10px 0px;
+    margin:20px 0 10px 0px;
 
 li{
     text-align: left;
@@ -587,6 +590,7 @@ li.profile-dialog{
     color: @darkgrey;
 }
 li.profile-detail{
+  width: 475px;
 span, a{
     font-size:14px;
     color: @lightgrey;
@@ -610,13 +614,13 @@ a{
     left:  10px;
     top: 212px;
     background: url('/web-assets/images/arrow-left.png') no-repeat;
-    box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.2);
+    /*box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 .set5{
-    left: 450px;
+    left: 453px;
     top: 212px;
     background: url('/web-assets/images/arrow-right.png') no-repeat;
-    box-shadow: -2px 1px 1px 2px rgba(0, 0, 0, 0.2);
+    /*box-shadow: -2px 1px 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 .bigpic:hover .set4,.bigpic:hover .set5{
 .opacity(@opacity: 1);
@@ -724,7 +728,7 @@ a{
     padding:10px 0px;
     overflow: hidden;
     border-bottom: 1px solid #d3d3d3;
-    height:358px;
+    height:425px;
 .like-box{
 a.profile-img{
     padding:24px;
@@ -792,6 +796,11 @@ a{
     }
     }
     }
+
+.aa-typetalk{
+    height:354px;
+    }
+
 .content-c{
     padding:10px 0px;
 a{
@@ -842,12 +851,12 @@ span{
 .transition(@duration:1s,@ease:ease);
     }
 .set3b{
-.opacity(@opacity: 0);
-.transition(@duration:1s,@ease:ease);
+display:none;
     }
 .set3{
+word-wrap:break-word;
+width:475px;
 .opacity(@opacity: 1);
-.transition(@duration:1s,@ease:ease);
     }
 .right-pop{
     margin-left:-404px;
@@ -869,8 +878,9 @@ overflow: hidden;
 .transition(@duration:1s,@ease:ease);
     }
 .set3{
+ width:480px;
 .opacity(@opacity: 0);
-.transition(@duration:1s,@ease:ease);
+
     }
 .right-pop{
     margin-left:0;
@@ -1409,6 +1419,21 @@ div.pop-text{
 }
 }
 
+#slideshow { height:257px; width:175px; }
+#slideshow div {
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:8;
+    opacity:0.0;
+    height: 257px;
+    width:175px;
+    background-color: #FFF;
+}
+#slideshow div.active { z-index:10; opacity:1.0; }
+#slideshow div.last-active { z-index:9; }
+#slideshow div img { height: 257px; display: block; border: 0; width:175px;}
+#popup_container { background-color:rgba(225, 225, 225, 0.9); }
 
 
 /*---------------------------------------------------

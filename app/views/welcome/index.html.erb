@@ -12,6 +12,9 @@
     <%= render 'shared/qr_popup' %>
   </div>
 <% end %>
+<% content_for :custom_js do %>
+  photoIds = <%= @popular.collect(&:id).to_json.html_safe %>;
+<% end %>
 
 <section id="secondaryHeader">
 <div class="wrapper">
@@ -26,7 +29,7 @@
   <aside>
     <% if false %><button id="join_fontli" href="<%= signup_path(:default) %>"><% end %>
     <button style='cursor:default;'>
-      <span><%= User.count %>+ nerds...</span>
+      <span>+<%= User.count %> nerds...</span>
     </button>
     <div class="share" style='margin-top:10px;'>
       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.fontli.com" data-text="@fontli, Fontli- discover and share pure type love!" style='margin-bottom:-3px;'>Tweet</a>

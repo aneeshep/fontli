@@ -67,9 +67,19 @@ module ApplicationHelper
   def photo_details_li(foto=nil)
     foto ||= @photo
 
-    content_tag(:span, timestamp(foto.created_at)) +
-    content_tag(:a, pluralize(foto.likes_count, 'like'), :href => "#") +
-    content_tag(:a, pluralize(foto.comments_count, 'comment'), :href => "#")
+    lks = cmts = fnts = ''
+    ts = content_tag(:span, timestamp(foto.created_at))
+
+    if foto.likes_count > 0
+      lks = content_tag(:a, pluralize(foto.likes_count, 'like'), :href => "javascript:;", :class => 'likes_cnt')
+    end
+    if foto.comments_count > 0
+      cmts = content_tag(:a, pluralize(foto.comments_count, 'comment'), :href => "javascript:;", :class => 'comments_cnt')
+    end
+    if foto.fonts_count > 0
+      fnts = content_tag(:a, pluralize(foto.fonts_count, 'font'), :href => "javascript:;", :class => 'fonts_cnt', 'data-url' => feed_fonts_path(:id => foto.id))
+    end
+    ts + lks + cmts + fnts
   end
 
   # returns {font_tag_id1 => #font1, font_tag_id2 => #font2, .. }

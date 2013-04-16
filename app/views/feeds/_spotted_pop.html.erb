@@ -4,12 +4,16 @@
   <a href="javascript:;" class="cross flt-right"></a>
   <!-- <a href="javascript:;" class="settings flt-right"></a> -->
 </header>
-<% @fonts.each do |f| %>
-  <div class="pop-text">
-    <img src="<%= f.img_url %>" width="270" height="64" alt="">
-    <span><%= f.display_name %></span><span><%= pluralize(f.agrees_count, 'Agree') %></span>
+<div class="aa-spotted content content-b">
+  <div class="comment-box clr">
+  <% @fonts.each do |f| %>
+    <div class="pop-text">
+      <img src="<%= f.img_url %>" width="270" height="64" alt="">
+      <span><%= f.display_name %></span><span><%= pluralize(f.agrees_count, 'Agree') %></span>
+    </div>
+  <% end %>
   </div>
-<% end %>
+</div>
 <div class="bottom-nav">
   <span>
     <a href="javascript:;" class='view-typetalk'>
