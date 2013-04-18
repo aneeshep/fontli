@@ -18,13 +18,12 @@
       <% end %>
     </ul>
 
-    <span class="set2"> By <%= user.display_name %> </span>
     <ul class="set3">
       <li class="profile-name">
         <span><%= user.display_name %></span>
       </li>
       <li class="profile-dialog">
-        <span><%= @photo.caption %></span>
+        <span><%= truncate(@photo.caption, :length => 100) %></span>
       </li>
       <li class="profile-detail">
         <%= photo_details_li %>
@@ -33,7 +32,7 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <img src='<%= fnt.img_url %>' />
+      <img src='<%= fnt.img_url %>' width="350px" /><br/>
       <span class='pop-disclaimer'><%= fnt.display_name %></span>
       <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
     </div>

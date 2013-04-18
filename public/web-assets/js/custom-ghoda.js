@@ -41,10 +41,12 @@ $(document).ready(function() {
 	});
   $('.popup .cross').live('click', function() {
     $('#popup_container').html('').hide();
+    $("body").css("overflow", "visible");
   });
   $(document).keyup(function(e) {
     if (e.keyCode == 27) { //ESC key
       $('#popup_container').html('').hide();
+      $("body").css("overflow", "visible");
       $('#qr_pop').hide();
     }
   });
@@ -66,7 +68,9 @@ $(document).ready(function() {
       data: {id:id},
       success: function(data, textStatus) {
         hideAjaxLoader();
+        $("body").css("overflow", "hidden");
         $('#popup_container').html(data);
+        setTypetalkHeight();
         enableScrollBars('.aa-typetalk');
         setupPopupNavLinks(id);
       },
@@ -89,6 +93,7 @@ $(document).ready(function() {
         hideAjaxLoader();
         var openPop = $('.popup').hasClass('open');
         $('#popup_container').html(data);
+        setTypetalkHeight();
         if(openPop) $('.popup').toggleClass('open closed');
         setupPopupNavLinks(id);
         enableScrollBars('.aa-typetalk');
@@ -142,10 +147,12 @@ $(document).ready(function() {
     var offset = $(window).scrollTop();
     $('#qr_pop .img-qrcode').hide(); // hide both codes
     $('#qr_pop .img-qrcode.'+klass).show(); //show relavant
+    $("body").css("overflow", "hidden");
     $('#qr_pop').css('top', offset + 'px').show();
   });
   $('#qr_pop a.close-icon').click(function() {
     $('#qr_pop').hide();
+    $("body").css("overflow", "visible");
   });
   //interval = setInterval(function() {
   //  $('#slider1').trigger('nextSlide');
@@ -217,4 +224,10 @@ function slideSwitch() {
     .animate({opacity: 1.0}, 1000, function() {
       $active.removeClass('active last-active');
     });
+}
+// use this to position the view spotted/view typetalk link at the bottom of the popup.
+function setTypetalkHeight() {
+  var totalHeight = 465; // 40px padding
+  captionHeight = $('.right-pop .content-a').height();
+  $('.right-pop .content-b').css('height', (totalHeight - captionHeight) + 'px');
 }

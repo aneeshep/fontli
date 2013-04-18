@@ -29,10 +29,10 @@
   <aside>
     <% if false %><button id="join_fontli" href="<%= signup_path(:default) %>"><% end %>
     <button style='cursor:default;'>
-      <span>+<%= User.count %> nerds...</span>
+      <span>+<%= User.count %> type nerds</span>
     </button>
     <div class="share" style='margin-top:10px;'>
-      <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.fontli.com" data-text="@fontli, Fontli- discover and share pure type love!" style='margin-bottom:-3px;'>Tweet</a>
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.fontli.com" data-text="@fontli, Fontli- discover and share pure type love!">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
       <div class="fb-like" data-href="http://www.fontli.com/" data-send="false" data-layout="button_count" data-show-faces="false" style="margin-top:-2px;"></div>
     </div>
@@ -49,6 +49,7 @@
         <div style='background: url(<%= p.url(:medium) %>) no-repeat; width:305px;height:305px;'>
         </div>
       </li>
+      <img src="<%= p.url(:large) %>" style="display:none;" /> <!-- preload -->
       <% end %>
     </ul>
   </div>

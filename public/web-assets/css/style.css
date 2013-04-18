@@ -3,7 +3,7 @@
 @lightgrey: #999999;
 @darkgrey: #333;
 
-body		{font-family: "ff-dax-web-pro-condensed",Arial Narrow, Arial, Helvetica, sans-serif;background:#292929}
+body		{font-family: "Arial Narrow", Arial, Helvetica, sans-serif;background:#292929}
 a			{color:#FF0000}
 
 header.main		{color:@grey}
@@ -329,21 +329,28 @@ span{
 
 
 .mobpic{position: absolute;left: -235px;top:8px;z-index: 99;}
-.phone-top{position: absolute;top:66px;left: 12px;}
-.qrcode{position: absolute;right: -222px;top: 30px;}
+.phone-top{position: absolute;top:77px;left: 19px;}
+.qrcode{position: absolute;right: -222px;top: 30px;height:124px;width:162px}
 div.qrcode{
+    div.app-download{
+    height:57px;
+    }
+
     div.app-store{
-    margin-top:10px;
+    margin-top:0px;
+    height:56px;
 }
     .app-store img:hover{
-        border-bottom: 1px solid #ccc;
-        border-right: 1px solid #ccc;
+       /* border-bottom: 1px solid #666;
+           border-right: 1px solid #666;*/
+        box-shadow: 0px 0px 5px #888;
     }
 }
 
 .app-download img:hover{
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+   /* border-bottom: 1px solid #666;
+    border-right: 1px solid #666;*/
+    box-shadow: 0px 0px 5px #888;
 }
 
 .center{
@@ -353,18 +360,20 @@ div.qrcode{
 
 .controls{
     text-align: center;position: relative;top:-36px;
-    a:hover{opacity: 0.7}
 a.prev-page{
    float: left;
     position: relative;
     top: -147px;
+    opacity: 0.7;
 }
 
 a.next-page{
    float: right;
     position: relative;
     top: -147px;
+    opacity:0.7;
 }
+a.next-page:hover, a.prev-page:hover { opacity: 1.0; }
     }
 
 .tertiary{
@@ -582,15 +591,15 @@ span{
     font-size:18px;
     font-weight: bold;
     display: inline-block;
-    cursor: pointer;
 }
     }
 li.profile-dialog{
     font-size: 16px;
     color: @darkgrey;
+    overflow:hidden;
+    height:30px;
 }
 li.profile-detail{
-  width: 475px;
 span, a{
     font-size:14px;
     color: @lightgrey;
@@ -662,7 +671,7 @@ header{
     color: @darkgrey;
     font-size: 22px;
     text-align: center;
-    padding:10px 0px;
+    padding:12px 0px;
 a{
     display: inline-block;
     cursor: pointer;
@@ -727,8 +736,8 @@ a{
 .content-b{
     padding:10px 0px;
     overflow: hidden;
-    border-bottom: 1px solid #d3d3d3;
-    height:425px;
+    /*border-bottom: 1px solid #d3d3d3;*/
+    height:485px;
 .like-box{
 a.profile-img{
     padding:24px;
@@ -823,7 +832,7 @@ a.propic{
 
 
 .set3b{
-    bottom: 30px;
+    bottom: 20px;
     margin: 0 auto;
     position: absolute;
     text-align: center;
@@ -841,7 +850,6 @@ span{
 
 .popup.closed{
     overflow:hidden;
-    cursor: pointer;
 .left-pop{
     background-color: #fff;
     padding:10px;
@@ -1106,7 +1114,7 @@ button{
 }
 
 /* Custom styles */
-.footer a{ color: inherit; }
+.footer a{ color: inherit; font-size:12px; }
 .hidden { display: none; }
 .fixed-top { position: fixed; top: 0; width: 100%; background-color: rgba(1, 1, 1, 0.8); z-index: 10; }
 div[rel=popitup], li[rel=popitup] { cursor:pointer; }
@@ -1357,10 +1365,13 @@ p{
             margin: 10px 0;
         }
             span{
-            font-size:12px;
+            font-size:14px;
             color: #fff;
             display: block;
             margin-bottom: 10px;
+        }
+        a img:hover{
+        box-shadow:0 0 3px #666;
         }
         }
         }
@@ -1383,7 +1394,7 @@ div.bottom-nav{
  span a{
     display: block;
     margin: 0 auto;
-    width: 110px;
+    width: 120px;
     color: #999;
     font-size: 14px;
 }
@@ -1409,8 +1420,8 @@ div.pop-text{
 }
     span{
     font-size: 12px;
-    font-weight: bold;
     margin-top: 40px;
+    margin-right: 5px;
 
     span{
     font-size:10px;
@@ -1419,21 +1430,22 @@ div.pop-text{
 }
 }
 
-#slideshow { height:257px; width:175px; }
+#slideshow { height:270px; width:180px; }
 #slideshow div {
     position:absolute;
     top:0px;
     left:0px;
     z-index:8;
     opacity:0.0;
-    height: 257px;
-    width:175px;
+    height: 270px;
+    width:180px;
     background-color: #FFF;
 }
 #slideshow div.active { z-index:10; opacity:1.0; }
 #slideshow div.last-active { z-index:9; }
-#slideshow div img { height: 257px; display: block; border: 0; width:175px;}
+#slideshow div img { height: 270px; display: block; border: 0; width:180px;}
 #popup_container { background-color:rgba(225, 225, 225, 0.9); }
+.twitter-share-button { margin-bottom:-3px; margin-left:3px; width:130px; }
 
 
 /*---------------------------------------------------
