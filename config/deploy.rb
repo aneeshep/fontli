@@ -9,7 +9,7 @@ set :application, "typestry"
 set :deploy_to, "/data/www/#{application}"
 set :rake, "rake"
 set :migrate_target, :latest
-set :default_stage, "staging"
+set :default_stage, "production"
 set :stages, %w(production staging)
 
 
