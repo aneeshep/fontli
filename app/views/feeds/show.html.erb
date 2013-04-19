@@ -16,6 +16,9 @@
         <div class="hover"></div>
       </li>
       <% end %>
+      <li class='set1-cross'>
+        <a href='javascript:;' class='cross'></a>
+      </li>
     </ul>
 
     <ul class="set3">
@@ -32,7 +35,7 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <img src='<%= fnt.img_url %>' width="350px" /><br/>
+      <img src='<%= fnt.img_url %>' width="300px" /><br/>
       <span class='pop-disclaimer'><%= fnt.display_name %></span>
       <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
     </div>
@@ -98,8 +101,8 @@
               <li class="b">
                 <span><%= c.body %></span>
                 <% c.font_tag_ids.each do |ft_id| %>
-                  <% f = fnts_map[ft_id] %>
-                  <span>Tagged <%= f.display_name %></span>
+                  <% f = fnts_map[ft_id.to_s] %>
+                  <span>Spotted <%= f.display_name %></span>
                 <% end %>
               </li>
             </ul>
@@ -110,14 +113,14 @@
    <!-- <div class="content-c">
       <a href="javascript:;">Your comment...</a>
     </div> -->
+    <% if @photo.fonts_count > 0 %>
     <div class="bottom-nav">
-      <% if @photo.fonts_count > 0 %>
       <span>
         <a href="javascript:;" class='view-spotted' data-url='<%= feed_fonts_path(:id => @photo.id) %>'>
-          View Spotted
+          View Spottings
           <img src="/web-assets/images/arrow-right-nav.png" width="19" height="17" alt="arrow" title="arrow" /></a>
       </span>
-      <% end %>
     </div>
+    <% end %>
   </div>
 </div>

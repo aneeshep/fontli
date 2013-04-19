@@ -90,12 +90,16 @@ module ApplicationHelper
     fnts_by_id = Font.where(:_id.in => fnt_ids).to_a.group_by(&:id)
 
     fnt_tags.inject({}) do |hsh, ft|
-      hsh.update(ft.id => fnts_by_id[ft.font_id].first)
+      hsh.update(ft.id.to_s => fnts_by_id[ft.font_id].first)
     end
   end
 
   # HACK: to NOT show any links for V1 launch
   def profile_path(opts)
     'javascript:;'
+  end
+
+  def user_countdown_count
+    Rails.env.production? ? User.count : 14457
   end
 end

@@ -3,7 +3,7 @@
 @lightgrey: #999999;
 @darkgrey: #333;
 
-body		{font-family: "Arial Narrow", Arial, Helvetica, sans-serif;background:#292929}
+body		{font-family: "PT Sans", Arial, Helvetica, sans-serif;background:#292929}
 a			{color:#FF0000}
 
 header.main		{color:@grey}
@@ -42,14 +42,18 @@ p		{width: 383px;display: inline-block;vertical-align: text-bottom;font-size: 13
     }
 cite				{font-weight:bold;color:#000}
 a.storify-link { float:right; font-size:10px; color:#000; }
-aside 				{float:right}
+aside 				{float:right; width: 255px; }
 button 			{
-span 	{color: #fff;padding: 15px 31px;display: block;border-bottom: solid 3px #D43F3F;text-shadow:#570000 0 -1px}
+  float: right;
+span 	{color: #fff;padding: 15px;display: block;border-bottom: solid 3px #D43F3F;text-shadow:#570000 0 -1px}
+strong { background-color:rgba(255,255,255,0.5);padding:5px 4px;font-weight:bold;border-radius:2px;}
     }
+.share { float: right; margin-top: 10px; margin-right: 3px; }
+.twitter-share-button { margin-bottom:-3px; }
     }
 
 footer.main{
-    overflow: hidden;clear:both;padding:0 0 35px;
+    overflow: hidden;clear:both;padding:50px 0 35px 0;
 ul{
 li{display:inline;float:left;font-size:14px; color: @white;text-decoration: underline;text-transform: uppercase;margin-right: 20px;cursor: pointer;}
     }
@@ -179,7 +183,7 @@ h2{
     font-size: 30px;
 }
 #banner.big li div{
-    box-shadow: 0 28px 28px -18px #000 inset, 0 -28px 28px -18px #000 inset;
+    box-shadow: 0 28px 28px -18px rgba(0,0,0,0.7) inset, 0 -28px 28px -18px rgba(0,0,0,0.7) inset;
 }
 #stream{
     background-color: #ececec;
@@ -359,18 +363,20 @@ div.qrcode{
 
 
 .controls{
-    text-align: center;position: relative;top:-36px;
+    text-align: center;position: relative;top:-210px;
 a.prev-page{
    float: left;
     position: relative;
-    top: -147px;
+    top: 0;
+    left: 10px;
     opacity: 0.7;
 }
 
 a.next-page{
    float: right;
     position: relative;
-    top: -147px;
+    top: 0;
+    right: 10px;
     opacity:0.7;
 }
 a.next-page:hover, a.prev-page:hover { opacity: 1.0; }
@@ -450,7 +456,7 @@ li.mat1-b{
     text-shadow: 0 1px #000000;
     font-size:18px;
 }
-.mat3{
+.mat3{ 
     position: absolute;
     color: #fff;
     text-shadow: 0 1px #000000;
@@ -495,7 +501,7 @@ li.mat1-b{
 .set1 {
     position: absolute;
     overflow: hidden;
-    left: 328px;
+    left: 445px;
     cursor: pointer;
     top:10px;
 li{
@@ -560,6 +566,17 @@ div{
     background: url('/web-assets/images/loc1big.png') no-repeat;
 }
     }
+li.set1-cross{
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  a {
+    width: 45px;
+    height: 45px;
+    background: url('/web-assets/images/close-white.png') no-repeat;
+    display:block;
+  }
+}
 li:hover{
 i{
     display: none;
@@ -596,8 +613,6 @@ span{
 li.profile-dialog{
     font-size: 16px;
     color: @darkgrey;
-    overflow:hidden;
-    height:30px;
 }
 li.profile-detail{
 span, a{
@@ -750,6 +765,7 @@ a.likes{
     font-size: 14px;
     color: @lightgrey;
     text-decoration: underline;
+    cursor: default;
 img{
     margin: 6px 0px 4px 16px;
 }
@@ -761,6 +777,7 @@ a.comments{
     font-size: 14px;
     color: @lightgrey;
     text-decoration: underline;
+    cursor: default;
 }
 a.profile-img{
     padding:24px;
@@ -843,7 +860,7 @@ h2{
 }
 span{
     font-size:14px;
-    color: @darkgrey;
+    color: @lightgrey;
 }
     }
 
@@ -854,6 +871,7 @@ span{
     background-color: #fff;
     padding:10px;
 }
+.set1 li.set1-cross { display:inline; }
 .set2{
 .opacity(@opacity: 0);
 .transition(@duration:1s,@ease:ease);
@@ -875,6 +893,7 @@ width:475px;
     cursor: normal;
 .transition-dimension(@dimension:width, @duration:0.5s);
 overflow: hidden;
+.set1 li.set1-cross { display:none; }
 .set2{
     display: block;
 .opacity(@opacity: 1);
@@ -1118,8 +1137,8 @@ button{
 .hidden { display: none; }
 .fixed-top { position: fixed; top: 0; width: 100%; background-color: rgba(1, 1, 1, 0.8); z-index: 10; }
 div[rel=popitup], li[rel=popitup] { cursor:pointer; }
-#popup_container, #ajax_loader { position:absolute; top:0; left:0; text-align:center; z-index:10; display:none; background:transparent; width:100%; height:100%; }
-#ajax_loader { z-index:100; background-color:#cecece; opacity:0.9; }
+#popup_container, #ajax_loader { position:absolute; top:0; left:0; text-align:center; z-index:10; display:none; width:100%; height:100%; }
+#ajax_loader { z-index:100; background-color:#000; opacity:0.9; }
 #ajax_loader img { position:absolute; top:0; bottom:0; margin:auto; }
 
 /* Signin page */
@@ -1394,9 +1413,14 @@ div.bottom-nav{
  span a{
     display: block;
     margin: 0 auto;
-    width: 120px;
+    width: 135px;
     color: #999;
     font-size: 14px;
+
+}
+	img{
+	position:relative;
+	top:3px;
 }
     }
 div.bottom-nav span a:hover{
@@ -1409,10 +1433,8 @@ div.set3b span.pop-disclaimer{
 div.pop-text{
     margin: 0 auto;
     text-align: center;
-    width: 234px;
+    width: 300px;
     margin-bottom:10px;
-
-
 
     h1{
     font-size:24px;
@@ -1422,30 +1444,28 @@ div.pop-text{
     font-size: 12px;
     margin-top: 40px;
     margin-right: 5px;
-
-    span{
-    font-size:10px;
-    color: #666;
 }
+    span.agrees{
+    color: @lightgrey;
 }
 }
 
-#slideshow { height:270px; width:180px; }
+#slideshow { height:271px; width:180px; }
 #slideshow div {
     position:absolute;
     top:0px;
     left:0px;
     z-index:8;
     opacity:0.0;
-    height: 270px;
+    height: 271px;
     width:180px;
     background-color: #FFF;
 }
 #slideshow div.active { z-index:10; opacity:1.0; }
 #slideshow div.last-active { z-index:9; }
-#slideshow div img { height: 270px; display: block; border: 0; width:180px;}
-#popup_container { background-color:rgba(225, 225, 225, 0.9); }
-.twitter-share-button { margin-bottom:-3px; margin-left:3px; width:130px; }
+#slideshow div img { height: 271px; display: block; border: 0; width:180px;}
+#popup_container { background-color:rgba(0, 0, 0, 0.8); }
+.wrap { overflow:hidden; }
 
 
 /*---------------------------------------------------
