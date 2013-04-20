@@ -29,12 +29,15 @@
   <aside>
     <% if false %><button id="join_fontli" href="<%= signup_path(:default) %>"><% end %>
     <button style='cursor:default;'>
+      <% if false # countdown not required for now %>
       <span data-count='<%= user_countdown_count %>' class='user-countdown'>
         <% user_countdown_count.to_s.length.times do |i| %>
           <strong class='<%= i %>'><%= 0 %></strong>
         <% end %>
-        type nerds
+        Typaholics
       </span>
+      <% end %>
+      <span><%= User.count %> Typaholics</span>
     </button>
     <div class="share">
       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.fontli.com" data-text="@fontli, Fontli- discover and share pure type love!">Tweet</a>

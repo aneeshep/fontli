@@ -1140,6 +1140,9 @@ div[rel=popitup], li[rel=popitup] { cursor:pointer; }
 #popup_container, #ajax_loader { position:absolute; top:0; left:0; text-align:center; z-index:10; display:none; width:100%; height:100%; }
 #ajax_loader { z-index:100; background-color:#000; opacity:0.9; }
 #ajax_loader img { position:absolute; top:0; bottom:0; margin:auto; }
+#popup_loader { position:absolute; top:0; left:0; text-align:center; z-index:100; display:none; width:100%; opacity:0.7; }
+.popup .left-pop { width:480px; }
+.popup .left-pop img.loader { margin-top:250px; }
 
 /* Signin page */
 div.signin{
