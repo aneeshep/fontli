@@ -54,10 +54,14 @@
         <div style='background: url(<%= p.url(:medium) %>) no-repeat; width:305px;height:305px;'>
         </div>
       </li>
-      <img src="<%= p.url(:large) %>" style="display:none;" /> <!-- preload -->
       <% end %>
     </ul>
   </div>
   <%= render 'shared/controls' %>
 </div>
 </section>
+
+<!-- preload images for popup -->
+<% @popular.each do |p| %>
+  <img src="<%= p.url(:large) %>" style="display:none;" />
+<% end %>
