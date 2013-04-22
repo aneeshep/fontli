@@ -62,13 +62,14 @@ $(document).ready(function() {
     var id  = $(this).attr('data-id');
     showAjaxLoader(true);
     if(interval) clearInterval(interval);
+    clearTimeout(timeout);
     spottedContentLoaded = false;
     $.ajax({
       url: url,
       data: {id:id},
       success: function(data, textStatus) {
         hideAjaxLoader(true);
-        $("body").css("overflow", "hidden");
+        //$("body").css("overflow", "hidden");
         $('#popup_container').html(data);
         setTypetalkHeight();
         enableScrollBars('.aa-typetalk');
@@ -84,6 +85,8 @@ $(document).ready(function() {
   $('a.set4, a.set5').live('click', function() {
     var url = $(this).attr('data-href');
     var id = $(this).attr('data-id');
+    var elem = $(this);
+    elem.hide(); // avoid further clicks
     // bring the popup to closed state, if opened
     if($('.popup').hasClass('open')) {
       $('.popup').toggleClass('open closed');
@@ -99,15 +102,16 @@ $(document).ready(function() {
         var rightPop1 = $(data).first().find('.right-pop.typetalk').html();
         var rightPop2 = $(data).first().find('.right-pop.spotted').html();
         $('#popup_container .right-pop').hide();
-        $('#popup_container .left-pop').fadeOut(400, function() {
+        $('#popup_container .left-pop').fadeOut(0, function() {
           hideAjaxLoader(true);
           $('#popup_container .left-pop').html(leftPop);
           $('#popup_container .right-pop.typetalk').html(rightPop1);
           $('#popup_container .right-pop.spotted').html(rightPop2);
-        }).fadeIn(800, function() {
+        }).fadeIn(400, function() {
           $('#popup_container .right-pop.typetalk').show();
           setTypetalkHeight();
           setupPopupNavLinks(id);
+          elem.show();
           enableScrollBars('.aa-typetalk');
         });
       },
@@ -160,30 +164,39 @@ $(document).ready(function() {
     var offset = $(window).scrollTop();
     $('#qr_pop .img-qrcode').hide(); // hide both codes
     $('#qr_pop .img-qrcode.'+klass).show(); //show relavant
-    $("body").css("overflow", "hidden");
+    //$("body").css("overflow", "hidden");
     $('#qr_pop').css('top', offset + 'px').show();
   });
   $('#qr_pop a.close-icon').click(function() {
     $('#qr_pop').hide();
     $("body").css("overflow", "inherit");
   });
-  setTimeout(function() {
-    $('#slider1').trigger('prevPage');
-  }, 3000);
-  interval = null;
-  setInterval(function() {
-    if('#slideshow') slideSwitch();
-  }, 4000);
-  $('.controls a').click(function() {
-    clearInterval(interval);
-  });
+});
+
+// window load events
+$(window).load(function() {
+  $('body').css('overflow', 'inherit');
+  $('#ajax_loader').hide();
+  userCountdownTimer = 0;
   $('.user-countdown strong').each(function() {
     var countArray = $.map($('.user-countdown').attr('data-count').split(''), Number);
     var elem = $(this);
     var digit = countArray[parseInt(elem.attr('class'))];
-    for(var i=1; i <= digit; i++) { updateCounter(i, elem) }
+    for(var i=1; i <= digit; i++) { updateCounter(i, digit, elem) }
+  });
+  timeout = setTimeout(function() {
+    $('.controls .next-page').trigger('click');
+  }, userCountdownTimer + 2000);
+  interval = null;
+  setInterval(function() {
+    if('#slideshow') slideSwitch();
+  }, userCountdownTimer + 3000);
+  $('.controls a').click(function() {
+    clearTimeout(timeout);
+    clearInterval(interval);
   });
 });
+
 
 function showAjaxLoader(popup) {
   var offset = $(window).scrollTop();
@@ -255,12 +268,18 @@ function setTypetalkHeight() {
   captionHeight = $('.right-pop .content-a').height();
   $('.right-pop .content-b').css('height', (totalHeight - captionHeight) + 'px');
 }
-function updateCounter(val,elem) {
-  var slot = '<strong style="color: rgb(255, 255, 255); font-weight: bold; opacity: 0; position: relative; left: -23px; top: -32px;">1</strong>'
+function updateCounter(val,digit,elem) {
+  var klass = elem.attr('class');
+  var slot = $('<strong></strong>');
+  slot.html(val);
+  slot.css({opacity:0,position:'relative',left:'0px','top':'-10px'});
+  slot.attr('class', klass + 'a');
+
+  userCountdownTimer += 150;
   setTimeout(function() {
-    //$(slot).animate({opacity:1, top:0}, 300);
-    elem.animate({'color':'#999', 'font-weight':'normal'}, 200);
-    elem.html(val);
-    elem.animate({'color':'#fff', 'font-weight':'bold'}, 200);
-  }, 700 * val);
+    elem.after(slot);
+    $('.'+klass).fadeOut(0);
+    slot.animate({opacity:1, top:0}, 50);
+    slot.attr('class', klass);
+  }, userCountdownTimer);
 }

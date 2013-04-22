@@ -35,7 +35,7 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <img src='<%= fnt.img_url %>' width="300px" /><br/>
+      <img src='<%= fnt.img_url %>' width="300px" height="64" /><br/>
       <span class='pop-disclaimer'><%= fnt.display_name %></span>
       <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
     </div>
