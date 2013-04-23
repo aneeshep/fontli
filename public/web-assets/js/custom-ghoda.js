@@ -165,7 +165,7 @@ $(document).ready(function() {
     $('#qr_pop .img-qrcode').hide(); // hide both codes
     $('#qr_pop .img-qrcode.'+klass).show(); //show relavant
     //$("body").css("overflow", "hidden");
-    $('#qr_pop').css('top', offset + 'px').show();
+    $('#qr_pop').show();
   });
   $('#qr_pop a.close-icon').click(function() {
     $('#qr_pop').hide();
@@ -202,9 +202,9 @@ function showAjaxLoader(popup) {
   var offset = $(window).scrollTop();
   if(popup) {
     $('#popup_container').html($('#popup_loader').html());
-    $('#popup_container').css('top', offset + 'px').show(); }
+    $('#popup_container').show(); }
   else {
-    $('#ajax_loader').css('top', offset + 'px').show();
+    $('#ajax_loader').show();
   }
 }
 function hideAjaxLoader(popup) {
