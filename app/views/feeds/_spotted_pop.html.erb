@@ -8,7 +8,7 @@
   <div class="comment-box clr">
   <% @fonts.each do |f| %>
     <div class="pop-text">
-      <img src="<%= f.img_url %>" width="300" height="64" alt="">
+      <img src="<%= f.img_url %>" width="300" alt="">
       <span><%= f.display_name %></span>
       <span class='agrees'><%= pluralize(f.agrees_count, 'Agree') %></span>
     </div>

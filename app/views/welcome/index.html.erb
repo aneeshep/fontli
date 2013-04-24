@@ -39,7 +39,7 @@
         Typaholics
       </span>
       <% end %>
-      <span><%= User.count %> Typaholics</span>
+      <span>+<%= User.count %> Typaholics</span>
     </button>
     <div class="share">
       <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.fontli.com" data-text="@fontli, Fontli- discover and share pure type love!">Tweet</a>
@@ -56,7 +56,9 @@
     <ul>
       <% @popular.each do |p| %>
       <li data-id='<%= p.id %>' href='<%= show_feed_path %>' rel='popitup'>
-        <div style='background: url(<%= p.url(:medium) %>) no-repeat; width:305px;height:305px;'>
+        <div style='background: none no-repeat; width:305px;height:305px;'>
+          <div class="img-shadow"></div>
+          <img xsrc="<%= p.url(:medium) %>"  width="305" height="305" />
         </div>
       </li>
       <% end %>
@@ -68,5 +70,5 @@
 
 <!-- preload images for popup -->
 <% @popular.each do |p| %>
-  <img src="<%= p.url(:large) %>" style="display:none;" />
+  <img xsrc="<%= p.url(:large) %>" style="display:none;" />
 <% end %>

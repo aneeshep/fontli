@@ -10,18 +10,16 @@
     <link href="/web-assets/css/style.css"  rel="stylesheet/less" type="text/css" />
     <link href="/web-assets/css/jquery.mCustomScrollbar.css"  rel="stylesheet" type="text/css" />
     <script src="/web-assets/js/less.js" type="text/javascript"></script>
-    <script type="text/javascript" src="//use.typekit.net/ita3rwh.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script src="/web-assets/js/jquery-1.7.min.js" type="text/javascript"></script>
     <script src="/web-assets/js/jquery-ui.min.js" type="text/javascript"></script>
 
     <% slider_height = logged_in? ? 148 : 305 %>
     <style type="text/css" media="screen">
       body div.slider    { overflow:hidden; position:relative; width:100%; }
-      body div.slider ul { margin:0; padding:0; height:<%= slider_height %>px;}
-      body div.slider li { float:left; list-style:none; cursor:pointer; }
-      body div.slider li { text-align:center; line-height:160px; font-size:25px; }
+      body div.slider ul { margin:0; padding:0; height:<%= slider_height %>px; background-color:#000; }
+      body div.slider li { position:relative; float:left; list-style:none; cursor:pointer; text-align:center; line-height:160px; font-size:25px; }
       .wrap ul li div{height:<%= slider_height %>px;}
+      .wrap ul li div.img-shadow { height:305px; width:306px; position:absolute; pointer-events:none; }
       .twitter-share-button { margin-bottom: -3px; }
     </style>
 
@@ -50,7 +48,6 @@
     </div>
 
     <script type="text/javascript" src="/web-assets/js/lemmon-slider.js"></script>
-    <script src="/web-assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
     <script src="/web-assets/js/custom-ghoda.js" type="text/javascript"></script>
     <script type="text/javascript">$(document).ready(function() { <%= yield(:custom_js) %> });</script>
     <script src="/web-assets/js/jquery.mousewheel.min.js" type="text/javascript"></script>
