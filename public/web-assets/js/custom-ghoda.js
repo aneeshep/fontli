@@ -6,11 +6,13 @@ $(document).ready(function() {
 	});
   $('.popup .cross').live('click', function() {
     $('#popup_container').html('').hide();
+    $('#popup_loader').hide(); // just in case
     $("body").css("overflow", "inherit");
   });
   $(document).keyup(function(e) {
     if (e.keyCode == 27) { //ESC key
       $('#popup_container').html('').hide();
+      $('#popup_loader').hide(); // just in case
       $("body").css("overflow", "inherit");
       $('#qr_pop').hide();
     }
@@ -144,8 +146,12 @@ $(window).load(function() {
   $('#ajax_loader').hide();
   // load images async
   $('img[xsrc]').each(function() {
-    var src = $(this).attr("xsrc");
-    $(this).removeAttr('xsrc').attr('src', src);
+    var elem = $(this);
+    var src = elem.attr("xsrc");
+    elem.removeAttr('xsrc').attr('src', src).load(function() {
+      if(elem.get(0).complete && elem.get(0).className != 'hidden-img')
+        elem.show(); // its already visible
+    });
   });
   userCountdownTimer = 0;
   $('.user-countdown strong').each(function() {
@@ -156,11 +162,11 @@ $(window).load(function() {
   });
   timeout = setTimeout(function() {
     $('.controls .next-page').trigger('click');
-  }, userCountdownTimer + 2000);
+  }, userCountdownTimer + 7000);
   interval = null;
   setInterval(function() {
     if('#slideshow') slideSwitch();
-  }, userCountdownTimer + 3000);
+  }, userCountdownTimer + 8000);
   $('.controls a').click(function() {
     clearTimeout(timeout);
     clearInterval(interval);

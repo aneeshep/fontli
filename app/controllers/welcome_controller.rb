@@ -20,10 +20,13 @@ class WelcomeController < ApplicationController
     @story   = StorifyStory.random_story
     #@popular = Photo.popular
     @popular = Photo.for_homepage.only(:id,:data_filename).to_a
+    @skip_mobile_css = true
   end
 
-  def index_old
-    render :action => 'index_old', :layout => false
+  def index_new
+    index
+    @skip_mobile_css = false
+    render :action => 'index'
   end
 
   def splash

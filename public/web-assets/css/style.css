@@ -27,13 +27,10 @@ header.main{
     }
 
 header.main .secondary {font-size: 25px;font-weight: bold;width: 512px;line-height: 30px;padding: 30px 0 50px;margin-left: 225px;position: relative;}
-#secondaryHeader button 	{background:#FF0404;border:solid 1px #AC2425;
-    -webkit-border-radius: 5px;-moz-border-radius: x;border-radius: x;padding:0;font-size:18px;
-    border-radius:6px;cursor:pointer;
-}
+
 #secondaryHeader{
     margin: 0px auto;
-    padding: 30px 0px;
+    padding: 25px 0px;
     background-color: #fff;
     overflow: hidden;
 blockquote{
@@ -43,9 +40,10 @@ p		{width: 383px;display: inline-block;vertical-align: text-bottom;font-size: 13
 cite				{font-weight:bold;color:#000}
 a.storify-link { float:right; font-size:10px; color:#000; }
 aside 				{float:right; width: 255px; }
-button 			{
-  float: right;
-span 	{color: #fff;padding: 15px 15px 15px 18px;display: block;border-bottom: solid 3px #D43F3F;text-shadow:#570000 0 -1px}
+button 			{float: right;background:url(../images/banner.png) no-repeat;width:166px;height:77px;text-align:center;
+                   cursor:pointer;border:none;padding:0;
+span:first-child 	{color: #4D4D4D;display: block;font-size: 30px;text-shadow: #4d4d4d 0 -1px;letter-spacing: 5px;margin-bottom:8px;}
+span:last-child{ color: #4D4D4D;display:inline-block;font-size: 13px;font-weight:bold;margin-top:-2px;}
 strong { background-color:rgba(255,255,255,0.3);padding:5px 4px;font-weight:bold;border-radius:2px; border-top:2px solid #D43F3F; margin-left:-3px;}
     }
 .share { float: right; margin-top: 10px; margin-right: 3px; }
@@ -1476,7 +1474,6 @@ div.pop-text{
 #slideshow div img { height: 271px; display: block; border: 0; width:180px;}
 #popup_container { background-color:rgba(0, 0, 0, 0.8); }
 .wrap { overflow:hidden; }
-
 
 /*---------------------------------------------------
     LESS Elements 0.7

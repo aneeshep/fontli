@@ -28,8 +28,8 @@ Fontli::Application.routes.draw do
   match "get_sub_font_details" => "fonts#get_sub_font_details", :as => :get_sub_font_details
 
   # welcome controller
-  root :to => 'welcome#index_old'
-  match 'test-version' => 'welcome#index', :as => :test
+  root :to => 'welcome#index'
+  match 'test-version' => 'welcome#index_new', :as => :test
 
   match 'keepalive' => 'welcome#keepalive', :as => :keepalive
   match 'signup/:platform' => 'welcome#signup', :as => :signup
