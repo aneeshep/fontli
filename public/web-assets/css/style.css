@@ -46,8 +46,7 @@ span:first-child 	{color: #4D4D4D;display: block;font-size: 30px;text-shadow: #4
 span:last-child{ color: #4D4D4D;display:inline-block;font-size: 13px;font-weight:bold;margin-top:-2px;}
 strong { background-color:rgba(255,255,255,0.3);padding:5px 4px;font-weight:bold;border-radius:2px; border-top:2px solid #D43F3F; margin-left:-3px;}
     }
-.share { float: right; margin-top: 10px; margin-right: 3px; }
-.twitter-share-button { margin-bottom:-3px; }
+.share { float: right; margin-top: 5px; margin-right: 3px; }
     }
 
 footer.main{
