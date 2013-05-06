@@ -1473,6 +1473,7 @@ div.pop-text{
 #slideshow div img { height: 271px; display: block; border: 0; width:180px;}
 #popup_container { background-color:rgba(0, 0, 0, 0.8); }
 .wrap { overflow:hidden; }
+.twitter-share-button { width:88px !important; }
 
 /*---------------------------------------------------
     LESS Elements 0.7
