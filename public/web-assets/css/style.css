@@ -40,7 +40,7 @@ p		{width: 383px;display: inline-block;vertical-align: text-bottom;font-size: 13
 cite				{font-weight:bold;color:#000}
 a.storify-link { float:right; font-size:10px; color:#000; }
 aside 				{float:right; width: 255px; }
-button 			{float: right;background:url(../images/banner.png) no-repeat;width:166px;height:77px;text-align:center;
+button 			{float: right;background:url(../images/banner.png) no-repeat;width:181px;height:77px;text-align:center;
                    cursor:pointer;border:none;padding:0;
 span:first-child 	{color: #4D4D4D;display: block;font-size: 30px;text-shadow: #4d4d4d 0 -1px;letter-spacing: 5px;margin-bottom:8px;}
 span:last-child{ color: #4D4D4D;display:inline-block;font-size: 13px;font-weight:bold;margin-top:-2px;}
@@ -1473,7 +1473,7 @@ div.pop-text{
 #slideshow div img { height: 271px; display: block; border: 0; width:180px;}
 #popup_container { background-color:rgba(0, 0, 0, 0.8); }
 .wrap { overflow:hidden; }
-.twitter-share-button { width:88px !important; }
+.twitter-share-button { width:90px !important; }
 
 /*---------------------------------------------------
     LESS Elements 0.7
