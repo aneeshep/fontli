@@ -14,8 +14,6 @@
 <% end %>
 <% content_for :custom_js do %>
   photoIds = <%= @popular.collect(&:id).to_json.html_safe %>;
-  $('body').css('overflow', 'hidden');
-  $('#ajax_loader').show();
 <% end %>
 
 <section id="secondaryHeader">
@@ -55,11 +53,15 @@
 <div class="wrap">
   <div id="slider1" class="slider">
     <ul>
-      <% @popular.each do |p| %>
+      <% @popular.each_with_index do |p, i| %>
       <li data-id='<%= p.id %>' href='<%= show_feed_path %>' rel='popitup'>
         <div style='background: none no-repeat; width:305px;height:305px;'>
           <div class="img-shadow"></div>
-          <img src="<%= render('/shared/black_img_data') %>" xsrc="<%= p.url(:medium) %>" style="width:305px;height:305px;" />
+          <% if(i < 5) # load only the first 5 images upfront %>
+            <img src="<%= p.url(:medium) %>" style="width:305px;height:305px;" />
+          <% else # rest are loaded later %>
+            <img src="<%= render('/shared/black_img_data') %>" xsrc="<%= p.url(:medium) %>" style="width:305px;height:305px;" />
+          <% end %>
         </div>
       </li>
       <% end %>

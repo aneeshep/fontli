@@ -142,8 +142,6 @@ $(document).ready(function() {
 
 // window load events
 $(window).load(function() {
-  $('body').css('overflow', 'inherit');
-  $('#ajax_loader').hide();
   // load images async
   $('img[xsrc]').each(function() {
     var elem = $(this);

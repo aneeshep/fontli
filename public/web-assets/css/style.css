@@ -42,7 +42,7 @@ a.storify-link { float:right; font-size:10px; color:#000; }
 aside 				{float:right; width: 255px; }
 button 			{float: right;background:url(../images/banner.png) no-repeat;width:181px;height:77px;text-align:center;
                    cursor:pointer;border:none;padding:0;
-span:first-child 	{color: #4D4D4D;display: block;font-size: 30px;text-shadow: #4d4d4d 0 -1px;letter-spacing: 5px;margin-bottom:8px;}
+span:first-child 	{color: #4D4D4D;display: block;font-size:28px;text-shadow: #4d4d4d 0 -1px;letter-spacing:0px;margin-bottom:8px;}
 span:last-child{ color: #4D4D4D;display:inline-block;font-size: 13px;font-weight:bold;margin-top:-2px;}
 strong { background-color:rgba(255,255,255,0.3);padding:5px 4px;font-weight:bold;border-radius:2px; border-top:2px solid #D43F3F; margin-left:-3px;}
     }
@@ -667,7 +667,7 @@ a{
     background-color: #fff;
     margin-top:20px;
     position: relative;
-    box-shadow: 0px 0px 8px 4px #999;
+    box-shadow: 0px 0px 8px 4px #000;
     display: inline-block;
 
 }
