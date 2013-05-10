@@ -1510,23 +1510,26 @@ div.pop-text{
 #privacy header.main{
   position: relative;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+  .primary {
+    border-bottom: none;
+  }
 }
 #privacy footer{
+  padding: 30px 0 100px 0;
   border-top: 1px solid #545454;
   box-shadow: 0 -2px 2px 0 rgba(0, 0, 0, 0.5);
   p{
-    color: #fff;
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
-  ul li {
-    text-decoration: none;
-  }
-  a{
     color: #999;
-  }
-  a:hover{
-    text-decoration: underline;
+    font-size: 14px;
+    margin-bottom: 10px;
+    a{
+      color: #fff;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    a:hover{
+      text-decoration: underline;
+    }
   }
 }
 /* faq specific css ends*/
