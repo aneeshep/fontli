@@ -37,7 +37,7 @@
         typoholics
       </span>
       <% end %>
-      <span>+<%= User.count %></span>
+      <span><%= number_with_delimiter(User.count) %></span>
       <span>typoholics</span>
     </button>
     <div class="share">

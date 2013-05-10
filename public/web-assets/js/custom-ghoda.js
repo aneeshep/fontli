@@ -38,6 +38,7 @@ $(document).ready(function() {
         hideAjaxLoader(true);
         //$("body").css("overflow", "hidden");
         $('#popup_container').html(data);
+        centerPopup();
         setTypetalkHeight();
         enableScrollBars('.aa-typetalk');
         setupPopupNavLinks(id);
@@ -78,9 +79,9 @@ $(document).ready(function() {
           $('#popup_container .right-pop.typetalk').show();
           setTypetalkHeight();
           setupPopupNavLinks(id);
-          elem.show();
           enableScrollBars('.aa-typetalk');
         });
+        elem.show();
       },
       error: function() {
         hideAjaxLoader(true);
@@ -173,8 +174,8 @@ $(window).load(function() {
 
 
 function showAjaxLoader(popup) {
-  var offset = $(window).scrollTop();
   if(popup) {
+    centerPopup();
     $('#popup_container').html($('#popup_loader').html());
     $('#popup_container').show(); }
   else {
@@ -184,6 +185,12 @@ function showAjaxLoader(popup) {
 function hideAjaxLoader(popup) {
   if(popup) $('#popup_loader').hide();
   else $('#ajax_loader').hide();
+}
+function centerPopup() {
+  var windowHeight = $(window).height();
+  var popupHeight = $('.popup').height();
+  var marginTop = (windowHeight - popupHeight) / 2
+  $('.popup').css('margin-top', marginTop + 'px');
 }
 function getDocHeight() {
   var D = document;
