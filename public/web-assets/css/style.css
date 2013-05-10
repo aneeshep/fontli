@@ -1476,6 +1476,61 @@ div.pop-text{
 .wrap { overflow:hidden; }
 .twitter-share-button { width:90px !important; }
 
+/* faq/privacy specific css begins*/
+.faq-container{
+  line-height: 1.5em;
+  margin: 0 auto;
+  background-color: #fff;
+  padding:20px 40px 100px 40px;
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.3);
+  h2{
+    color: #4D4D4D;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 40px 0;
+  }
+  h4{
+    font-size: 18px;
+    margin: 25px 0 5px;
+  }
+  p{
+    color: #666666;
+    font-size: 14px;
+  }
+  a{
+    color: #ff0000;
+  }
+  a:hover{
+    text-decoration: underline;
+  }
+}
+.faq-bg{
+  background-color: #ececec;
+}
+#privacy header.main{
+  position: relative;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+#privacy footer{
+  border-top: 1px solid #545454;
+  box-shadow: 0 -2px 2px 0 rgba(0, 0, 0, 0.5);
+  p{
+    color: #fff;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  ul li {
+    text-decoration: none;
+  }
+  a{
+    color: #999;
+  }
+  a:hover{
+    text-decoration: underline;
+  }
+}
+/* faq specific css ends*/
+
 /*---------------------------------------------------
     LESS Elements 0.7
   ---------------------------------------------------
