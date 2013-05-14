@@ -17,7 +17,6 @@ class FeedsController < ApplicationController
     klass, id = url.split('_')
     @photo = klass.constantize.find(id.to_s)
     preload_photo_associations
-    @open_popup = true
     render 'show', :layout => 'plain'
   rescue
     render :file => 'public/404.html', :status => '404', :layout => false
