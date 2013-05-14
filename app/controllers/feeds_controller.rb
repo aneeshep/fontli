@@ -1,5 +1,5 @@
 class FeedsController < ApplicationController
-  skip_before_filter :login_required, :only => [:show, :fonts]
+  skip_before_filter :login_required, :only => [:show, :fonts, :permalink]
 
   def index
     @photos = Photo.feeds_for(current_user, (params[:page] || 1)).to_a
@@ -10,6 +10,17 @@ class FeedsController < ApplicationController
     @photo = Photo[params['id']]
     preload_photo_associations
     render 'show', :layout => false
+  end
+
+  def permalink
+    url = ActiveSupport::Base64.urlsafe_decode64(URI.unescape(params[:url]))
+    klass, id = url.split('_')
+    @photo = klass.constantize.find(id.to_s)
+    preload_photo_associations
+    @open_popup = true
+    render 'show', :layout => 'plain'
+  rescue
+    render :file => 'public/404.html', :status => '404', :layout => false
   end
 
   def sos

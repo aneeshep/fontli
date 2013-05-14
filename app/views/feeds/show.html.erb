@@ -1,7 +1,7 @@
 <% user = @photo.user %>
 <% likes_cnt, comments_cnt = @photo.likes_count, @photo.comments_count %>
 <% fnts_map = fonts_map_for_comments @recent_comments %>
-<div class="popup closed">
+<div class="popup <%= @open_popup ? 'open' : 'closed' %>">
   <div class="left-pop">
     <div class="bigpic">
       <img src="<%= @photo.url(:large) %>" style="width:480px;height:480px;"/>

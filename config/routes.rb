@@ -47,5 +47,5 @@ Fontli::Application.routes.draw do
   end
 
   # Permalink - Has to be the last one
-  match '*url' => 'welcome#permalink'
+  match '*url' => 'feeds#permalink'
 end

@@ -29,10 +29,8 @@ header.main{
 header.main .secondary {font-size: 25px;font-weight: bold;width: 512px;line-height: 30px;padding: 30px 0 50px;margin-left: 225px;position: relative;}
 
 #secondaryHeader{
-    margin: 0px auto;
     padding: 25px 0px;
     background-color: #fff;
-    overflow: visible;
     height: 105px;
 blockquote{
     color:@grey;font-size:16px;margin-left:225px;padding:left;width: 470px;float: left;
@@ -1533,6 +1531,14 @@ div.pop-text{
   }
 }
 /* faq specific css ends*/
+
+/* permalink page css starts */
+body#plain{
+  text-align:center;
+  .set1-cross, .set4, .set5, .cross { display:none; }
+  footer .qrcode-links a { color: #fff; text-decoration: underline; }
+}
+/* permalink page css ends */
 
 /*---------------------------------------------------
     LESS Elements 0.7

@@ -9,16 +9,39 @@
     <link href="/web-assets/css/reset-grid.css" rel="stylesheet" type="text/css" />
     <link href="/web-assets/css/style.css"  rel="stylesheet/less" type="text/css" />
     <script src="/web-assets/js/less.js" type="text/javascript"></script>
-    <script type="text/javascript" src="//use.typekit.net/ita3rwh.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script src="/web-assets/js/jquery-1.7.min.js" type="text/javascript"></script>
 
     <%= yield(:head) %>
     <%= csrf_meta_tags %>
   </head>
 
-  <body>
-    <%= yield %>
-    <script type="text/javascript">$(window).load(function() { <%= yield(:custom_js) %> });</script>
+  <body id="plain">
+    <div id='qr_pop'>
+      <%= render 'shared/qr_popup' %>
+    </div>
+
+    <div id="masterWrapper">
+      <header class="main">
+        <div class="wrapper">
+          <div class="primary">
+            <a href="/" id="logo">Fontli</a>
+            <span>discover, share, pure type love</span>
+          </div>
+        </div>
+      </header>
+
+      <%= yield %>
+
+      <footer class="main">
+        <%= render 'shared/footer', :perma => true %>
+      </footer>
+    </div>
+
+    <script src="/web-assets/js/custom-ghoda.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        <%= yield(:custom_js) %> 
+      });
+    </script>
   </body>
 </html>

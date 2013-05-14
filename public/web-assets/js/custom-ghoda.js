@@ -21,9 +21,11 @@ $(document).ready(function() {
   $('#join_fontli').click(function() {
     location.href = $(this).attr('href');
   });
-  $('#slider1').lemmonSlider({
-    infinite: true
-  });
+  if(typeof($('#slider1').lemmonSlider) != 'undefined') {
+    $('#slider1').lemmonSlider({
+      infinite: true
+    });
+  }
   $('li[rel=popitup],div[rel=popitup]').live('click', function() {
     var url = $(this).attr('href');
     var id  = $(this).attr('data-id');
@@ -38,7 +40,7 @@ $(document).ready(function() {
         hideAjaxLoader(true);
         //$("body").css("overflow", "hidden");
         $('#popup_container').html(data);
-        centerPopup();
+        centerPopup('.popup');
         setTypetalkHeight();
         enableScrollBars('.aa-typetalk');
         setupPopupNavLinks(id);
@@ -127,12 +129,13 @@ $(document).ready(function() {
   $('.popup .bottom-nav .view-typetalk').live('click', function() {
     animateTypetalkPopup();
   });
-  $('.qrcode a').click(function() {
+  $('.qrcode a, .qrcode-links a').click(function() {
     var klass = $(this).attr('class');
     var offset = $(window).scrollTop();
     $('#qr_pop .img-qrcode').hide(); // hide both codes
     $('#qr_pop .img-qrcode.'+klass).show(); //show relavant
     //$("body").css("overflow", "hidden");
+    centerPopup('.ipad-landing-popup');
     $('#qr_pop').show();
   });
   $('#qr_pop a.close-icon').click(function() {
@@ -175,7 +178,7 @@ $(window).load(function() {
 
 function showAjaxLoader(popup) {
   if(popup) {
-    centerPopup();
+    centerPopup('.popup');
     $('#popup_container').html($('#popup_loader').html());
     $('#popup_container').show(); }
   else {
@@ -186,11 +189,12 @@ function hideAjaxLoader(popup) {
   if(popup) $('#popup_loader').hide();
   else $('#ajax_loader').hide();
 }
-function centerPopup() {
+function centerPopup(selector) {
+  var elem = $(selector);
   var windowHeight = $(window).height();
-  var popupHeight = $('.popup').height();
+  var popupHeight = elem.height();
   var marginTop = (windowHeight - popupHeight) / 2
-  $('.popup').css('margin-top', marginTop + 'px');
+  elem.css('margin-top', marginTop + 'px');
 }
 function getDocHeight() {
   var D = document;
@@ -221,6 +225,7 @@ function setupPopupNavLinks(id) {
   $('.popup .set4').attr('data-id', prevID);
 }
 function enableScrollBars(selector) {
+  if(typeof(mCustomScrollbar) == 'undefined') return true;
   $(selector).mCustomScrollbar({
 	  scrollButtons:{
 			enable:true

@@ -66,16 +66,6 @@ class WelcomeController < ApplicationController
     render 'api_doc', :layout => false
   end
 
-  def permalink
-    url = ActiveSupport::Base64.urlsafe_decode64(URI.unescape(params[:url]))
-    klass, id = url.split('_')
-    @obj = klass.constantize.find(id.to_s)
-    @user = @obj.user
-    render 'permalink', :layout => false
-  rescue
-    render :file => 'public/404.html', :status => '404'
-  end
-
 private
 
   def facebook_login
