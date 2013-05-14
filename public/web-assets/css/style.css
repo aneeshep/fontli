@@ -1505,14 +1505,14 @@ div.pop-text{
 .faq-bg{
   background-color: #ececec;
 }
-#privacy header.main{
+#privacy header.main, #plain header.main{
   position: relative;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
   .primary {
     border-bottom: none;
   }
 }
-#privacy footer{
+#privacy footer, #plain footer{
   padding: 30px 0 100px 0;
   border-top: 1px solid #545454;
   box-shadow: 0 -2px 2px 0 rgba(0, 0, 0, 0.5);
@@ -1535,6 +1535,8 @@ div.pop-text{
 /* permalink page css starts */
 body#plain{
   text-align:center;
+  .plain-bg { background-color: #ececec; }
+  .popup { margin: 30px 0; box-shadow: 0px 0px 7px 4px rgba(0,0,0,0.2); }
   .set1-cross, .set4, .set5, .cross { display:none; }
   footer .qrcode-links a { color: #fff; text-decoration: underline; }
 }
