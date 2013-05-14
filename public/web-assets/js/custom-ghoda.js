@@ -225,7 +225,7 @@ function setupPopupNavLinks(id) {
   $('.popup .set4').attr('data-id', prevID);
 }
 function enableScrollBars(selector) {
-  if(typeof(mCustomScrollbar) == 'undefined') return true;
+  if(typeof($(selector).mCustomScrollbar) == 'undefined') return true;
   $(selector).mCustomScrollbar({
 	  scrollButtons:{
 			enable:true

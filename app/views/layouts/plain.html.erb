@@ -9,7 +9,9 @@
     <link href="/web-assets/css/reset-grid.css" rel="stylesheet" type="text/css" />
     <link href="/web-assets/css/style.css"  rel="stylesheet/less" type="text/css" />
     <script src="/web-assets/js/less.js" type="text/javascript"></script>
+    <link href="/web-assets/css/jquery.mCustomScrollbar.css"  rel="stylesheet" type="text/css" />
     <script src="/web-assets/js/jquery-1.7.min.js" type="text/javascript"></script>
+    <script src="/web-assets/js/jquery-ui.min.js" type="text/javascript"></script>
 
     <%= yield(:head) %>
     <%= csrf_meta_tags %>
@@ -38,6 +40,7 @@
     </div>
 
     <script src="/web-assets/js/custom-ghoda.js" type="text/javascript"></script>
+    <script src="/web-assets/js/jquery.mCustomScrollbar.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function() {
         setTypetalkHeight();
@@ -45,5 +48,6 @@
         <%= yield(:custom_js) %> 
       });
     </script>
+    <script src="/web-assets/js/jquery.mousewheel.min.js" type="text/javascript"></script>
   </body>
 </html>
