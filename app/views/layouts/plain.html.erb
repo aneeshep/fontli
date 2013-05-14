@@ -40,6 +40,8 @@
     <script src="/web-assets/js/custom-ghoda.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function() {
+        setTypetalkHeight();
+        enableScrollBars('.aa-typetalk');
         <%= yield(:custom_js) %> 
       });
     </script>
