@@ -1913,7 +1913,7 @@ body#plain{
   text-align:center;
   .plain-bg { background-color: #ececec; }
   .popup { margin: 30px 0; box-shadow: 0px 0px 7px 4px rgba(0,0,0,0.2); }
-  .set1-cross, .set4, .set5, .cross { display:none; }
+  .set1-cross, .set4, .set5, .cross, .collapse { display:none; }
   footer .qrcode-links a { color: #fff; text-decoration: underline; }
 }
 /* permalink page css ends */
