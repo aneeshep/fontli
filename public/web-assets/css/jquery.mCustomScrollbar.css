@@ -10,7 +10,7 @@
 	width:16px;
 	height:100%;
 	top:0;
-	right:0;
+	right:-4px;
 }
 .mCSB_scrollTools .mCSB_draggerContainer{
 	height:100%;
@@ -33,15 +33,17 @@
 	cursor:pointer;
 	width:100%;
 	height:30px;
-}
+	padding:10px 0px;
+	}
 .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
 	width:8px;
-	height:100%;
+	height:95%;
 	margin:0 auto;
 	-webkit-border-radius:10px;
 	-moz-border-radius:10px;
 	border-radius:10px;
 	text-align:center;
+	margin-left:5px;
 }
 .mCSB_scrollTools .mCSB_buttonUp,
 .mCSB_scrollTools .mCSB_buttonDown{
