@@ -1,55 +1,43 @@
 <%= render 'shared/pinned_header_js' %>
 
-<div class="black-bar fixed-top hidden"></div>
-
 <section id="stream">
-<div class="pro-header-a wrapper fixed-top hidden" style="top:10px;">
-  <div class="block-a">
-    <a class="profile-img flt-left" href="javascript:;"><%= profile_image %></a>
-    <h3>@<%= @user.username %></h3>
-    <h2><%= @user.full_name %></h2>
-  </div>
-  <%= render 'profile_cta' %>
-  <button class="button-a flt-right">
-    Follow
-  </button>
-</div>
-
-<div class="pro-header-b wrapper">
-  <a class="pro-img-big"><%= profile_image(@user, :big) %></a>
+<div class="pro-header-b">
+<div class="wrapper">
+  <a class="pro-img-big">
+    <%= profile_image(@user, :big) %>
+    <div class="overlap-a"></div>
+  </a>
   <div class="block-b">
     <a href="javascript:;" class="header-user">@<%= @user.username %></a>
     <h1><%= @user.full_name %></h1>
     <p><%= @user.description %></p>
-    <% unless @user.website.blank? %>
-      <a href="javascript:;" class="header-link"><%= @user.website %></a>
-    <% end %>
   </div>
   <div class="block-c">
-    <button class="button-a flt-right">
-      Follow
-    </button>
-    <ul>
-      <li class="content-li">
-        <h3>Posts</h3>
-        <h4><%= @user.photos_count %></h4>
-      </li>
-      <li><img src="/web-assets/images/divider.png"></li>
-      <li class="content-li">
-        <h3>Followers</h3>
-        <h4><%= @user.followers_count %></h4>
-      </li>
-      <li><img src="/web-assets/images/divider.png"></li>
-      <li class="content-li">
-        <h3>Following</h3>
-        <h4><%= @user.follows_count %></h4>
-      </li>
+    <div>
+      <button class="button-a flt-right">Follow</button>
+      <img src="/web-assets/images/flag.png" alt="flag" title="flag" width="18" height="16" />
+    </div>
+    <ul class='contact'>
+      <% unless false %>
+        <li>
+          <img width="11" height="15" src="/web-assets/images/location1.png">
+          <span>No user location</span>
+        </li>
+      <% end %>
+      <% unless @user.website.blank? %>
+        <li>
+          <img width="11" height="15" src="/web-assets/images/location1.png">
+          <a href="javascript:;"><%= @user.website %></a>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>
-
-<div class="pro-header-c">
-  <%= render 'profile_cta' %>
+</div>
+<div class='pro-header-d' id='pinned_header'>
+  <div class='wrapper'>
+    <%= render 'profile_cta' %>
+  </div>
 </div>
 
 <section id='profile_section_container'>

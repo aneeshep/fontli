@@ -95,8 +95,8 @@ module ApplicationHelper
   end
 
   # HACK: to NOT show any links for V1 launch
-  def profile_path(opts)
-    'javascript:;'
+  def profile_path(opts=nil)
+    @current_user ? super(opts) : 'javascript:;'
   end
 
   def user_countdown_count

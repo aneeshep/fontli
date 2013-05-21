@@ -1,7 +1,9 @@
 <% content_for :custom_js do %>
-var header = $('.pro-header-c');
-var pinnedHeader = $('.pro-header-a');
-var blackBar = $('.black-bar');
+var header = $('#pinned_header');
+var headerTop = header.position().top;
+var headerHeight = header.innerHeight() + 2; // 2px borders
+var nextElem = header.next();
+var nextElemMargin = parseInt(nextElem.css('margin-top'));
 var didScroll = false;
 
 $(window).scroll(function() {
@@ -11,18 +13,15 @@ $(window).scroll(function() {
 setInterval(function() {
   if ( didScroll ) {
     didScroll = false;
-    var docHeight = getDocHeight();
-    var winHeight = $(window).height();
     var winScroll = $(window).scrollTop();
-    var elemOffset = header.position().top + header.innerHeight() + 2 // 2px buffer
 
-    if ( winScroll > elemOffset ) {
-      blackBar.show();
-      pinnedHeader.slideDown();
+    if ( winScroll >= headerTop ) {
+      header.addClass('fixed-top');
+      nextElem.css('margin-top', headerHeight + nextElemMargin + 'px');
     } else {
-      pinnedHeader.hide();
-      blackBar.hide();
+      header.removeClass('fixed-top');
+      nextElem.css('margin-top', nextElemMargin + 'px');
     }
   }
-}, 250);
+}, 10);
 <% end %>

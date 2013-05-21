@@ -8,7 +8,7 @@
 
     <link href="/web-assets/css/reset-grid.css" rel="stylesheet" type="text/css" />
     <link href="/web-assets/css/style.css" rel="stylesheet/less" type="text/css" />
-    <% unless @skip_mobile_css %>
+    <% if @test_version || @current_user %>
       <link href="/web-assets/css/mobile.css" rel="stylesheet/less" type="text/css" />
     <% end %>
     <link href="/web-assets/css/jquery.mCustomScrollbar.css"  rel="stylesheet" type="text/css" />
