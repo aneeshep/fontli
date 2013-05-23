@@ -1,8 +1,8 @@
 module StorifyClient
 
   def self.fetch_story(limit=5)
-    res = request(:per_page => limit)
-    res.compact.empty? ? default_story : res
+    res = request(:per_page => limit).compact
+    res.empty? ? default_story : res
   end
 
 private
