@@ -19,7 +19,7 @@ private
   # accepts path string and params hash
   def self.request(params)
     params[:api_key] = SECURE_TREE['storify_api_key']
-    url = '/v1/stories/Fontli/fontli-buzz' + "?#{params.to_param}"
+    url = '/v1/stories/Fontli/fontli-buzz/elements' + "?#{params.to_param}"
     req = Net::HTTP::Get.new(url)
 
     begin
