@@ -67,7 +67,7 @@ class Photo
   scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:sos_requested_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
-  scope :for_homepage, where(:show_in_homepage => true).desc(:likes_count)
+  scope :for_homepage, where(:show_in_homepage => true).desc(:created_at)
 
   #before_save :crop_file # we receive only the cropped images from client.
   before_save :set_sos_approved_at

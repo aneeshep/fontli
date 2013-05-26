@@ -4,12 +4,14 @@ require 'rubygems'
 require File.expand_path('../../config/environment', __FILE__)
 require 'storify_client'
 
-stories = StorifyClient.fetch_story
+limit = (ARGV[0] || 5).to_i
+stories = StorifyClient.fetch_story(limit)
 if stories.length > 1 # success
   StorifyStory.delete_all
 
   stories.each do |s|
     StorifyStory.create! s
   end
+  puts "Created #{stories.length} stories"
 end
 puts "done."
