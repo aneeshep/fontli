@@ -15,7 +15,7 @@ class FeedsController < ApplicationController
   def permalink
     url = ActiveSupport::Base64.urlsafe_decode64(URI.unescape(params[:url]))
     klass, id = url.split('_')
-    @photo = klass.constantize.find(id.to_s)
+    @photo, @perma = klass.constantize.find(id.to_s), true
     preload_photo_associations
     render 'show', :layout => 'plain'
   rescue
