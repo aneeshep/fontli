@@ -3,8 +3,8 @@ module Encryptor
 
   OPTS = {
     :algo => 'aes-128-cbc',
-    :key  => '6f7e50b79f19f736b93b0efc4b2bcc57',
-    :iv   => '6b2c8762aed3240bce1485da86530dc0'
+    :key  => SECURE_TREE['encryption_key'],
+    :iv   => SECURE_TREE['encryption_iv']
   }
 
   # takes an base64 encoded n encrypted text and decrypts it to plain string
