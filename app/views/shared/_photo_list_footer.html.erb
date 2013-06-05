@@ -1,16 +1,21 @@
-<a href="<%= profile_path(:user_id => u.id) %>" class="profile-img">
-  <img src="<%= u.url_thumb %>" />
-</a>
-<div class="overlap"></div>
+<% unless section == 'profile-post' %>
+  <a href="<%= profile_path(:user_id => u.id) %>" class="profile-img">
+    <img width="50" height="50" alt="profile-image" src="<%= u.url_thumb %>" />
+    <div class="overlap"></div>
+  </a>
+<% end %>
 <ul>
-  <li class="profile-name">
-    <span><%= u.username %></span>
-  </li>
+  <% unless section == 'profile-post' %>
+    <li class="profile-name">
+      <span><%= u.username %></span>
+    </li>
+  <% end %>
   <li class="profile-detail">
     <%= photo_details_li(f) %>
   </li>
-  <li class="profile-location">
-    <img width="11" height="15" src="/web-assets/images/location1.png" alt="location" title="location">
-    <span><%= f.address %></span>
-  </li>
+  <% unless f.address.blank? %>
+    <li class="profile-location">
+      <span><%= f.address %></span>
+    </li>
+  <% end %>
 </ul>

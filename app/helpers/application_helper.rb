@@ -102,4 +102,28 @@ module ApplicationHelper
   def user_countdown_count
     Rails.env.production? ? User.count : 14457
   end
+
+  def render_follow_button(usr)
+    return "" if current_user.id == usr.id
+    content = if current_user.can_follow?(usr)
+      "<button class='button-a flt-left'>Follow</button>"
+    else # already following
+      "<button class='button-a selected flt-left'>Following</button>"
+    end
+    content.html_safe
+  end
+
+  def render_flag_button(usr)
+    return "" if current_user.id == usr.id
+    content = if current_user.can_flag?(usr)
+      "<a href='#' class='img-flag flt-left bg-tooltip'><label class='tooltip'>Flag</label></a>"
+    else
+      "<a href='#' class='img-flag selected flt-left bg-tooltip'><label class='tooltip'>Flagged</label></a>"
+    end
+    content.html_safe
+  end
+
+  def me?
+    current_user.id == @user.id
+  end
 end

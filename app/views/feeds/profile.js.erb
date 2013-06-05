@@ -1,9 +1,13 @@
+<% typ = params[:type] || 'post' %>
+<% section = 'profile-post' if typ == 'post' %>
+
 <% contents = if params[:type] == 'fav_font' %>
   <% render '/shared/font_list' %>
 <% else %>
-  <% render '/shared/photo_list' %>
+  <% render '/shared/photo_list', :section => section %>
 <% end %>
+
 $('#profile_section_container').html('<%= escape_javascript(contents) %>');
 $('.profile-cta').removeClass('selected');
-<% typ = params[:type] || 'post' %>
 $(".profile-cta.<%= typ %>").addClass('selected');
+hideAjaxLoader();

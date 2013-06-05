@@ -1,32 +1,28 @@
 <%= render 'shared/pinned_header_js' %>
+<% no_info = @user.description.blank? %>
 
 <section id="stream">
-<div class="pro-header-b">
+<div class="pro-header-b<%= '-none' if no_info %>">
 <div class="wrapper">
-  <a class="pro-img-big">
+  <a class="pro-img-big<%= '-none' if no_info %>">
     <%= profile_image(@user, :big) %>
-    <div class="overlap-a"></div>
+    <div class="overlap-a<%= '-none' if no_info %>"></div>
   </a>
-  <div class="block-b">
-    <a href="javascript:;" class="header-user">@<%= @user.username %></a>
+  <div class="block-b<%= '-none' if no_info %>">
+    <a href="javascript:;" class="header-user<%= '-none' if no_info %>">@<%= @user.username %></a>
     <h1><%= @user.full_name %></h1>
-    <p><%= @user.description %></p>
+    <% unless no_info %>
+      <p><%= @user.description %></p>
+    <% end %>
   </div>
-  <div class="block-c">
+  <div class="block-c<%= '-none' if no_info %>">
     <div>
-      <button class="button-a flt-right">Follow</button>
-      <img src="/web-assets/images/flag.png" alt="flag" title="flag" width="18" height="16" />
+      <%= render_flag_button(@user) %>
+      <%= render_follow_button(@user) %>
     </div>
     <ul class='contact'>
-      <% unless false %>
-        <li>
-          <img width="11" height="15" src="/web-assets/images/location1.png">
-          <span>No user location</span>
-        </li>
-      <% end %>
       <% unless @user.website.blank? %>
         <li>
-          <img width="11" height="15" src="/web-assets/images/location1.png">
           <a href="javascript:;"><%= @user.website %></a>
         </li>
       <% end %>
@@ -41,6 +37,6 @@
 </div>
 
 <section id='profile_section_container'>
-  <%= render '/shared/photo_list' %>
+  <%= render '/shared/photo_list', :section => 'profile-post' %>
 </section>
 </section>

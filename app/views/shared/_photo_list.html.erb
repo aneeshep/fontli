@@ -3,14 +3,15 @@
 <% end %>
 
 <% usr = @photos.first.try(:user) if @users_map.nil? # for user profile %>
+<% section ||= '' %>
 <% @photos.each do |f| %>
   <div rel='popitup' href='<%= show_feed_path %>' data-id=<%= f.id %>>
     <section>
-      <%= render 'shared/photo_list_section', :f => f %>
+      <%= render 'shared/photo_list_section', :f => f, :section => section %>
     </section>
     <% u = usr || @users_map[f.user_id].first %>
-    <footer>
-      <%= render 'shared/photo_list_footer', :u => u, :f => f %>
+    <footer class='<%= section %>'>
+      <%= render 'shared/photo_list_footer', :u => u, :f => f, :section => section %>
     </footer>
   </div>
 <% end %>

@@ -557,6 +557,22 @@ class User
     self.full_name || self.username
   end
 
+  # current_user.can_follow?(other_user)
+  def can_follow?(usr)
+    return false if usr.id == self.id # Same user
+    !self.friend_ids.include?(usr.id.to_s)
+  end
+
+  def can_flag?(usr)
+    return false if usr.id == self.id # Same user
+    self.flags.where(:from_user_id => usr.id).first.nil?
+  end
+
+  def spotted_on?(foto)
+    @spotted_foto_ids ||= self.fonts.only(:photo_id).collect(&:photo_id)
+    @spotted_foto_ids.include?(foto.id)
+  end
+
 private
 
   def generate_rand(length = 8)

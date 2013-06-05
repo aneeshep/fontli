@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$('.bigpic, .collapse, .likes_cnt, .comments_cnt, .fonts_cnt').live('click', function() {
 		$('.popup').toggleClass('closed open');
 	});
-  $('.popup .cross').live('click', function() {
+  $('.popup .cross,.signin .img-cross').live('click', function() {
     $('#popup_container').html('').hide();
     $('#popup_loader').hide(); // just in case
     $("body").css("overflow", "inherit");
