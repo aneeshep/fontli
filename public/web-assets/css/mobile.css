@@ -3,11 +3,16 @@
 @lightgrey: #999999;
 @darkgrey: #333;
 
-@media only screen and (max-device-width: 480px) {
+@media only screen and (max-width: 480px) {
   body{
   min-width:100%;
 
   }
+  .wrapper{
+  width:100%;
+  margin:0;
+  }
+  a.storify-link { font-size:10px; color:#000; }
         .popup{
         height: auto;
         overflow:visible;
@@ -84,7 +89,7 @@
     float: left;
     height: 100%;
      margin: 3% 0 2%;
-    width: auto;
+    width: 80%;
     position:static;
            div a img{
            width:100%;
@@ -147,8 +152,6 @@
     }
     footer.main{
     padding:3% 0 1% 3%;
-    position:absolute;
-    bottom:0;
     }
     .set3b{
     position:relative;
@@ -302,7 +305,7 @@ width:100%;
 }
 .controls{
 position:relative;
-bottom:160px;
+bottom:20px;
 overflow:hidden;
 }
 #secondaryHeader{
