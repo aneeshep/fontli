@@ -1,16 +1,11 @@
-// reset the comment form
-var elem = $('#comment_form_<%= params[:id] %>').find('input[type=text]');
-elem.val(elem.attr('data-label'));
-elem.blur();
-
-//remove any error messages
-$('#comment_form_<%= params[:id] %>').find('div.errors').remove();
-
 <% if @status %>
   // update the comments count
-  $('.comments').html("<%= @photo.comments.count %>");
-  // refresh the comments content
-  $('.comments_block').html("<%= escape_javascript(render "comments_content", :foto => @photo) %>");
+  $("#comments_cnt_<%= params[:id] %>").html("<%= pluralize(@photo.comments_count, 'comment') %>");
+  $("#comments_cnt_<%= params[:id] %>").removeClass('hidden');
+  $(".like-box .view-typetalk").html("<%= pluralize(@photo.comments_count, 'comment') %>");
+  // append the comment content
+  $('.aa-typetalk .comment-box').append("<%= escape_javascript(render "/shared/comment_content", :c => @cmt) %>");
 <% else %>
-  $('#comment_form_<%= params[:id] %>').prepend("<%= escape_javascript(simple_errors_for @cmt) %>");
+  $('.comment-form').append("<span>Failed. Too long!</span>");
 <% end %>
+hideAjaxLoader();

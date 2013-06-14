@@ -9,7 +9,7 @@
     <a data-href="<%= profile_path(:user_id => @user.id, :type => 'fav_font') %>" remote=true><%= pluralize(@user.fav_fonts_count, 'Favourite') %></a>
   </li>
   <li class="profile-cta spotted <%= 'selected' if params[:type] == 'spotted' %>">
-    <a data-href="<%= profile_path(:user_id => @user.id, :type => 'spotted') %>" remote=true><%= @user.fonts_count %> Spotted</a>
+    <a data-href="<%= profile_path(:user_id => @user.id, :type => 'spotted') %>" remote=true><%= @user.my_fonts_count %> Spotted</a>
   </li>
 </ul>
 <ul class='float-Rt'>

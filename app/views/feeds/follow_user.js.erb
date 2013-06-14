@@ -1,0 +1,4 @@
+// update the button
+var elem = $('#follow_btn_<%= params[:id] %>');
+elem.replaceWith("<%= escape_javascript(render_follow_button(@user)) %>");
+hideAjaxLoader();

@@ -443,6 +443,13 @@ class User
     Photo.where(:_id.in => foto_ids).limit(lmt).offset(offst).desc(:created_at)
   end
 
+  def spotted_photos(page = 1, lmt = 20)
+    offst = (page.to_i - 1) * lmt
+    foto_ids = self.fonts.only(:photo_id).collect(&:photo_id)
+    return [] if foto_ids.empty?
+    Photo.where(:_id.in => foto_ids).limit(lmt).offset(offst).desc(:created_at)
+  end
+
   def my_fonts(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     self.fonts.limit(lmt).offset(offst)
@@ -560,7 +567,7 @@ class User
   # current_user.can_follow?(other_user)
   def can_follow?(usr)
     return false if usr.id == self.id # Same user
-    !self.friend_ids.include?(usr.id.to_s)
+    !self.friend_ids.include?(usr.id)
   end
 
   def can_flag?(usr)

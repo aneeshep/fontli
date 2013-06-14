@@ -46,16 +46,23 @@ class FeedsController < ApplicationController
               current_user
             end
     page = params[:page] || 1
+    offset = (page.to_i - 1) * 18
 
     case params[:type]
     when 'like'
       @photos = @user.fav_photos(page, 18)
       preload_photos_my_likes_comments(:skip_likes => true)
     when 'fav_font'
-      @fonts = @user.fav_fonts(page, 18)
+      @fonts = @user.my_fav_fonts(page, 18)
       #preload_fonts_photos # this is more tricky
+    when 'spotted'
+      @photos = @user.spotted_photos(page, 18)
+      preload_photos_my_likes_comments
+    when 'followers'
+      @users = @user.followers.limit(18).offset(offset).to_a
+    when 'follows'
+      @users = @user.friends.limit(18).offset(offset).to_a
     else
-      offset = (page.to_i - 1) * 18
       @photos = @user.photos.recent(18).offset(offset)
       preload_photos_my_likes_comments
     end
@@ -70,7 +77,6 @@ class FeedsController < ApplicationController
       @fonts = Font.popular.to_a
     else
       @users = User.new.recommended_users
-      @friend_ids = current_user.friend_ids.group_by {|a| a}
     end
   end
 
@@ -100,11 +106,22 @@ class FeedsController < ApplicationController
   end
 
   def socialize_feed
-    return if request.get?
     @photo = Photo.find(params[:id])
     meth_name = "#{params[:modal]}_feed".to_sym
     self.method(meth_name).call
+    @photo.reload # to read the new likes_count/comments_count
     render meth_name
+  end
+
+  def follow_user
+    @user = User.find(params[:id])
+    current_user.follows.new(:follower_id => @user.id).save
+  end
+
+  def unfollow_user
+    @user = User.find(params[:id])
+    current_user.follows.where(:follower_id => @user.id).first.destroy
+    render 'follow_user'
   end
 
   def detail_view
@@ -131,7 +148,7 @@ class FeedsController < ApplicationController
   def comment_feed
     @cmt = @photo.comments.new(
       :user_id => current_user.id,
-      :body => params[:body]
+      :body => params[:comment]
     )
     @status = @cmt.save
   end
@@ -153,13 +170,13 @@ class FeedsController < ApplicationController
     @status = @photo.destroy
   end
 
-  # loads recent 5 likes and 5 comments with associated users for a foto.
+  # loads all likes and comments with associated users for a foto.
   def preload_photo_associations(foto = nil)
     foto ||= @photo
-    @recent_likes = foto.likes.desc(:created_at).limit(5).to_a
-    lkd_usr_ids = @recent_likes.collect(&:user_id)
-    @recent_comments = foto.comments.desc(:created_at).to_a
-    cmt_usr_ids = @recent_comments.collect(&:user_id)
+    @likes = foto.likes.desc(:created_at).to_a
+    lkd_usr_ids = @likes.collect(&:user_id)
+    @comments = foto.comments.desc(:created_at).to_a
+    cmt_usr_ids = @comments.collect(&:user_id)
     
     unless (lkd_usr_ids + cmt_usr_ids).empty?
       usrs = User.where(:_id.in => (lkd_usr_ids + cmt_usr_ids)).only(:id, :username, :avatar_filename).to_a

@@ -1,11 +1,14 @@
 <% half = @users.length / 2 %>
-<table class="flt-left">
-  <% @users.first(half).each do |u| %>
-    <%= render '/shared/account', :u => u %>
-  <% end %>
-</table>
-<table class="flt-right">
-  <% @users[(half+1)..-1].each do |u| %>
-    <%= render '/shared/account', :u => u %>
-  <% end %>
-</table>
+<% half = 1 if @users.length < 2 %>
+<div id="limelight-markup" class="wrapper">
+  <div class="left-content">
+    <% @users.first(half).each do |u| %>
+      <%= render '/shared/account', :u => u %>
+    <% end %>
+  </div>
+  <div class="right-content">
+    <% @users[(half+1)..-1].to_a.each do |u| %>
+      <%= render '/shared/account', :u => u %>
+    <% end %>
+  </div>
+</div>

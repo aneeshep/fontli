@@ -9,3 +9,4 @@ $('#popular_section_container').html('<%= escape_javascript(contents) %>');
 $('.popular-cta').removeClass('selected');
 <% typ = params[:type] || 'account' %>
 $(".popular-cta.<%= typ %>").addClass('selected');
+hideAjaxLoader();

@@ -1,25 +1,10 @@
-<header>
-  Spottings
-  <a href="javascript:;" class="collapse flt-left"></a>
-  <a href="javascript:;" class="cross flt-right"></a>
-  <!-- <a href="javascript:;" class="settings flt-right"></a> -->
-</header>
-<div class="aa-spotted content content-b">
-  <div class="comment-box clr">
+<div class="comment-box clr">
   <% @fonts.each do |f| %>
     <div class="pop-text">
       <img src="<%= f.img_url %>" width="300" alt="">
       <span><%= f.display_name %></span>
       <span class='agrees'><%= pluralize(f.agrees_count, 'Agree') %></span>
+      <img src="/web-assets/images/heartsmall.png" width="22" height="20" alt="like" title="like" />
     </div>
   <% end %>
-  </div>
-</div>
-<div class="bottom-nav">
-  <span>
-    <a href="javascript:;" class='view-typetalk'>
-      <img src="/web-assets/images/arrow-left-nav.png" width="19" height="17" alt="arrow" title="arrow" />
-      Back to Typetalk
-    </a>
-  </span>
 </div>

@@ -1,6 +1,6 @@
 <% user = @photo.user %>
-<% likes_cnt, comments_cnt = @photo.likes_count, @photo.comments_count %>
-<% fnts_map = fonts_map_for_comments @recent_comments %>
+<% likes_cnt, comments_cnt, fonts_cnt = @photo.likes_count, @photo.comments_count, @photo.fonts_count %>
+<% fnts_map = fonts_map_for_comments @comments %>
 <% if @perma %>
   <% content_for :head do %>
     <script type="text/javascript">var switchTo5x=true;</script>
@@ -19,18 +19,21 @@
 <div class="popup <%= @open_popup ? 'open' : 'closed' %>">
   <div class="left-pop">
     <div class="bigpic">
+      <div class="img-overlay"></div>
       <img src="<%= @photo.url(:large) %>" style="width:480px;height:480px;"/>
       <a href="javascript:;" data-href='<%= show_feed_path %>' class="set4"></a>
       <a href="javascript:;" data-href='<%= show_feed_path %>' class="set5"></a>
     </div>
 
-    <ul class="set1">
-      <% ([] || ['a', 'b', 'c', 'd']).each do |char| %>
-      <li class="set1-<%= char %>">
+    <ul class="set1 icons">
+      <% (['a', 'b', 'c']).each do |char| %>
+      <li class="set1-<%= char %> <%= 'login-req' unless logged_in? %>">
         <i></i>
         <div class="hover"></div>
       </li>
       <% end %>
+    </ul>
+    <ul class="set1">
       <li class='set1-cross'>
         <a href='javascript:;' class='cross'></a>
       </li>
@@ -50,28 +53,32 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <img src='<%= fnt.img_url %>' width="350px" /><br/>
-      <span class='pop-disclaimer'><%= fnt.display_name %></span>
-      <span><%= pluralize(fnt.agrees_count, 'Agree') %></span>
+      <img src='<%= fnt.img_url %>' width="350px" />
+      <span class='pop-disclaimer'>
+        <%= fnt.display_name %>
+        <%= pluralize(fnt.agrees_count, 'Agree') %>
+        <img src="/web-assets/images/heartsmall.png" width="22" height="20" alt="like" title="like" />
+      </span>
     </div>
     <% end %>
   </div>
 
-  <div class="right-pop spotted" style="display:none;"></div>
-  <div class="right-pop typetalk">
+  <div class="right-pop">
     <header>
-      Typetalk
+      <span class='header-title'>Typetalk</span>
       <a href="javascript:;" class="collapse flt-left"></a>
       <a href="javascript:;" class="cross flt-right"></a>
       <!--  <a href="javascript:;" class="settings flt-right"></a> -->
     </header>
     <div class="content-a">
-      <a class="propic" href="<%= profile_path(:user_id => user.id) %>">
+      <a class="propic <%= 'login-req' unless logged_in? %>" href="<%= profile_path(:user_id => user.id) %>">
         <img src="<%= user.url(:thumb) %>">
       </a>
       <ul>
         <li class="a">
-          <a href="<%= profile_path(:user_id => user.id) %>"><span class="name"><%= user.username %></span></a>
+          <a class="<%= 'login-req' unless logged_in? %>" href="<%= profile_path(:user_id => user.id) %>">
+            <span class="name"><%= user.username %></span>
+          </a>
           <span class="time"><%= timestamp(@photo.created_at) %></span>
         </li>
         <li class="b">
@@ -80,62 +87,43 @@
         <li class="c">
           <a href="#"></a>
         </li>
+        <li><a href="#"><img src="/web-assets/images/myfont.png" /></a></li>
       </ul>
     </div>
+    <div class="like-box">
+      <a class='view-likes' href="javascript:;">
+        <%= pluralize(likes_cnt, 'like') %>
+      </a>
+      <a class='view-typetalk strong' href="javascript:;">
+        <%= pluralize(comments_cnt, 'comment') %>
+      </a>
+      <a class='view-spotted' data-url='<%= feed_fonts_path(:id => @photo.id) %>' href="javascript:;">
+        <%= pluralize(fonts_cnt, 'spotting') %>
+      </a>
+      <a href="javascript:;" class="like <%= 'login-req' unless logged_in? %>">
+        <img src="/web-assets/images/heartsmall.png" />
+      </a>
+      <a href="javascript:;" class="like <%= 'login-req' unless logged_in? %>">
+        <img src="/web-assets/images/Spot-Selected.png" />
+      </a>
+    </div>
+
+    <div class="aa-spotted content content-b" style="display:none;"></div>
+    <div class="aa-likes content content-b" style="display:none;">
+      <%= render 'liked_pop' %>
+    </div>
     <div class="aa-typetalk content content-b">
-      <div class="like-box">
-        <% @recent_likes.each do |l| %>
-          <% u = @users_map[l.user_id].first %>
-          <a href="<%= profile_path(:user_id => u.id) %>" class="profile-img" style="background:url(<%= u.url_thumb %>)"></a>
-        <% end %>
-        <a href="javascript:;" class="likes">
-          <!-- <img src="/web-assets/images/heartsmall.png" /> -->
-          <% if likes_cnt > 0 && likes_cnt < 6 %>
-            <br/><%= pluralize(likes_cnt, 'like') %>
-          <% end %>
-          <% if likes_cnt - @recent_likes.length > 0 %>
-            <br/>+<%= pluralize(likes_cnt - @recent_likes.length, 'like') %>
-          <% end %>
-        </a>
-      </div>
       <div class="comment-box clr">
-        <% if comments_cnt > 0 %>
-          <a href="javascript:;" class="comments"><%= pluralize(comments_cnt, 'comment') %></a></br>
-        <% end %>
-        <% @recent_comments.each do |c| %>
+        <% @comments.each do |c| %>
           <% u = @users_map[c.user_id].first %>
-          <div class="comment">
-            <a class="propic" href="<%= profile_path(:user_id => u.id) %>">
-              <img src="<%= u.url_thumb %>">
-            </a>
-            <ul>
-              <li class="a">
-                <span class="name"><%= u.username %></span>
-                <span class="time"><%= timestamp(c.created_at) %></span>
-              </li>
-              <li class="b">
-                <span><%= c.body %></span>
-                <% c.font_tag_ids.each do |ft_id| %>
-                  <% f = fnts_map[ft_id.to_s] %>
-                  <span>Spotted <%= f.display_name %></span>
-                <% end %>
-              </li>
-            </ul>
-          </div> <!-- comment -->
+          <%= render 'shared/comment_content', :c => c, :u => u, :fnts_map => fnts_map %>
         <% end %>
-      </div> <!-- comment_box -->
+      </div>
     </div>
-    <!-- <div class="content-c">
-      <a href="javascript:;">Your comment...</a>
-    </div> -->
-    <% if @photo.fonts_count > 0 %>
-    <div class="bottom-nav">
-      <span>
-        <a href="javascript:;" class='view-spotted' data-url='<%= feed_fonts_path(:id => @photo.id) %>'>
-          View Spottings
-          <img src="/web-assets/images/arrow-right-nav.png" width="19" height="17" alt="arrow" title="arrow" /></a>
-      </span>
+    <div class="bottom-nav <%= 'hidden' unless logged_in? %>">
+      <form action="<%= socialize_feed_path(@photo.id, :modal => 'comment') %>" class='comment-form'>
+        <input type="text" name="comment" placeholder="Your Comment..." autocomplete='off' />
+      </form>
     </div>
-    <% end %>
   </div>
 </div>

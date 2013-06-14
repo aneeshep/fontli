@@ -1,0 +1,21 @@
+<div class="comment-box clr">
+  <% @likes.each do |l| %>
+    <% u = @users_map[l.user_id].first %>
+    <div class="comment">
+      <a class="propic" href="<%= profile_path(:user_id => u.id) %>">
+        <img src="<%= u.url_thumb %>">
+      </a>
+      <ul>
+        <li class="a">
+          <span class="name"><%= u.username %></span>
+          <span class="time"><%= timestamp(l.created_at) %></span>
+        </li>
+        <li class="b">
+          <span><%= u.follows_count %> Followers</span>
+          <span><%= u.followers_count %> Following</span>
+        </li>
+      </ul>
+      <%= render_follow_button(u) %>
+    </div>
+  <% end %>
+</div>

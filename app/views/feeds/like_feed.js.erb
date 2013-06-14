@@ -1,5 +1,7 @@
 // update the likes count
-$('#likes_cnt_<%= params[:id] %>').html("<%= @photo.likes.count %>");
+$('#likes_cnt_<%= params[:id] %>').html("<%= pluralize(@photo.likes_count, 'like') %>");
+$('#likes_cnt_<%= params[:id] %>').removeClass('hidden');
 // update the button
 var elem = $('#like_<%= params[:id] %>');
-elem.replaceWith("<%= escape_javascript(button_tag("", :type => "submit",:id => 'unlike_' + @photo.id.to_s, :value => 'unlike', :name => 'modal', :class => 'me_likey')) %>");
+elem.replaceWith("<%= escape_javascript(render_photo_like_button(@photo, true)) %>");
+hideAjaxLoader();

@@ -1,20 +1,29 @@
-<ul class="font-list wrapper">
-  <% @fonts.each do |f| %>
-  <li>
-    <img class="font-img-bg" src="<%= f.img_url %>">
-    <div class="div-a">
-      <a href="#" class="font-name"><%= f.display_name %></a>
-      <a href="#" class="font-owner">by MyFonts</a>
-    </div>
-    <div class="div-b">
-      <% Font.tagged_photos_for({:family_id => f.family_id}, 6).each do |p| %>
-        <img class="font-sample-img" src="<%= p.url_thumb %>">
-      <% end %>
-    </div>
-  </li>
-  <% end %>
+<% content_for :custom_js do %>
+  photoIds = [];
+<% end %>
 
-  <% if @fonts.empty? %>
-    <li><div class='div-a'>No fonts</div></li>
-  <% end %>
-</ul>
+<div class="wrapper recently_spotted">
+<% @fonts.each do |f| %>
+  <ul>
+    <li>
+      <a href="#">
+        <img src="<%= f.img_url %>" width="290" height="auto">
+        <h5><span><%= f.display_name %></span>by MyFonts</h5>
+        <span><%= pluralize(f.tagged_photos_count, 'Photo') %></span>
+        <span><%= f.favs_count %> Favourite</span>
+      </a>
+    </li>
+    <% Font.tagged_photos_for({:family_id => f.family_id}, 3).each do |p| %>
+      <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= f.id %>'>
+        <a class="spotted-img" href="javascript:;">
+          <img src="<%= p.url_thumb %>" width="208" height="206" />
+        </a>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @fonts.empty? %>
+  <p>No fonts</p>
+<% end %>
+</div>

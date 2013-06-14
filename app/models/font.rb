@@ -84,6 +84,14 @@ class Font
     end
   end
 
+  def tagged_photos_count
+    @tagged_photos_count ||= Font.where(:family_id => self.family_id).count
+  end
+
+  def favs_count
+    @favs_count ||= self.fav_fonts.count
+  end
+
   def hashes=(hshs)
     return true if hshs.blank?
     hshs.each do |h|

@@ -66,19 +66,18 @@ module ApplicationHelper
 
   def photo_details_li(foto=nil)
     foto ||= @photo
-
     lks = cmts = fnts = ''
     ts = content_tag(:span, timestamp(foto.created_at))
 
-    if foto.likes_count > 0
-      lks = content_tag(:a, pluralize(foto.likes_count, 'like'), :href => "javascript:;", :class => 'likes_cnt')
-    end
-    if foto.comments_count > 0
-      cmts = content_tag(:a, pluralize(foto.comments_count, 'comment'), :href => "javascript:;", :class => 'comments_cnt')
-    end
-    if foto.fonts_count > 0
-      fnts = content_tag(:a, pluralize(foto.fonts_count, 'font'), :href => "javascript:;", :class => 'fonts_cnt', 'data-url' => feed_fonts_path(:id => foto.id))
-    end
+    css_class = 'likes_cnt' + (foto.likes_count > 0 ? '' : ' hidden')
+    lks = content_tag(:a, pluralize(foto.likes_count, 'like'), :href => "javascript:;", :class => css_class, :id => "likes_cnt_#{foto.id}")
+
+    css_class = 'comments_cnt' + (foto.comments_count > 0 ? '' : ' hidden')
+    cmts = content_tag(:a, pluralize(foto.comments_count, 'comment'), :href => "javascript:;", :class => css_class, :id => "comments_cnt_#{foto.id}")
+
+    css_class = 'fonts_cnt' + (foto.fonts_count > 0 ? '' : ' hidden')
+    fnts = content_tag(:a, pluralize(foto.fonts_count, 'font'), :href => "javascript:;", :class => css_class, :id => "fonts_cnt_#{foto.id}", 'data-url' => feed_fonts_path(:id => foto.id))
+
     ts + lks + cmts + fnts
   end
 
@@ -96,7 +95,7 @@ module ApplicationHelper
 
   # HACK: to NOT show any links for V1 launch
   def profile_path(opts=nil)
-    @current_user ? super(opts) : 'javascript:;'
+    logged_in? ? super(opts) : 'javascript:;'
   end
 
   def user_countdown_count
@@ -104,11 +103,13 @@ module ApplicationHelper
   end
 
   def render_follow_button(usr)
+    return "<button class='button-a flt-left login-req'>Follow</button>".html_safe unless logged_in?
     return "" if current_user.id == usr.id
+    css_id = "follow_btn_#{usr.id}"
     content = if current_user.can_follow?(usr)
-      "<button class='button-a flt-left'>Follow</button>"
+      "<button class='button-a flt-left follow-btn' id='#{css_id}' data-href='#{follow_user_path(usr.id)}'>Follow</button>"
     else # already following
-      "<button class='button-a selected flt-left'>Following</button>"
+      "<button class='button-a selected flt-left follow-btn' id='#{css_id}' data-href='#{unfollow_user_path(usr.id)}'>Following</button>"
     end
     content.html_safe
   end
@@ -121,6 +122,15 @@ module ApplicationHelper
       "<a href='#' class='img-flag selected flt-left bg-tooltip'><label class='tooltip'>Flagged</label></a>"
     end
     content.html_safe
+  end
+
+  def render_photo_like_button(f, liked=false)
+    href = socialize_feed_path(f, :modal => liked ? 'unlike' : 'like')
+    css_class = "mat4 #{'selected' if liked} bg-tooltip"
+    css_id = (liked ? 'unlike_' : 'like_') + f.id.to_s
+    content_tag(:a, :href => 'javascript:;', :class => css_class, :id => css_id, 'data-href' => href, :remote => true) do
+      content_tag(:label, liked ? 'liked' : 'like', :class => 'tooltip')
+    end
   end
 
   def me?

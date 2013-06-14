@@ -1,0 +1,20 @@
+<% u ||= c.user %>
+<% fnts_map ||= [] %>
+<div class="comment">
+  <a class="propic" href="<%= profile_path(:user_id => u.id) %>">
+    <img src="<%= u.url_thumb %>">
+  </a>
+  <ul>
+    <li class="a">
+    <span class="name"><%= u.username %></span>
+    <span class="time"><%= timestamp(c.created_at) %></span>
+    </li>
+    <li class="b">
+    <span><%= c.body %></span>
+    <% (c.font_tag_ids || []).each do |ft_id| %>
+      <% f = fnts_map[ft_id.to_s] %>
+      <span>Spotted <%= f.display_name %></span>
+    <% end %>
+    </li>
+  </ul>
+</div> <!-- comment -->

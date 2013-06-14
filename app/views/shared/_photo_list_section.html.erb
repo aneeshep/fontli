@@ -1,5 +1,5 @@
-<img src="<%= f.url_medium %>">
-<div class="overlap-b"></div>
+<img src="<%= f.url_medium %>" class='popitup'>
+<div class="overlap-b popitup"></div>
 <% unless section == 'profile-post'%>
   <i></i>
 <% end %>
@@ -10,16 +10,13 @@
 <span class="mat2">
   <%= f.most_agreed_font.display_name if f.sos_approved? %>
 </span>
-<span class="mat3">
-  <%= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 45) %>
-</span>
+<span class="mat3"></span>
+
 <% liked = @my_lks.nil? || @my_lks[f.id] %>
-<a href="#" class="mat4 <%= 'selected' if liked %> bg-tooltip"><label class='tooltip'><%= liked ? 'liked' : 'like' %></label></a>
+<%= render_photo_like_button(f, liked) %>
 <span class="mat5">
   <%= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 40) %>
 </span>
 <% spotted = current_user.spotted_on?(f) %>
 <a class="loc-img <%= 'selected' if spotted %> bg-tooltip" href="#"><label class="tooltip"><%= spotted ? 'spotted' : 'spot' %></label></a>
-<span class="mat6">
-  Comment...
-</span>
+<span class="mat6"></span>

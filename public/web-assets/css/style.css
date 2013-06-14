@@ -142,8 +142,6 @@ h2{
 }
     }
 
-
-
 #stream-4 div.my-update {
 h1{
     color: #333333;
@@ -245,8 +243,6 @@ section:hover{
     -o-animation:myfirst .2s; /* Opera */
 }
 
-
-
 footer{
     margin:20px 0px 10px 0px;
  a.profile-img{
@@ -257,7 +253,6 @@ footer{
    display: inline-block;
    float:left;
    overflow: hidden;
-
 
  div.overlap{
    pointer-event: none;
@@ -338,14 +333,6 @@ span{
     100% {top:-5px;}
 }
 
-
-
-
-
-
-
-
-
 .mobpic{position: absolute;left: -235px;top:8px;z-index: 99;}
 .phone-top{position: absolute;top:77px;left: 19px;}
 .qrcode{position: absolute;right: -222px;top: 30px;height:124px;width:162px}
@@ -378,7 +365,6 @@ div.qrcode{
 width:325px;
 }
 
-
 .controls{
     text-align: center;position: relative;top:-210px;
 a.prev-page{
@@ -404,7 +390,6 @@ a.next-page:hover, a.prev-page:hover { opacity: 1.0; }
     height: 47px;
 }
 
-
 .grey-box{
     display: inline;
     float: right;
@@ -423,7 +408,7 @@ input{
 }
 
 input:hover{
-background: url("http://localhost/fontli-assets/css/../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
+background: url("../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
 
 
 }
@@ -436,14 +421,21 @@ background: url("http://localhost/fontli-assets/css/../images/search.png") no-re
 
 }
 .grey-box.search:hover{
-background: url("http://localhost/fontli-assets/css/../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
+background: url("../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
   box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.42) inset;
-  input{
+
+input{
+background:#fff;
+}
+
+}
+input:focus{
 background:#fff;
 color:#4d4d4d;
 width:160px;
-
-
+.grey-box.search{
+ background: url("../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
+ box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.42) inset;
 }
 
 }
@@ -545,15 +537,12 @@ width:160px;
       }
     }
 
-
     span a.outer{
     top:8px ;
 
     span a.outer:hover{
     top:8px;
     }
-
-
 
     }
     span a.outer:hover{
@@ -586,7 +575,7 @@ width:160px;
 
     li{
          border-top: 1px solid transparent;
-         border-bottom: 1px solid transparent   ;
+         border-bottom: 1px solid transparent;
          border-opacity: 0;
     }
 
@@ -699,8 +688,6 @@ div.outer-b:hover{
     li:last-child:hover{
     border-top:1px solid #ccc;
     }
-
-
 
     li a{
     padding:8px;
@@ -833,146 +820,10 @@ color:#4d4d4d;
 
 
 .set1.icons{
-left:20px;
+left:10px;
 }
 
 .set1 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     position: absolute;
     overflow: hidden;
     left: 445px;
@@ -984,7 +835,7 @@ li{
     position: relative;
     padding:10px;
     overflow: hidden;
-    width:20px;
+    width:25px;
 i{
     display: inline-block;
 }
@@ -992,9 +843,7 @@ div{
     display:none;
 }
     }
-li:hover{
-width:30px;
-}
+
 li:last-child:hover{
 width:45px;
 }
@@ -1008,7 +857,7 @@ div{
     height:44px;
     width:33px;
     padding:10px;
-    background: url('../images/Like-Enlarged.png') no-repeat;
+    background: url('../images/Like-Enlarged.png') no-repeat ;
 }
     }
 li.set1-b{
@@ -1027,12 +876,14 @@ li.set1-c{
 i{
     width: 22px;
     height: 47px;
-    background: url('../images/comment1.png') no-repeat 0px 2px;
+    background: url('../images/comment1.png') no-repeat -0px 2px;
 }
 div{
     height:43px;
     width:53px;
-    background: url('../images/Comment-Enlarged.png') no-repeat;
+    background: url('../images/Comment-Enlarged.png') no-repeat -0px 0px;
+    position:relative;
+    left:-10px;
 }
     }
 li.set1-d{
@@ -1309,7 +1160,7 @@ a{
     }
     a.profile-img{
         padding:24px;
-        background: url('/images/pro-a.png') no-repeat;
+        background: url('../images/pro-a.png') no-repeat;
         float: left;
         border-radius: 24px;
         margin: 0px 7px 0px 0px;
@@ -1439,8 +1290,6 @@ span{
     }
 }
 
-
-
 .set3b{
     bottom: 20px;
     margin: 0 auto;
@@ -1504,6 +1353,7 @@ overflow: hidden;
     }
 .set3{
  width:480px;
+ display:none;
 .opacity(@opacity: 0);
 .transition(@duration:1s,@ease:ease);
     }
@@ -1512,6 +1362,9 @@ overflow: hidden;
 .transition-dimension(@dimension:margin-left, @duration:0.5s);
     }
     }
+.popup.open ul.set1{
+display:none;
+}
 
 /* Profile Page */
 .pro-header-a{
@@ -1669,8 +1522,6 @@ float:right;
   ul{
       display:inline-block;
 
-
-
   li{
       display: inline;
       float: left;
@@ -1701,14 +1552,10 @@ box-shadow:0 3px 3px rgba(0, 0, 0, 0.15);
     background:url("../images/Asset-fontli-2a - No Top Shadow.png") repeat;
     box-shadow:0 3px 3px rgba(0,0,0,0.15);
 
-
-
 ul{
     clear: both;
     display:inline-block;
     margin-left:15px;
-
-
 
 li{
     display: inline;
@@ -1855,12 +1702,8 @@ div[rel=popitup], li[rel=popitup] { cursor:pointer; }
 
 /*limelight clean up page styling starts*/
 
-#limelight-content{
-margin-top:30px;
-}
-
 #limelight-markup{
-    margin: 0 auto;
+    margin-top:30px;
 
 div.left-content{
 float:left;
@@ -2022,9 +1865,7 @@ p{
     }
 
 
-
 /*ipad landing popup page style ends*/
-
 
 /*pop page related styling*/
 
@@ -2093,7 +1934,9 @@ div.pop-text{
 #popup_container { background-color:rgba(0, 0, 0, 0.8); }
 .wrap { overflow:hidden;  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.7);height:158px;position:relative; }
 .twitter-share-button { width:90px !important; }
-
+div.wrap.slide-banner{
+height:305px;
+}
 /* faq/privacy specific css begins*/
 .faq-container{
   line-height: 1.5em;
@@ -2220,13 +2063,10 @@ color: #999;
 
 /*font details page starts*/
 
-
-
 .font-details{
 padding:30px 0 20px;
 background:#fff;
 overflow:hidden;
-
 
 div.left-panel{
 width:550px;
@@ -2271,8 +2111,6 @@ font-size:16px;
 text-align:center;
 }
 }
-
-
 
 }
 .overlap-d{
@@ -2446,8 +2284,6 @@ top:10px;
        box-shadow: 0 -2px 0 0 rgba(0, 0, 0, 0.2) inset;
    	border: 1px solid rgba(0, 0, 0, 0.3);
    	margin-top:19px;
-
-
    }
 
    button:hover{
@@ -2591,7 +2427,7 @@ h4{
  background:#fff;
 }
 .grey-box.search-sticky{
-    background: url("http://localhost/fontli-assets/css/../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
+    background: url("../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
     box-shadow: -1px -1px 0 #FFFFFF inset, 1px 1px 0 #C0C0C0 inset;
     padding: 8px 0 3px 27px;
   border:none;
@@ -2850,8 +2686,6 @@ width:70px;
  display:block;
  }
 
-
-
 /* search page*/
 
 .pro-header-s{
@@ -3046,10 +2880,6 @@ h1{
     }
     }
 }
-
-
-
-
 
 
 /*---------------------------------------------------

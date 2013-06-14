@@ -3,6 +3,8 @@
 
 <% contents = if params[:type] == 'fav_font' %>
   <% render '/shared/font_list' %>
+<% elsif ['followers', 'follows'].include? params[:type] %>
+  <% render '/shared/account_list' %>
 <% else %>
   <% render '/shared/photo_list', :section => section %>
 <% end %>
