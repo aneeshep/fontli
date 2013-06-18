@@ -13,6 +13,9 @@ $(document).ready(function() {
     $('#popup_container').html('').hide();
     $('#popup_loader').hide(); // just in case
     $("body").css("overflow", "inherit");
+    if(typeof(prevPageUrl) != 'undefined') {
+      history.pushState('data', '', prevPageUrl);
+    }
   });
   $(document).keyup(function(e) {
     if (e.keyCode == 27) { //ESC key

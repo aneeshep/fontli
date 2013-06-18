@@ -14,6 +14,11 @@
       var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
     </script>
   <% end %>
+<% else # update the url to photo's permalink url %>
+  <script type='text/javascript'>
+    prevPageUrl = location.href;
+    history.pushState('data', '', '<%= @photo.permalink %>');
+  </script>
 <% end %>
 
 <div class="popup <%= @open_popup ? 'open' : 'closed' %>">
