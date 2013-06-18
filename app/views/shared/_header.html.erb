@@ -6,7 +6,9 @@
     <div class='notifications-count-box' href='<%= my_updates_path %>'><%= notif_cnt %></div>
     <div class="grey-box up"></div>
     <div class="grey-box search">
-      <input type="text" name="search" placeholder="search" />
+      <%= form_tag search_path, :method => 'post' do %>
+        <input type="text" name="search" placeholder="search" value="<%= params[:search] %>" />
+      <% end %>
     </div>
   </div>
 <% else %>

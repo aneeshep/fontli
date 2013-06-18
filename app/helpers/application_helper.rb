@@ -133,6 +133,16 @@ module ApplicationHelper
     end
   end
 
+  def render_font_autocomplete(fnts)
+    content = ''.html_safe
+    fnts.each do |f|
+      content << content_tag(:li) do
+        content_tag(:a, f[:name], :href => '#')
+      end
+    end
+    content
+  end
+
   def me?
     current_user.id == @user.id
   end

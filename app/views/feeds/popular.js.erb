@@ -5,6 +5,11 @@
 <% else %>
   <% render '/shared/account_list' %>
 <% end %>
+<% if params[:type].blank? # accounts %>
+  $('#stream').attr('id', 'stream-2');
+<% else # posts/fonts %>
+  $('#stream-2').attr('id', 'stream');
+<% end %>
 $('#popular_section_container').html('<%= escape_javascript(contents) %>');
 $('.popular-cta').removeClass('selected');
 <% typ = params[:type] || 'account' %>

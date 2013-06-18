@@ -133,6 +133,13 @@ class FeedsController < ApplicationController
     @mentions_list = current_user.mentions_list(@foto.id)
   end
 
+  def search
+    term = params[:search]
+    @users = User.search(term)
+    @posts = Photo.search(term)
+    @fonts = Font.search(term)
+  end
+
   private
 
   def like_feed

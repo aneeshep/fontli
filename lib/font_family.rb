@@ -3,11 +3,7 @@ require "open-uri"
 module FontFamily
   def self.font_autocomplete(query="")
     params = {:q => query}
-    resp = request('MyFontsSearch/autocomplete.json', params) || []
-
-    resp.collect do |fnt_name|
-      {:name => fnt_name}
-    end
+    request('MyFontsSearch/autocomplete.json', params) || []
   end
 
   def self.font_details(query="")
@@ -39,15 +35,16 @@ module FontFamily
     end.flatten
   end
 
-  def self.get_family_details(id)
-    params = {:idlist => id}
+  def self.get_family_details(family_id)
+    params = {:idlist => family_id}
     resp = request('MyFontsDetails/getFontFamilyDetails.json', params)
 
     if resp
       result = resp.first
       {
         :name => result["name"], :image => result["sampleImage"], :font_url => result["myfontsURL"],
-        :uniqueid => result["uniqueID"], :id => result["id"]
+        :uniqueid => result["uniqueID"], :id => result["id"],
+        :desc => result['articles'].first['body'], :owner => result['owner']['name']
       }
     end
   end

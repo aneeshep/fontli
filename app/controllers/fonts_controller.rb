@@ -9,21 +9,17 @@ class FontsController < ApplicationController
     redirect_to :back
   end
 
-  def fetch_font_families
-    if params[:term]
-      fonts = FontFamily.font_autocomplete(params[:term])
-      render :json => fonts
-    else
-      redirect_to :root
-    end
+  def font_autocomplete
+    fonts = FontFamily.font_autocomplete(params[:term])
+    render :json => fonts
   end
 
-  def get_font_details
-    @fonts_list = FontFamily.font_details(params[:font_name]) unless params[:font_name].blank?
+  def font_details
+    @fonts_list = FontFamily.font_details(params[:fontname]) unless params[:fontname].blank?
     render :layout => false
   end
 
-  def get_sub_font_details
+  def sub_font_details
     @sub_fonts_list = FontFamily.sub_font_details(params[:uniqueid]) unless params[:uniqueid].blank?
     render :layout => false
   end

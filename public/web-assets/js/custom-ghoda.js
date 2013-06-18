@@ -120,24 +120,49 @@ $(document).ready(function() {
         }
       });
     }
-    $('.right-pop .like-box a').removeClass('strong');
+    hideSpotContent();
+    $('.right-pop .like-box.pop-nav a').removeClass('strong');
     $(this).addClass('strong');
     $('.right-pop .header-title').html('Spottings');
     $('.right-pop .bottom-nav').hide();
   });
   $('.popup .view-typetalk').live('click', function() {
     animateTypetalkPopup();
-    $('.right-pop .like-box a').removeClass('strong');
+    hideSpotContent();
+    $('.right-pop .like-box.pop-nav a').removeClass('strong');
     $(this).addClass('strong');
     $('.right-pop .header-title').html('Typetalk');
     $('.right-pop .bottom-nav').show();
   });
   $('.popup .view-likes').live('click', function() {
     animateLikesPopup();
-    $('.right-pop .like-box a').removeClass('strong');
+    hideSpotContent();
+    $('.right-pop .like-box.pop-nav a').removeClass('strong');
     $(this).addClass('strong');
     $('.right-pop .header-title').html('Typetalk');
     $('.right-pop .bottom-nav').hide();
+  });
+  $('.right-pop .like-box.pop-nav a.spot').live('click', function() {
+    $('.right-pop .content-a').hide();
+    $('.right-pop .like-box.spot-search').show();
+  });
+  //$('.right-pop input[name=spot-search]').live('keyup', function() {
+  //  var term = $(this).val().trim();
+  //  if(term.length < 3) return false;
+  //  var url = '/font-autocomplete';
+  //  var params = {term: term};
+  //  $.ajax({url: url, data: params, dataType: 'script'});
+  //});
+  $('.right-pop input[name=spot-search]').live('keyup.autocomplete', function(){
+    $(this).autocomplete({
+      source: '/font-autocomplete',
+      minLength: 3,
+      select: function(e, ui) {
+        if(!(ui.item)) return false;
+        $(this).blur();
+        $('.right-pop .spot-preview').show();
+      }
+    });
   });
   $('.qrcode a, .qrcode-links a').click(function() {
     var klass = $(this).attr('class');
@@ -320,4 +345,10 @@ function updateCounter(val,digit,elem) {
     slot.animate({opacity:1, top:0}, 50);
     slot.attr('class', klass);
   }, userCountdownTimer);
+}
+function hideSpotContent() {
+  $('.right-pop .like-box.spot-search').hide();
+  $('.right-pop .like-box.spot-preview').hide();
+  $('.right-pop .auto-suggestion').hide();
+  $('.right-pop .content-a').show();
 }

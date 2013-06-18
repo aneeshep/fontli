@@ -90,7 +90,7 @@
         <li><a href="#"><img src="/web-assets/images/myfont.png" /></a></li>
       </ul>
     </div>
-    <div class="like-box">
+    <div class="like-box pop-nav">
       <a class='view-likes' href="javascript:;">
         <%= pluralize(likes_cnt, 'like') %>
       </a>
@@ -103,10 +103,19 @@
       <a href="javascript:;" class="like <%= 'login-req' unless logged_in? %>">
         <img src="/web-assets/images/heartsmall.png" />
       </a>
-      <a href="javascript:;" class="like <%= 'login-req' unless logged_in? %>">
+      <a href="javascript:;" class="like spot <%= 'login-req' unless logged_in? %>">
         <img src="/web-assets/images/Spot-Selected.png" />
       </a>
     </div>
+
+    <div class="like-box spot-search hidden">
+      <input type="text" name="spot-search" placeholder="search..."  style="color:#666" />
+    </div>
+    <div class="like-box spot-preview hidden">
+      <input type="text" name='spot-preview' placeholder="Type preview text..."  style="color:#666" />
+    </div>
+    <ul class="auto-suggestion hidden">
+    </ul>
 
     <div class="aa-spotted content content-b" style="display:none;"></div>
     <div class="aa-likes content content-b" style="display:none;">

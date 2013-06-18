@@ -213,6 +213,14 @@ class Photo
     def flagged_ids
       self.unscoped.where(:flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
     end
+
+    def search(text,sort = nil,dir = nil)
+      return [] if text.blank?
+      res = self.where(:caption => /^#{text}.*/i).to_a
+      res = res.sort{|a,b| a.send(sort) <=> b.send(sort)} if sort
+      res = res.reverse if dir == "asc"
+      res
+    end
   end
 
   def data=(file)

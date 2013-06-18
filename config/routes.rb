@@ -16,6 +16,10 @@ Fontli::Application.routes.draw do
   match 'popular' => 'feeds#popular', :as => :popular
   match 'my-updates' => 'feeds#my_updates', :as => :my_updates
   match 'network-updates' => 'feeds#network_updates', :as => :network_updates
+  match 'search' => 'feeds#search', :as => :search
+  match "font-autocomplete" => "fonts#font_autocomplete", :as => :font_autocomplete
+  match "font-details/:fontname" => "fonts#font_details", :as => :font_details
+  match "sub-font-details/:uniqueid" => "fonts#sub_font_details", :as => :sub_font_details
 
   # Old Unused routes
   match 'post-feed' => 'feeds#post_feed', :as => :post_feed
@@ -23,9 +27,6 @@ Fontli::Application.routes.draw do
   match 'detail_view' => 'feeds#detail_view', :as => :detail_view
   match 'get_mentions_list' => 'feeds#get_mentions_list', :as => :get_mentions_list
   match 'tag_font' => 'fonts#tag_font', :as => :tag_font
-  match "fetch_font_families" => "fonts#fetch_font_families", :as => :fetch_font_families
-  match "get_font_details" => "fonts#get_font_details", :as => :get_font_details
-  match "get_sub_font_details" => "fonts#get_sub_font_details", :as => :get_sub_font_details
 
   # welcome controller
   root :to => 'welcome#index'

@@ -1,0 +1,57 @@
+<section id="stream">
+<div class="pro-header-s">
+  <div class="wrapper">
+    <span>Search Results for <label><%= params[:search] %></label></span>
+    <a href="#" class="btn-sort">
+      <img width="13" height="10" src="/web-assets/images/arrow-down-c.png" alt="" title="" />
+      Sort by
+    </a>
+    <% total_count = @posts.length + @users.length + @fonts.length %>
+    <ul class="float-Rt">
+      <li><a href="#"><%= total_count %> Results</a></li>
+      <li><a href="#posts"><%= @posts.length %> Posts</a></li>
+      <li><a href="#fonts"><%= @fonts.length %> Fonts</a></li>
+      <li><a href="#users"><%= @users.length %> Members</a></li>
+    </ul>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="font-list" id="posts">
+    <h1><a href="#">Post (<%= @posts.length %>)</a></h1>
+    <ul>
+      <% @posts.each do |p| %>
+        <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= p.id %>'>
+          <a href="javascript:;">
+            <img src="<%= p.url_thumb %>" />
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="people-list" id="users">
+    <h1><a href="#">People (<%= @users.length %>)</a></h1>
+    <% @users.each do |u| %>
+      <div class="profile-detail">
+        <a href="<%= profile_path(:user_id => u.id) %>" class="pro-img-big-none">
+          <img width="75" height="auto" src="<%= u.url_thumb %>" />
+          <div class="overlap-a-none"></div>
+        </a>
+        <div class="block-b-none">
+          <a class="header-user-none" href="<%= profile_path(:user_id => u.id) %>">@<%= u.username %></a>
+          <h1><%= u.full_name %></h1>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="results-list" id="fonts">
+    <h1><a href="#">Fonts (<%= @fonts.length %>)</a></h1>
+    <% @fonts.each do |f| %>
+      <div class="result">
+        <img width="270" height="64" src="<%= f.thumb_url %>" />
+        <span>
+          <a href="#"><%= f.display_name %></a>
+        </span>
+      </div>
+    <% end %>
+  </div>
+</section>

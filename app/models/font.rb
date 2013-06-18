@@ -82,6 +82,16 @@ class Font
       resp = fnts.group_by { |f| f[:family_id] }
       resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
     end
+
+    def search(name,sort = nil,dir = nil)
+      return [] if name.blank?
+      res = self.where(:family_name => /^#{name}.*/i).to_a
+      res << self.where(:subfont_name => /^#{name}.*/i).to_a
+      res = res.flatten.uniq(&:id)
+      res = res.sort{|a,b| a.send(sort) <=> b.send(sort)} if sort
+      res = res.reverse if dir == "asc"
+      res
+    end
   end
 
   def tagged_photos_count

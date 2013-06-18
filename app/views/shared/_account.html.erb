@@ -4,12 +4,12 @@
 
 <% fotos = u.photos.only(:id, :data_filename).limit(4).to_a %>
 <div class="limelight-content">
-  <a href="<%= profile_path(u) %>" class="pro-img-big">
+  <a href="<%= profile_path(:user_id => u.id) %>" class="pro-img-big">
     <img src="<%= u.url_large %>">
     <div class="overlap-d"></div>
   </a>
   <div class="user-detail">
-    <a href="<%= profile_path(u) %>"><%= u.username %></a>
+    <a href="<%= profile_path(:user_id => u.id) %>"><%= u.username %></a>
     <h1><%= u.full_name %></h1>
     <%= render_follow_button(u) %>
     <div class="clear"> </div>
@@ -24,9 +24,9 @@
       <% end %>
     </ul>
     <ul class="subtext">
-      <li><a href="<%= profile_path(u) %>"><%= pluralize(u.photos_count, 'Post') %></a></li>
-      <li><a href="<%= profile_path(u) %>"><%= pluralize(u.my_fonts_count, 'Spotting') %></a></li>
-      <li><a href="<%= profile_path(u) %>"><%= pluralize(u.followers_count, 'Follower') %></a></li>
+      <li><a href="<%= profile_path(:user_id => u.id) %>"><%= pluralize(u.photos_count, 'Post') %></a></li>
+      <li><a href="<%= profile_path(:user_id => u.id) %>"><%= pluralize(u.my_fonts_count, 'Spotting') %></a></li>
+      <li><a href="<%= profile_path(:user_id => u.id) %>"><%= pluralize(u.followers_count, 'Follower') %></a></li>
     </ul>
   </div>
 </div>
