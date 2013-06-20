@@ -3,7 +3,7 @@
 @lightgrey: #999999;
 @darkgrey: #333;
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 800px) {
   body{
   min-width:100%;
 
@@ -138,11 +138,9 @@
     div.qrcode div.app-download {
     float:left;
     width:45%;
-    height:auto;
     }
     div.qrcode div.app-store {
        display: inline-block;
-        height: 100%;
         margin-left: 3%;
         margin-top: 0;
         width: 45%;
@@ -313,5 +311,27 @@ padding:3% 2%;
 }
 footer.main ul li{
 margin-right:2%;
+}
+#slider1.slider{
+       ul{
+       width:100%;
+       overflow:hidden;
+       li{
+       width:100%;
+       height:100%;
+       div{
+       width:100%;
+       height:100%;
+       div.img-shadow{
+         width:100%;
+         height:100%;
+        img{
+        width:100%;
+        height:100%;
+        }
+       }
+       }
+       }
+       }
 }
 }
