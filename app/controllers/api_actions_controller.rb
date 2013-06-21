@@ -23,7 +23,13 @@ class ApiActionsController < ApiBaseController
 
   def signup
     @extuid = '' if @extuid == '(null)' # weird case
-    user, error = User.new(current_api_accepts_map).api_signup
+    if User::PLATFORMS.include?(@platform.to_s) && @extuid.blank?
+      user = nil
+      other_platform = @platform == 'twitter' ? 'FB' : 'Twitter'
+      error = "Sorry, we couldn't sign you up using #{@platform.titleize}. Please try using #{other_platform}."
+    else
+      user, error = User.new(current_api_accepts_map).api_signup
+    end
     render_response(user, !user.nil?, error)
   end
 
