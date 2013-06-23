@@ -2,11 +2,15 @@ require 'font_family'
 
 class FontsController < ApplicationController
   def tag_font
-    @photo = Photo.find(params[:photo_id])
-    @font = @photo.fonts.new(params[:font])
-    @font.user_id = current_user.id
-    @font.save
-    redirect_to :back
+    # re-using the same method for apis
+    @resp, @error = Photo.add_comment_for(
+      :photo_id  => params[:photo_id],
+      :user_id   => current_user.id,
+      :font_tags => [params[:font]]
+    )
+    @photo = Photo[params[:photo_id]]
+    @fonts = @photo.fonts.asc(:created_at).to_a
+    render :layout => false
   end
 
   def font_autocomplete
@@ -15,12 +19,16 @@ class FontsController < ApplicationController
   end
 
   def font_details
-    @fonts_list = FontFamily.font_details(params[:fontname]) unless params[:fontname].blank?
+    @fonts = cache("font_details_#{params[:fontname]}") do
+      FontFamily.font_details(params[:fontname])
+    end
     render :layout => false
   end
 
   def sub_font_details
-    @sub_fonts_list = FontFamily.sub_font_details(params[:uniqueid]) unless params[:uniqueid].blank?
+    @sub_fonts_list = cache("sub_font_details_#{params[:uniqueid]}") do
+      FontFamily.sub_font_details(params[:uniqueid])
+    end
     render :layout => false
   end
 end

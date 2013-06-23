@@ -4,7 +4,7 @@
   $("#comments_cnt_<%= params[:id] %>").removeClass('hidden');
   $(".like-box .view-typetalk").html("<%= pluralize(@photo.comments_count, 'comment') %>");
   // append the comment content
-  $('.aa-typetalk .comment-box').append("<%= escape_javascript(render "/shared/comment_content", :c => @cmt) %>");
+  $('.aa-typetalk .comment-box').prepend("<%= escape_javascript(render "/shared/comment_content", :c => @cmt) %>");
 <% else %>
   $('.comment-form').append("<span>Failed. Too long!</span>");
 <% end %>

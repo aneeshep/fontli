@@ -11,6 +11,7 @@ Fontli::Application.routes.draw do
   match 'unfollow-user/:id' => 'feeds#unfollow_user', :as => :unfollow_user
   match 'sos' => 'feeds#sos', :as => :sos
   match 'feed/:id/fonts' => 'feeds#fonts', :as => :feed_fonts
+  match 'fonts/:family_id' => 'feeds#show_font', :as => :show_font
   match 'recent-fonts' => 'feeds#recent_fonts', :as => :recent_fonts
   match 'profile' => 'feeds#profile', :as => :profile
   match 'popular' => 'feeds#popular', :as => :popular
@@ -20,13 +21,13 @@ Fontli::Application.routes.draw do
   match "font-autocomplete" => "fonts#font_autocomplete", :as => :font_autocomplete
   match "font-details/:fontname" => "fonts#font_details", :as => :font_details
   match "sub-font-details/:uniqueid" => "fonts#sub_font_details", :as => :sub_font_details
+  match 'tag_font' => 'fonts#tag_font', :as => :tag_font
 
   # Old Unused routes
   match 'post-feed' => 'feeds#post_feed', :as => :post_feed
   match 'publish-feed/:id' => 'feeds#publish_feed', :as => :publish_feed
   match 'detail_view' => 'feeds#detail_view', :as => :detail_view
   match 'get_mentions_list' => 'feeds#get_mentions_list', :as => :get_mentions_list
-  match 'tag_font' => 'fonts#tag_font', :as => :tag_font
 
   # welcome controller
   root :to => 'welcome#index'

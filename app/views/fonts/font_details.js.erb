@@ -1,0 +1,5 @@
+$('.right-pop .aa-spot-list').html('<%= escape_javascript(render '/feeds/spot_list') %>').show();
+$('.right-pop .aa-spotted').hide();
+enableScrollBars('.aa-spot-list');
+$('.right-pop .spot-preview').show();
+hideAjaxLoader();

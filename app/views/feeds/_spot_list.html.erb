@@ -1,0 +1,20 @@
+<div class="comment-box clr">
+  <% @fonts.each do |f| %>
+    <div class="set3c">
+      <img src="<%= f[:image] %>" width="300" alt="">
+      <span class='font-name'><%= f[:name] %></span>
+      <div class="spotted" data-id="<%= f[:uniqueid] %>">
+        <button class="small-btn-spotted spot-this">Spot</button>
+        <button class="small-btn-black view-family">View Family (<%= f[:count] %>)</button>
+      </div>
+      <%= form_tag tag_font_path, :id => "tag_form_#{f[:uniqueid]}", :remote => true do %>
+        <%= hidden_field_tag :photo_id, '', :class => 'photo-id-input' %>
+        <%= hidden_field :font, :family_unique_id, :value => f[:uniqueid] %>
+        <%= hidden_field :font, :family_name, :value => f[:name] %>
+        <%= hidden_field :font, :family_id, :value => f[:id] %>
+        <%= hidden_field :font, :img_url, :value => f[:image] %>
+        <%= hidden_field :font, :coords, :class => 'coords-input' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

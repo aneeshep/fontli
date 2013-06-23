@@ -5,5 +5,6 @@ tmp/
 .sass-cache/
 public/photos/
 public/avatars/
+public/fonts/
 public/assets
 .project

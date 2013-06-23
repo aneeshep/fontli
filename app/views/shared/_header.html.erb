@@ -2,8 +2,13 @@
   <% notif_cnt = current_user.notifications_count %>
   <div class="tertiary">
     <a href="<%= feeds_path %>" id="logo">Fontli</a>
-    <a href='<%= profile_path %>' class="grey-box profile" style="background: url('<%= current_user.url_thumb %>') no-repeat -5px 0px #2a2a2a;"></a>
-    <div class='notifications-count-box' href='<%= my_updates_path %>'><%= notif_cnt %></div>
+    <div class="grey-box profile">
+      <a href='<%= profile_path %>' class='img-mask'>
+        <img width="49" height="49" title="profile" src='<%= current_user.url_thumb %>'>
+        <div class="overlap"></div>
+      </a>
+      <div class='notifications-count-box' href='<%= my_updates_path %>'><%= notif_cnt %></div>
+    </div>
     <div class="grey-box up"></div>
     <div class="grey-box search">
       <%= form_tag search_path, :method => 'post' do %>

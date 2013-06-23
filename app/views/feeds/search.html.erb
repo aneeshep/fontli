@@ -1,17 +1,12 @@
 <section id="stream">
 <div class="pro-header-s">
   <div class="wrapper">
-    <span>Search Results for <label><%= params[:search] %></label></span>
-    <a href="#" class="btn-sort">
-      <img width="13" height="10" src="/web-assets/images/arrow-down-c.png" alt="" title="" />
-      Sort by
-    </a>
     <% total_count = @posts.length + @users.length + @fonts.length %>
+    <span>Search Results <b>(<%= total_count %>)</b> for <label><%= params[:search] %></label></span>
     <ul class="float-Rt">
-      <li><a href="#"><%= total_count %> Results</a></li>
       <li><a href="#posts"><%= @posts.length %> Posts</a></li>
-      <li><a href="#fonts"><%= @fonts.length %> Fonts</a></li>
       <li><a href="#users"><%= @users.length %> Members</a></li>
+      <li><a href="#fonts"><%= @fonts.length %> Fonts</a></li>
     </ul>
   </div>
 </div>

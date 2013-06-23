@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
 
   before_filter :login_required, :set_current_controller
 
+  # required to be public by the mongo extensions
+  def current_user
+    @current_user ||= User.find(session[:user_id])
+  end
+  helper_method :current_user
+
 protected
 
   def login_required
@@ -24,11 +30,6 @@ protected
     msg = "Access denied! Please login."
     redirect_to login_url(:default), :notice => msg
   end
-
-  def current_user
-    @current_user ||= User.find(session[:user_id])
-  end
-  helper_method :current_user
 
   def logged_in?
     !session[:user_id].nil?

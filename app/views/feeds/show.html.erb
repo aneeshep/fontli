@@ -23,11 +23,16 @@
 
 <div class="popup <%= @open_popup ? 'open' : 'closed' %>">
   <div class="left-pop">
-    <div class="bigpic">
+    <div class="bigpic" data-id="<%= @photo.id.to_s %>">
       <div class="img-overlay"></div>
       <img src="<%= @photo.url(:large) %>" style="width:480px;height:480px;"/>
       <a href="javascript:;" data-href='<%= show_feed_path %>' class="set4"></a>
       <a href="javascript:;" data-href='<%= show_feed_path %>' class="set5"></a>
+
+      <div id='tag_locator' class='hidden'>
+        <img src='/web-assets/images/taglabelmark.png' id="tag_labelmark" class="draggable" />
+        <p>Place this marker on the image where the font is spotted</p>
+      </div>
     </div>
 
     <ul class="set1 icons">
@@ -62,7 +67,7 @@
       <span class='pop-disclaimer'>
         <%= fnt.display_name %>
         <%= pluralize(fnt.agrees_count, 'Agree') %>
-        <img src="/web-assets/images/heartsmall.png" width="22" height="20" alt="like" title="like" />
+        <img src="/web-assets/images/Agreed--Default.png" width="22" height="18" title="Agree" />
       </span>
     </div>
     <% end %>
@@ -92,7 +97,6 @@
         <li class="c">
           <a href="#"></a>
         </li>
-        <li><a href="#"><img src="/web-assets/images/myfont.png" /></a></li>
       </ul>
     </div>
     <div class="like-box pop-nav">
@@ -112,17 +116,18 @@
         <img src="/web-assets/images/Spot-Selected.png" />
       </a>
     </div>
+    <div style="clear:both;"></div>
 
     <div class="like-box spot-search hidden">
       <input type="text" name="spot-search" placeholder="search..."  style="color:#666" />
     </div>
     <div class="like-box spot-preview hidden">
-      <input type="text" name='spot-preview' placeholder="Type preview text..."  style="color:#666" />
+      <input type="text" class='search-input-bottom' name='spot-preview' placeholder="Type preview text..."  style="color:#666" />
     </div>
-    <ul class="auto-suggestion hidden">
-    </ul>
 
     <div class="aa-spotted content content-b" style="display:none;"></div>
+    <div class="aa-spot-list content content-b" style="display:none;"></div>
+    <div class="aa-spot-list-family content content-b" style="display:none;"></div>
     <div class="aa-likes content content-b" style="display:none;">
       <%= render 'liked_pop' %>
     </div>

@@ -17,8 +17,8 @@
   </div>
   <div class="block-c<%= '-none' if no_info %>">
     <div>
-      <%= render_flag_button(@user) %>
       <%= render_follow_button(@user) %>
+      <%= render_flag_button(@user) %>
     </div>
     <ul class='contact'>
       <% unless @user.website.blank? %>

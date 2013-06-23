@@ -28,12 +28,21 @@ class FeedsController < ApplicationController
   end
 
   def fonts
-    @fonts = Photo[params[:id]].fonts.to_a
+    @fonts = Photo[params[:id]].fonts.asc(:created_at).to_a
     render :partial => 'spotted_pop', :layout => false
   end
 
   def recent_fonts
     @fonts = Font.api_recent
+  end
+
+  def show_font
+    @font = Font[params[:font_id]]
+    @details = cache("font_family_details_#{params[:family_id]}") do
+      FontFamily.family_details(params[:family_id])
+    end
+    @photos = Font.tagged_photos_for(:family_id => params[:family_id], :page => params[:page]).to_a
+    preload_photos_my_likes_comments
   end
 
   def profile

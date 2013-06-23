@@ -1,10 +1,21 @@
 <div class="comment-box clr">
   <% @fonts.each do |f| %>
-    <div class="pop-text">
-      <img src="<%= f.img_url %>" width="300" alt="">
-      <span><%= f.display_name %></span>
-      <span class='agrees'><%= pluralize(f.agrees_count, 'Agree') %></span>
-      <img src="/web-assets/images/heartsmall.png" width="22" height="20" alt="like" title="like" />
+    <% status = f.my_agree_status %>
+    <div class="set3c">
+      <a href="<%= show_font_path(f.family_id, :font_id => f.id) %>">
+        <img src="<%= f.img_url %>" width="300" alt="" />
+        <span>
+          <span class="pop-disclaimer"><%= f.display_name %></span>
+          <%= pluralize(f.agrees_count, 'Agree') %>
+          <% if status == 'Tagged' %>
+            <img class="user-spotted" src="/web-assets/images/Spotted-Small.png" width="14" height="16" title="Spotted" />
+          <% elsif status == 'Agreed' %>
+            <img class="selected" src="/web-assets/images/Agreed-Clicked.png" width="22" height="18" title="Agreed" />
+          <% else %>
+            <img src="/web-assets/images/Agreed--Default.png" width="22" height="18" title="Agree" />
+          <% end %>
+        </span>
+      </a>
     </div>
   <% end %>
 </div>

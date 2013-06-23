@@ -74,7 +74,6 @@ img{
     left:5px;
 }
 box-shadow: 0 37px 58px -21px #000000 inset;
-margin:0px 5px;
 position: relative;
 span{
     color: #fff;
@@ -1224,14 +1223,17 @@ a{
              }
 
     .like-box{
-        border-bottom: 1px solid #CCCCCC;
-        overflow: auto;
+        overflow: visible;
         padding:0 6px 0 0;
          input[type="text"]{
             border:none;
             height: 30px;
             width: 100%;
              background: url("../images/patterna.png") repeat-x scroll 0 0 transparent;
+             border-top:1px solid #ddd;
+         }
+         input[type="text"].search-input-bottom{
+         border-bottom:1px solid #ddd;
          }
     a{
        color: #666666;
@@ -1242,7 +1244,7 @@ a{
     }
     a.like{
     float:right;
-    padding:8px 2px;
+    padding:8px 0px;
     }
     a.profile-img{
         padding:24px;
@@ -1353,10 +1355,10 @@ a.propic{
 
 
 .set3c{
-text-align:center;
-padding:10px 0;
+padding:5px 0 10px;
 margin:0 0 0 2px;
 width:350px;
+text-align:center;
 
 img:last-child{
 visibility:hidden;
@@ -1366,15 +1368,63 @@ span{
     color: @lightgrey;
     display:inline-block;
 }
+.font-name{
+  color: #4d4d4d !important;
+    font-weight: bold;
+    display:block;
+}
+.pop-disclaimer{
+  color: #4d4d4d !important;
+    font-weight: bold;
+    display:inline-block;
+}
     }
 .set3c:hover{
     box-shadow: 0 0 4px #CCCCCC;
     width:350px;
+    div.spotted{
+      .transition(@duration:.5s,@ease:ease);
+    display:block !important;
+
+    }
 
     img:last-child{
     visibility:visible;
     }
+
+
 }
+.set3c img.user-spotted,.set3c img.selected{
+visibility:visible;
+}
+img {vertical-align:-5%;}
+    .spotted{
+    margin-top:5px;
+    display:none;
+    button.small-btn-spotted{
+   font-size: 12px;
+    background: none repeat scroll 0% 0% rgb(73, 194, 188);
+     border: medium none;
+      border-radius: 1px 1px 1px 1px;
+      color: rgb(255, 255, 255);
+      padding:3px 0px;
+      width: 70px;
+      text-align: center;
+      cursor:pointer;
+
+    }
+    button.small-btn-black{
+    font-size: 12px;
+    background: #000;
+     border: medium none;
+      border-radius: 1px 1px 1px 1px;
+      color: rgb(255, 255, 255);
+      padding:3px 0px;
+      width: 100px;
+      text-align: center;
+      cursor:pointer;
+    }
+    }
 
 .set3b{
     bottom: 20px;
@@ -2969,14 +3019,77 @@ h1{
     }
     }
 }
+.img-tile-container{
+    overflow: hidden;
+    width: 305px;
 .img-tile{
-div:first-child{
-float: right; width: 227px; height: 75px;
+float:left;
+width:157px;
+height:157px;
 }
-img{
-position: relative!important; float: right;
+ div.split{
+  float: right;
+  height: 74px;
+  img{
+  position: relative!important;
+   float: right;
+   height:75px;
+   left:0!important;
+  }
+}
+
+
+}
+div.parent .popup{
+overflow:visible;
+    .bottom-nav{
+    visibility:hidden;
+    }
+}
+
+.trial{
+position: absolute;
+right: -200px;
+top: 20px;
+border: 1px solid red;
+display: block;
+width: 126px;
+z-index: 9999;
+}
+
+#popular_section_container{
+margin-top:30px;
+div.feed-item{
+display:inline-block;
 }
 }
+div.like-box .loc-img{
+    background: url('../images/location-b.png') no-repeat;
+  float: right;
+    margin-top: 7px;
+    padding: 4px;
+    width:20px;
+    height:22px;
+}
+.loc-tooltip{
+text-align:center;
+right:-25px;
+}
+
+.loc-img.selected{
+    background: url("../images/Spot-Selected.png") no-repeat scroll 0 0 transparent !important;
+    display: block;
+    height: 22px;
+    width: 20px;
+}
+#tag_locator{
+  position: absolute;
+  top: 200px;
+  left: 125px;
+  width: 250px;
+  p { padding:10px; background-color:#000; color:#fff; font-weight:bold; }
+}
+
 
 /*---------------------------------------------------
     LESS Elements 0.7

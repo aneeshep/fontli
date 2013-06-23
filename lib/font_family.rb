@@ -12,8 +12,9 @@ module FontFamily
 
     resp["results"].collect do |result|
       sub_font_count = result["description"].match(/\d/).to_s
+      img_url = result["sampleImage"].match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
       {
-        :name => result["name"], :image => result["sampleImage"],
+        :name => result["name"], :image => img_url,
         :font_url => result["myfontsURL"], :uniqueid => result["uniqueID"],
         :id => result["id"], :count => sub_font_count
       }
@@ -27,22 +28,24 @@ module FontFamily
     resp.collect do |result|
       result["styles"].collect do |style|
         font_url = style["myfontsURL"].blank? ? "" : "http://new.myfonts.com/" + style["myfontsURL"]
+        img_url = style["sampleImage"].match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
         {
-          :name => style["name"], :image => style["sampleImage"],
+          :name => style["name"], :image => img_url,
           :font_url => font_url, :uniqueid => result["uniqueID"], :id => style["id"]
         }
       end
     end.flatten
   end
 
-  def self.get_family_details(family_id)
+  def self.family_details(family_id)
     params = {:idlist => family_id}
     resp = request('MyFontsDetails/getFontFamilyDetails.json', params)
 
     if resp
       result = resp.first
+      img_url = result["sampleImage"].match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
       {
-        :name => result["name"], :image => result["sampleImage"], :font_url => result["myfontsURL"],
+        :name => result["name"], :image => img_url, :font_url => result["myfontsURL"],
         :uniqueid => result["uniqueID"], :id => result["id"],
         :desc => result['articles'].first['body'], :owner => result['owner']['name']
       }

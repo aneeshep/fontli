@@ -1,0 +1,11 @@
+<% unless @resp.nil? %>
+  var data = '<%= escape_javascript(render 'feeds/spotted_pop') %>';
+  loadSpottedContent(data);
+  hideSpotContent();
+  $('.pop-nav .view-spotted').html('<%= pluralize(@photo.fonts_count, 'spotting') %>');
+  $('.left-pop .fonts_cnt').html('<%= pluralize(@photo.fonts_count, 'font') %>');
+<% else %>
+  alert('Spotting failed. Please try again!');
+  $('.pop-nav .view-spotted').trigger('click');
+<% end %>
+hideAjaxLoader();
