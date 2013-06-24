@@ -28,7 +28,7 @@ class FeedsController < ApplicationController
   end
 
   def fonts
-    @fonts = Photo[params[:id]].fonts.asc(:created_at).to_a
+    @fonts = Photo[params[:id]].fonts.desc(:created_at).to_a
     render :partial => 'spotted_pop', :layout => false
   end
 

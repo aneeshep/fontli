@@ -9,7 +9,7 @@ class FontsController < ApplicationController
       :font_tags => [params[:font]]
     )
     @photo = Photo[params[:photo_id]]
-    @fonts = @photo.fonts.asc(:created_at).to_a
+    @fonts = @photo.fonts.desc(:created_at).to_a
     render :layout => false
   end
 

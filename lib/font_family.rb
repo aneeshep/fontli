@@ -1,13 +1,15 @@
 require "open-uri"
 
 module FontFamily
+  PREVIEW_TEXT = 'fargopudmixy'
+
   def self.font_autocomplete(query="")
     params = {:q => query}
     request('MyFontsSearch/autocomplete.json', params) || []
   end
 
   def self.font_details(query="")
-    params = {:searchText => query, :resultType => "fonts"}
+    params = {:searchText => query, :resultType => "fonts", :render => {:text => PREVIEW_TEXT, :foreground => '666666'}}
     resp = request('MyFontsSearch/search.json', params) || {'results' => []}
 
     resp["results"].collect do |result|
