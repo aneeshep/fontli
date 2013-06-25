@@ -34,6 +34,9 @@ header.main .secondary {font-size: 25px;font-weight: bold;width: 512px;line-heig
     height: 105px;
 blockquote{
     color:@grey;font-size:16px;margin-left:225px;padding:left;width: 470px;float: left;
+    a.avatar img{
+    vertical-align:top;
+    }
 p		{width: 383px;display: inline-block;vertical-align: 30%;font-size: 13px;line-height: 22px;margin-left: 10px;}
     }
 cite				{font-weight:bold;color:#000}
@@ -1223,7 +1226,7 @@ a{
              }
 
     .like-box{
-        overflow: visible;
+        overflow: auto;
         padding:0 6px 0 0;
          input[type="text"]{
             border:none;
@@ -1580,7 +1583,7 @@ a.header-link{
     color: #666;
     font-weight: bold;
 }
-a.header-user{
+span.header-user{
     font-size:16px;
     color: #999;
     font-weight: bold;
