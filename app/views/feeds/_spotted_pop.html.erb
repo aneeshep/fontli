@@ -1,8 +1,8 @@
 <div class="comment-box clr">
   <% @fonts.each do |f| %>
-    <% status = f.my_agree_status %>
+    <% status = logged_in? ? f.my_agree_status : '' %>
     <div class="set3c">
-      <a href="<%= show_font_path(f.family_id, :font_id => f.id) %>">
+      <a href="<%= session[:test_version] ? show_font_path(f.family_id, :font_id => f.id) : 'javascript:;'%>">
         <img src="<%= f.img_url %>" width="300" alt="" />
         <span>
           <span class="pop-disclaimer"><%= f.display_name %></span>

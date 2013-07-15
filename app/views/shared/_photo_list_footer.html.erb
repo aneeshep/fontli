@@ -1,6 +1,6 @@
 <% unless section == 'profile-post' %>
   <a href="<%= profile_path(:user_id => u.id) %>" class="profile-img">
-    <img width="50" height="50" alt="profile-image" src="<%= u.url_thumb %>" />
+    <img width="100%" height="100%" alt="profile-image" src="<%= u.url_thumb %>" />
     <div class="overlap"></div>
   </a>
 <% end %>

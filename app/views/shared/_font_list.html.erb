@@ -6,7 +6,7 @@
 <% @fonts.each do |f| %>
   <ul>
     <li>
-      <a href="#">
+      <a href="<%= show_font_path(f.family_id, :font_id => f.id) %>">
         <img src="<%= f.img_url %>" width="290" height="auto">
         <h5><span><%= f.display_name %></span>by MyFonts</h5>
         <span><%= pluralize(f.tagged_photos_count, 'Photo') %></span>
@@ -14,7 +14,7 @@
       </a>
     </li>
     <% Font.tagged_photos_for({:family_id => f.family_id}, 3).each do |p| %>
-      <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= f.id %>'>
+      <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= p.id %>'>
         <a class="spotted-img" href="javascript:;">
           <img src="<%= p.url_thumb %>" width="208" height="206" />
         </a>

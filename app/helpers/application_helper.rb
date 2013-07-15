@@ -95,7 +95,11 @@ module ApplicationHelper
 
   # HACK: to NOT show any links for V1 launch
   def profile_path(opts=nil)
-    logged_in? ? super(opts) : 'javascript:;'
+    session[:test_version] ? super(opts) : 'javascript:;'
+  end
+
+  def login_required_class
+    'login-req' if session[:test_version] && !logged_in?
   end
 
   def user_countdown_count
@@ -145,5 +149,13 @@ module ApplicationHelper
 
   def me?
     current_user.id == @user.id
+  end
+
+  def homepage?
+    session[:test_version] && @homepage
+  end
+
+  def not_homepage?
+    @homepage.nil?
   end
 end

@@ -1,5 +1,6 @@
 <% typ = params[:type] || 'post' %>
 <% section = 'profile-post' if typ == 'post' %>
+<% collection = @users || @photos || @fonts %>
 
 <% contents = if params[:type] == 'fav_font' %>
   <% render '/shared/font_list' %>
@@ -9,7 +10,23 @@
   <% render '/shared/photo_list', :section => section %>
 <% end %>
 
-$('#profile_section_container').html('<%= escape_javascript(contents) %>');
-$('.profile-cta').removeClass('selected');
-$(".profile-cta.<%= typ %>").addClass('selected');
-hideAjaxLoader();
+<% if params[:page] # pagination request %>
+  <% if collection.blank? # stop paginating %>
+    $('#profile_section_container').append('<p>Nothing more to load</p>');
+    // set the docHeight greater than actual height
+    // and that stops further pagination requests
+    docHeight = getDocHeight() + 10000;
+  <% else %>
+    $('#profile_section_container').append('<%= escape_javascript(contents) %>');
+    // set the page JS variables
+    pageNum = parseInt('<%= params[:page] %>');
+    docHeight = getDocHeight();
+    doPagination = true;
+  <% end %>
+  $('.loader').addClass('hidden');
+<% else %>
+  $('#profile_section_container').html('<%= escape_javascript(contents) %>');
+  $('.profile-cta').removeClass('selected');
+  $(".profile-cta.<%= typ %>").addClass('selected');
+  hideAjaxLoader();
+<% end %>

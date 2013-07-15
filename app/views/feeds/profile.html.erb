@@ -1,4 +1,6 @@
-<%= render 'shared/pinned_header_js' %>
+<% content_for :custom_js do %>
+  <%= render 'shared/pinned_header_js' %>
+<% end %>
 <% no_info = @user.description.blank? %>
 
 <section id="stream">
@@ -17,8 +19,8 @@
   </div>
   <div class="block-c<%= '-none' if no_info %>">
     <div>
-      <%= render_follow_button(@user) %>
-      <%= render_flag_button(@user) %>
+      <%#= render_follow_button(@user) %>
+      <%#= render_flag_button(@user) %>
     </div>
     <ul class='contact'>
       <% unless @user.website.blank? %>
@@ -39,4 +41,7 @@
 <section id='profile_section_container'>
   <%= render '/shared/photo_list', :section => 'profile-post' %>
 </section>
+<div class="loader hidden" style="width:32px;margin:10px auto;">
+  <img src='/web-assets/images/ajax-loader-sm.gif' alt='Loading...' />
+</div>
 </section>

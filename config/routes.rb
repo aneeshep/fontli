@@ -17,6 +17,7 @@ Fontli::Application.routes.draw do
   match 'popular' => 'feeds#popular', :as => :popular
   match 'my-updates' => 'feeds#my_updates', :as => :my_updates
   match 'network-updates' => 'feeds#network_updates', :as => :network_updates
+  match 'search-autocomplete' => 'feeds#search_autocomplete', :as => :search_autocomplete
   match 'search' => 'feeds#search', :as => :search
   match "font-autocomplete" => "fonts#font_autocomplete", :as => :font_autocomplete
   match "font-details/:fontname" => "fonts#font_details", :as => :font_details

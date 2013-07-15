@@ -9,11 +9,12 @@ $(document).ready(function() {
     $('.popup .view-typetalk').trigger('click');
     $('input[name=comment]').focus();
   });
+  prevPageUrl = '';
   $('.popup .cross,.signin .img-cross').live('click', function() {
     $('#popup_container').html('').hide();
     $('#popup_loader').hide(); // just in case
     $("body").css("overflow", "inherit");
-    if(typeof(prevPageUrl) != 'undefined') {
+    if(prevPageUrl != '') {
       history.pushState('data', '', prevPageUrl);
     }
   });
@@ -21,7 +22,7 @@ $(document).ready(function() {
     if (e.keyCode == 27) { //ESC key
       $('#popup_container').html('').hide();
       $('#popup_loader').hide(); // just in case
-      if(typeof(prevPageUrl) != 'undefined') {
+      if(prevPageUrl != '') {
         history.pushState('data', '', prevPageUrl);
       }
       $("body").css("overflow", "inherit");
@@ -64,22 +65,26 @@ $(document).ready(function() {
       url: url,
       data: {id:id},
       success: function(data, textStatus) {
+        var reponseScript = $(data).filter("script");
+        $.each(reponseScript, function(idx, val) { eval(val.text); } );
+
         var leftPop = $(data).first().find('.left-pop').html();
-        var rightPop1 = $(data).first().find('.right-pop.typetalk').html();
-        var rightPop2 = $(data).first().find('.right-pop.spotted').html();
+        var rightPop = $(data).first().find('.right-pop').html();
         $('#popup_container .right-pop').hide();
         $('#popup_container .left-pop').fadeOut(0, function() {
           hideAjaxLoader(true);
           $('#popup_container .left-pop').html(leftPop);
-          $('#popup_container .right-pop.typetalk').html(rightPop1);
-          $('#popup_container .right-pop.spotted').html(rightPop2);
+          history.pushState('data', '', $('#permalink_url').attr('data'));
+          $('#popup_container .right-pop').html(rightPop);
         }).fadeIn(400, function() {
-          $('#popup_container .right-pop.typetalk').show();
+          $('#popup_container .right-pop').show();
           setTypetalkHeight();
           setupPopupNavLinks(id);
           enableScrollBars('.aa-typetalk');
         });
         elem.show();
+        twttr.widgets.load();
+        FB.XFBML.parse();
       },
       error: function() {
         hideAjaxLoader(true);
@@ -150,7 +155,7 @@ $(document).ready(function() {
     animateLikesPopup();
     hideSpotContent();
     $('.right-pop .like-box.pop-nav a').removeClass('strong');
-    $(this).addClass('strong');
+    $('.right-pop .like-box.pop-nav a.view-likes').addClass('strong');
     $('.right-pop .bottom-nav').hide();
   });
   $('.right-pop .like-box.pop-nav a.spot').live('click', function() {
@@ -168,6 +173,16 @@ $(document).ready(function() {
         var url = '/font-details/' + ui.item.value;
         showAjaxLoader();
         $.ajax({url: url, dataType: 'script'});
+      }
+    });
+  });
+  $('.search input[name=search]').live('keyup.autocomplete', function(){
+    $(this).autocomplete({
+      source: '/search-autocomplete',
+      minLength: 3,
+      select: function(e, ui) {
+        if(!(ui.item)) return false;
+        $(this).parents('form').submit();
       }
     });
   });
@@ -200,10 +215,10 @@ $(document).ready(function() {
     var text = $(this).html();
     var desc2 = $('.desc2');
     if(text == 'View more') {
-      desc2.show();
+      desc2.removeClass('hidden');
       $(this).html('View less'); }
     else {
-      desc2.hide();
+      desc2.addClass('hidden');
       $(this).html('View more');
     }
   });
@@ -217,15 +232,8 @@ $(document).ready(function() {
 
 // window load events
 $(window).load(function() {
-  // load images async
-  $('img[xsrc]').each(function() {
-    var elem = $(this);
-    var src = elem.attr("xsrc");
-    elem.removeAttr('xsrc').attr('src', src).load(function() {
-      if(elem.get(0).complete && elem.get(0).className != 'hidden-img')
-        elem.show(); // its already visible
-    });
-  });
+  loadMoreImages('next');
+
   userCountdownTimer = 0;
   $('.user-countdown strong').each(function() {
     var countArray = $.map($('.user-countdown').attr('data-count').split(''), Number);
@@ -241,11 +249,26 @@ $(window).load(function() {
     if('#slideshow') slideSwitch();
   }, userCountdownTimer + 8000);
   $('.controls a').click(function() {
+    var direction = $(this).attr('class').replace('-page', '');
+    loadMoreImages(direction);
     clearTimeout(timeout);
     clearInterval(interval);
   });
 });
 
+function loadMoreImages(direction) {
+  var limit = 5;
+  if(direction == 'prev') limit = limit * -1;
+
+  $('img[class=hidden-img][xsrc]').slice(limit).each(function() {
+    $(this).attr('src', $(this).attr('xsrc'));
+    $(this).removeAttr('xsrc');
+  });
+  $('img[class!=hidden-img][xsrc]').slice(limit).each(function() {
+    $(this).attr('src', $(this).attr('xsrc'));
+    $(this).removeAttr('xsrc');
+  });
+}
 function photoDetailPopup(id, url) {
   showAjaxLoader(true);
   if(interval) clearInterval(interval);
@@ -256,12 +279,20 @@ function photoDetailPopup(id, url) {
     data: {id:id},
     success: function(data, textStatus) {
       hideAjaxLoader(true);
+      var reponseScript = $(data).filter("script");
+      $.each(reponseScript, function(idx, val) { eval(val.text); } );
       //$("body").css("overflow", "hidden");
       $('#popup_container').html(data);
+
+      prevPageUrl = location.href;
+      history.pushState('data', '', $('#permalink_url').attr('data'));
+
       centerPopup('.popup');
       setTypetalkHeight();
       enableScrollBars('.aa-typetalk');
       setupPopupNavLinks(id);
+      twttr.widgets.load();
+      FB.XFBML.parse();
     },
     error: function() {
       hideAjaxLoader(true);
@@ -351,9 +382,10 @@ function slideSwitch() {
 }
 // use this to position the view spotted/view typetalk link at the bottom of the popup.
 function setTypetalkHeight() {
-  var totalHeight = 424; // 40px padding and 41px like-box height
-  captionHeight = $('.right-pop .content-a').height();
-  $('.right-pop .content-b').css('height', (totalHeight - captionHeight) + 'px');
+  var totalHeight = 428; // 615px - 55px(header) - 29px(padding) - 38px(like-box) - 65px(margin-bottom)
+  var captionHeight = $('.right-pop .content-a').height();
+  var recentLikesHeight = $('.right-pop .recent-likes').height(); 
+  $('.right-pop .content-b').css('height', (totalHeight - captionHeight - recentLikesHeight) + 'px');
 }
 function updateCounter(val,digit,elem) {
   var klass = elem.attr('class');

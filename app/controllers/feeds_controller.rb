@@ -1,5 +1,6 @@
 class FeedsController < ApplicationController
-  skip_before_filter :login_required, :only => [:show, :fonts, :permalink]
+  #skip_before_filter :login_required, :only => [:show, :fonts, :permalink]
+  skip_before_filter :login_required, :only => [:show, :fonts, :permalink, :profile, :popular, :search, :recent_fonts, :search_autocomplete, :show_font]
 
   def index
     @photos = Photo.feeds_for(current_user, (params[:page] || 1)).to_a
@@ -7,7 +8,7 @@ class FeedsController < ApplicationController
   end
 
   def show
-    @photo = Photo[params['id']]
+    @photo = Photo.find(params[:id])
     preload_photo_associations
     render 'show', :layout => false
   end
@@ -38,7 +39,7 @@ class FeedsController < ApplicationController
 
   def show_font
     @font = Font[params[:font_id]]
-    @details = cache("font_family_details_#{params[:family_id]}") do
+    @details = Rails.cache.fetch("font_family_details_#{params[:family_id]}") do
       FontFamily.family_details(params[:family_id])
     end
     @photos = Font.tagged_photos_for(:family_id => params[:family_id], :page => params[:page]).to_a
@@ -55,7 +56,7 @@ class FeedsController < ApplicationController
               current_user
             end
     page = params[:page] || 1
-    offset = (page.to_i - 1) * 18
+    offset = (page.to_i - 1) * 3
 
     case params[:type]
     when 'like'
@@ -72,7 +73,7 @@ class FeedsController < ApplicationController
     when 'follows'
       @users = @user.friends.limit(18).offset(offset).to_a
     else
-      @photos = @user.photos.recent(18).offset(offset)
+      @photos = @user.photos.recent(3).offset(offset).to_a
       preload_photos_my_likes_comments
     end
   end
@@ -85,7 +86,7 @@ class FeedsController < ApplicationController
     when 'font'
       @fonts = Font.popular.to_a
     else
-      @users = User.new.recommended_users
+      @users = User.recommended
     end
   end
 
@@ -140,6 +141,16 @@ class FeedsController < ApplicationController
   def get_mentions_list
     @foto = Photo.find(params[:id])
     @mentions_list = current_user.mentions_list(@foto.id)
+  end
+
+  def search_autocomplete
+    term = params[:term]
+    users = User.search_autocomplete(term)
+    posts = Photo.search_autocomplete(term)
+    fonts = Font.search_autocomplete(term)
+
+    results = users + posts + fonts
+    render :json => results.sort_by(&:length)
   end
 
   def search
@@ -201,9 +212,12 @@ class FeedsController < ApplicationController
   end
 
   def preload_photos_my_likes_comments(opts={})
-    f_ids, user = @photos.collect(&:id), @user || current_user
+    f_ids, user = @photos.collect(&:id), @user
     if f_ids.any?
       @users_map = User.where(:_id.in => @photos.collect(&:user_id)).group_by(&:id)
+      @my_lks = @my_cmts = {}
+      return true
+
       unless opts[:skip_likes]
         @my_lks = user.likes.where(:photo_id.in => f_ids).desc(:created_at).group_by(&:photo_id)
       end

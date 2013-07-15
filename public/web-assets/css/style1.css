@@ -28,9 +28,13 @@ display:none;
 div.set3b span.pop-disclaimer{
 	display: inline-block;
 }
-.right-pop header a.settings,.right-pop header a.cross{
-	display: none;
-}
+
 .right-pop .content-b .comment-box .comment img.follow-btn{
 	display: none;
+}
+.user-detail button{
+display:none;
+}
+.mat4,.mat5,.mat6,section .loc-img{
+display:none;
 }

@@ -17,6 +17,6 @@
 <span class="mat5">
   <%= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 40) %>
 </span>
-<% spotted = current_user.spotted_on?(f) %>
+<% spotted = false && current_user.spotted_on?(f) %>
 <a class="loc-img <%= 'selected' if spotted %> bg-tooltip" href="#"><label class="tooltip"><%= spotted ? 'spotted' : 'spot' %></label></a>
 <span class="mat6"></span>

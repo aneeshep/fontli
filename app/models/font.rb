@@ -61,15 +61,26 @@ class Font
       Photo.where(:_id.in => fids.collect(&:photo_id)).desc(:created_at).skip(offst).limit(lmt)
     end
 
-    # get 20(max) popular family fonts(grouped) based on total tags_count, for a month
+    # get popular family fonts(grouped) based on total tags_count, for a month
     # total tags_count, includes the count of subfonts as well.
+    def cached_popular
+      Rails.cache.fetch('popular_fonts', :expires_in => 2.days.seconds.to_i) do
+        fnts = self.where(:created_at.gte => 1.months.ago).desc(:created_at).to_a
+        resp = fnts.group_by { |f| f[:family_id] }
+        resp = resp.sort_by { |fam_id, dup_fts| -dup_fts.sum(&:tags_count) }
+        resp.collect { |fam_id, dup_fts| dup_fts.first }
+      end
+    end
+
     def popular
       lmt = POPULAR_API_LIMIT
-      fnts = self.where(:created_at.gte => 1.months.ago).desc(:created_at).to_a
-      return [] if fnts.empty?
-      resp = fnts.group_by { |f| f[:family_id] }
-      resp = resp.sort_by { |fam_id, dup_fts| -dup_fts.sum(&:tags_count) }
-      resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
+      self.cached_popular.first(lmt)
+    end
+
+    # return no of popular fonts in random
+    # assumes there are enough popular photos in DB
+    def random_popular(lmt = 1)
+      self.popular.shuffle.first(lmt)
     end
 
     # fonts with min 3 agrees or a publisher_pick, sorted by updated_at
@@ -91,6 +102,12 @@ class Font
       res = res.sort{|a,b| a.send(sort) <=> b.send(sort)} if sort
       res = res.reverse if dir == "asc"
       res
+    end
+
+    def search_autocomplete(name)
+      return [] if name.blank?
+      res = self.where(:family_name => /^#{name}.*/i).only(:family_name).collect(&:family_name)
+      res + self.where(:subfont_name => /^#{name}.*/i).only(:subfont_name).collect(&:subfont_name)
     end
   end
 

@@ -176,14 +176,25 @@ class Photo
       Photo.where(:user_id.in => frn_ids).desc(:created_at).skip(offst).limit(lmt)
     end
 
-    def popular
-      pops = self.all_popular.limit(POPULAR_LIMIT * 3).to_a
-      pops = pops.shuffle.slice(0, POPULAR_LIMIT)
-      # add recent fotos if there aren't enough populars
-      if pops.length < POPULAR_LIMIT
-        pops += self.recent(POPULAR_LIMIT - pops.length)
+    def cached_popular
+      Rails.cache.fetch('popular_photos', :expires_in => 1.day.seconds.to_i) do
+        pops = self.all_popular.limit(POPULAR_LIMIT).to_a
+        # add recent fotos if there aren't enough populars
+        if pops.length < POPULAR_LIMIT
+          pops += self.recent(POPULAR_LIMIT - pops.length)
+        end
+        pops
       end
-      pops
+    end
+
+    def popular
+      self.cached_popular
+    end
+
+    # return no of popular photos in random
+    # assumes there are enough popular photos in DB
+    def random_popular(lmt = 1)
+      self.popular.shuffle.first(lmt)
     end
 
     def all_by_hash_tag(tag_name, pge = 1, lmt = 20)
@@ -220,6 +231,11 @@ class Photo
       res = res.sort{|a,b| a.send(sort) <=> b.send(sort)} if sort
       res = res.reverse if dir == "asc"
       res
+    end
+
+    def search_autocomplete(text)
+      return [] if text.blank?
+      self.where(:caption => /^#{text}.*/i).only(:caption).collect(&:caption)
     end
   end
 

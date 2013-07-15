@@ -1,10 +1,17 @@
-<section id="stream-2">
+<section id="stream">
 <div class="pro-header-a">
   <section class="popular-section">
-  <span>Popular</span>
+  <% if params[:type] == 'post' %>
+    <span>Popular</span>
+  <% elsif params[:type] == 'font' %>
+    <span>Recently Spotted</span>
+  <% else %>
+    <span>Limelight</span>
+  <% end %>
   </section>
 </div>
 
+<% if false %>
 <div class="nav">
   <section>
   <div class="pro-header-c">
@@ -12,8 +19,15 @@
   </div>
   </section>
 </div>
+<% end %>
 
-<section id='popular_section_container' class="wrapper">
-  <%= render '/shared/account_list' %>
+<section id='popular_section_container'>
+  <% if params[:type] == 'post' %>
+    <%= render '/shared/photo_list' %>
+  <% elsif params[:type] == 'font' %>
+    <%= render '/shared/font_list' %>
+  <% else %>
+    <%= render '/shared/account_list' %>
+  <% end %>
 </section>
 </section>

@@ -4,7 +4,7 @@
     <a href="<%= feeds_path %>" id="logo">Fontli</a>
     <div class="grey-box profile">
       <a href='<%= profile_path %>' class='img-mask'>
-        <img width="49" height="49" title="profile" src='<%= current_user.url_thumb %>'>
+        <img width="100%" height="100%" title="profile" src='<%= current_user.url_thumb %>'>
         <div class="overlap"></div>
       </a>
       <div class='notifications-count-box' href='<%= my_updates_path %>'><%= notif_cnt %></div>
@@ -16,10 +16,22 @@
       <% end %>
     </div>
   </div>
+<% elsif not_homepage? && params[:controller] == 'feeds' %>
+  <div class="tertiary">
+    <a href="/" id="logo">Fontli</a>
+    <div class="grey-box profile">
+      <a href='#' class='img-mask'>
+        <div class="overlap"></div>
+      </a>
+    </div>
+    <div class="grey-box up"></div>
+    <%= render '/shared/search_box' %>
+  </div>
 <% else %>
   <div class="primary">
     <a href="/" id="logo">Fontli</a>
-    <% if @test_version %><a remote="true" data-href="<%= login_path(:default) %>" id="signup">Sign In</a><% end %>
+    <% if homepage? %><%= render '/shared/search_box' %><% end %>
+    <% if false && session[:test_version] %><a remote="true" data-href="<%= login_path(:default) %>" id="signup">Sign In</a><% end %>
     <span>discover, share, pure type love</span>
   </div>
 

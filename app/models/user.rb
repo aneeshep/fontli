@@ -123,6 +123,12 @@ class User
       res
     end
 
+    def search_autocomplete(uname)
+      return [] if uname.blank?
+      res = self.where(:username => /^#{uname}.*/i).only(:username).collect(&:username)
+      res + self.where(:full_name => /^#{uname}.*/i).only(:full_name).collect(&:full_name)
+    end
+
     # uname can be username or email
     def login(uname, pass)
       u = self.by_uname_or_email(uname)
@@ -190,6 +196,36 @@ class User
       uids.uniq
     end
 
+    # users with highest no. of posts within last 15 days.
+    def cached_popular
+      Rails.cache.fetch('popular_users', :expires_in => 1.day.seconds.to_i) do
+        usr_ids = Photo.where(:created_at.gte => (Time.now - 15.days)).only(:user_id).to_a
+        usr_ids = usr_ids.group_by(&:user_id).sort_by {|uid, fotos| fotos.length }.reverse
+        # users should have a minimum of 4 posts.
+        usr_ids = usr_ids.collect {|uid, fotos| uid if fotos.length > 4}.compact
+
+        users = self.non_admins.where(:_id.in => usr_ids).to_a
+        # HACK: sort the users list based on order of usr_ids.
+        ordered_users = []
+        usr_ids.each do |uid|
+          ordered_users << users.detect {|usr| usr.id == uid }
+        end
+
+        if ordered_users.length < 20
+          limit_left = 20 - usr_ids.length
+          ordered_users += self.leaders.where(:_id.nin => usr_ids).limit(limit_left).to_a
+        end
+        ordered_users[0..19]
+      end
+    end
+
+    def recommended
+      self.cached_popular
+    end
+
+    def random_popular(lmt = 5)
+      self.recommended.shuffle.first(lmt)
+    end
   end
 
   # Signup using FB/Twitter will not carry password. Also handle users
@@ -536,28 +572,6 @@ class User
     flls = Follow.where(opts.merge(:follower_id.nin => [self.id] + blacklst_uids)).desc(:created_at).to_a
     favs = FavFont.where(opts).desc(:created_at).to_a
     (liks + ftgs + flls + favs).sort_by(&:created_at).reverse
-  end
-
-  # users with highest no. of posts within last 15 days.
-  # ideally, this should be a class method.
-  def recommended_users
-    usr_ids = Photo.where(:created_at.gte => (Time.now - 15.days)).only(:user_id).to_a
-    usr_ids = usr_ids.group_by(&:user_id).sort_by {|uid, fotos| fotos.length }.reverse
-    # users should have a minimum of 4 posts.
-    usr_ids = usr_ids.collect {|uid, fotos| uid if fotos.length > 4}.compact
-
-    users = User.non_admins.where(:_id.in => usr_ids).to_a
-    # HACK: sort the users list based on order of usr_ids.
-    ordered_users = []
-    usr_ids.each do |uid|
-      ordered_users << users.detect {|usr| usr.id == uid }
-    end
-
-    if ordered_users.length < 20
-      limit_left = 20 - usr_ids.length
-      ordered_users += User.leaders.where(:_id.nin => usr_ids).limit(limit_left).to_a
-    end
-    ordered_users[0..19]
   end
 
   def display_name

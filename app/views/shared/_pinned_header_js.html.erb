@@ -1,10 +1,12 @@
-<% content_for :custom_js do %>
 var header = $('#pinned_header');
 var headerTop = header.position().top;
 var headerHeight = header.innerHeight() + 2; // 2px borders
 var nextElem = header.next();
 var nextElemMargin = parseInt(nextElem.css('margin-top'));
 var didScroll = false;
+pageNum = 1;
+docHeight = getDocHeight();
+doPagination = true;
 
 $(window).scroll(function() {
   didScroll = true;
@@ -22,6 +24,13 @@ setInterval(function() {
       header.removeClass('fixed-top');
       nextElem.css('margin-top', nextElemMargin + 'px');
     }
+
+    // pagination
+    if ( doPagination && (winScroll + $(window).height() > docHeight - 200) ) {
+      $('.loader').removeClass('hidden');
+      doPagination = false; // halt the pagination until the ajax request is complete
+      var url = $('li.selected a').attr('data-href');
+      $.ajax({ url: url, dataType: 'script', data: {page: pageNum + 1} });
+    }
   }
 }, 10);
-<% end %>

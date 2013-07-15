@@ -19,7 +19,7 @@ class FontsController < ApplicationController
   end
 
   def font_details
-    @fonts = cache("font_details_#{params[:fontname]}") do
+    @fonts = Rails.cache.fetch("font_details_#{params[:fontname]}") do
       FontFamily.font_details(params[:fontname])
     end
     render :layout => false

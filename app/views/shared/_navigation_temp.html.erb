@@ -1,0 +1,49 @@
+<section id="banner" class="small">
+<div class="wrap">
+  <div id="slider1" class="slider">
+    <ul>
+      <% fnt = Font.random_popular.first %>
+      <li class='banner-cta' href='<%= popular_path(:type => 'font') %>'>
+        <div style="width:305px;background:url('<%= fnt.try(:thumb_url) %>') no-repeat;">
+          <span>Recently Spotted</span>
+        </div>
+      </li>
+      <% foto = Photo.random_popular.first %>
+      <li class='banner-cta' href='<%= popular_path(:type => 'post') %>'>
+        <div style="width:305px;background:url('<%= foto.try(:url_medium) %>') no-repeat;">
+          <span>Popular</span>
+        </div>
+      </li>
+      <% usrs = User.random_popular %>
+      <li class='banner-cta' href='<%= popular_path %>'>
+        <div class='img-tile-container'>
+          <div class='img-tile' style="background:url('<%= usrs[0].try(:url_large) %>') no-repeat;">
+            <span>Limelight</span>
+          </div>
+          <div class='split'>
+            <img width="73" height="74" src="<%= usrs[1].try(:url_thumb) %>">
+            <img width="73" height="74" src="<%= usrs[2].try(:url_thumb) %>">
+            <div></div>
+          </div>
+          <div class='split'>
+            <img width="73" height="74" src="<%= usrs[3].try(:url_thumb) %>">
+            <img width="73" height="74" src="<%= usrs[4].try(:url_thumb) %>">
+            <div></div>
+          </div>
+        </div>
+      </li>
+      <li class='banner-cta' href='#'>
+        <div style="width:305px;background:url('/web-assets/images/pok1.png') no-repeat;">
+          <span>Coming Soon</span>
+        </div>
+      </li>
+      <li class='banner-cta' href='#'>
+        <div style="width:305px;background:url('/web-assets/images/pok2.png') no-repeat;">
+          <span>Coming Soon</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <%#= render 'shared/controls' %>
+</div>
+</section>

@@ -9,7 +9,7 @@
     <link href="/web-assets/css/reset-grid.css" rel="stylesheet" type="text/css" />
     <link href="/web-assets/css/style.css" rel="stylesheet/less" type="text/css" />
     <link href="/web-assets/css/style1.css" rel="stylesheet/less" type="text/css" />
-    <% if @test_version || @current_user %>
+    <% if session[:test_version] %>
       <link href="/web-assets/css/mobile.css" rel="stylesheet/less" type="text/css" />
     <% end %>
     <link href="/web-assets/css/jquery.mCustomScrollbar.css"  rel="stylesheet" type="text/css" />
@@ -40,12 +40,13 @@
 
     <div id="masterWrapper" style="opacity:0.9">
       <header class="main">
-        <div class="wrapper">
+        <div class="wrapper" style="<%= 'position:relative' if homepage? %>">
           <%= render 'shared/header' %>
         </div>
       </header>
 
-      <%= render 'shared/navigation' if logged_in? %>
+      <%#= render 'shared/navigation' if logged_in? %>
+      <%= render 'shared/navigation_temp' if not_homepage? && params[:controller] == 'feeds' %>
       <%= yield %>
 
       <footer class="main">

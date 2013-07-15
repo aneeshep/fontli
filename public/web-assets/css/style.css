@@ -14,13 +14,50 @@ header.main		{color:@grey}
 #logo 		{background:url(../images/logo.png) no-repeat;width:78px;height:47px;text-indent:-9999px;display:block;float:left}
 
 header.main{
-.primary {overflow:hidden;padding: 15px 0;border-bottom:solid 1px #545454}
+.primary {overflow:hidden;padding: 15px 0 5px;box-shadow:0 8px 6px -6px #545454;}
 .primary {
-#signup,span{float:right;font-size:22px;margin:0 10px;padding: 25px 0 0px;
+ul{
+        background: none repeat scroll 0 0 #111;
+        border-top:none;
+        top: 65px;
+        right: 0px;
+        width: 166px;
+        position:absolute;
+        z-index:10;
+        box-shadow: 2px 1px 5px rgba(0,0,0,.3);
+        border-radius:3px;
+        border: 1px solid #0A0A0A;
+        height:150px;
+
+
+    li:last-child{
+    }
+
+    li:first-child{
+    padding-top:5px;
+    }
+
+    li{
+    }
+
+    li a{
+       color: #888;
+           display: block;
+           font-size: 14px;
+           padding: 10px 13px;
+           border-top: 1px solid transparent;
+                     border-bottom  : 1px solid #transparent;
+    }
+    li:hover{
+        background:#000;
+    }
+    }
+#signup,span{float:right;font-size:22px;padding: 18px 0 0px;
     a{
     color:#666666;
     display: block;
 }
+
 }
 #signup 			{color:@white}
     }
@@ -35,7 +72,7 @@ header.main .secondary {font-size: 25px;font-weight: bold;width: 512px;line-heig
 blockquote{
     color:@grey;font-size:16px;margin-left:225px;padding:left;width: 470px;float: left;
     a.avatar img{
-    vertical-align:top;
+    vertical-align:bottom;
     }
 p		{width: 383px;display: inline-block;vertical-align: 30%;font-size: 13px;line-height: 22px;margin-left: 10px;}
     }
@@ -75,6 +112,7 @@ li div{
 img{
     position: absolute;
     left:5px;
+    top:2px;
 }
 box-shadow: 0 37px 58px -21px #000000 inset;
 position: relative;
@@ -216,8 +254,9 @@ i{
      margin:0px 10px 20px 0;
  section{
      background-color: #f9f9f9;
-
+     margin-left:5px !important;
      height:350px;
+     width:320px;
      border:1px solid #cfcfcf;
      position: relative;
  .images{
@@ -247,6 +286,7 @@ i{
 
  footer{
      margin:20px 0px 10px 0px;
+     padding-left:7px;
   a.profile-img{
     position:relative;
     border-radius: 50px;
@@ -316,7 +356,7 @@ div{
     display: inline-block;
 section{
     background-color: #f9f9f9;
-
+    margin-left:5px !important;
     height:350px;
     border:1px solid #cfcfcf;
     position: relative;
@@ -514,17 +554,8 @@ input{
 .grey-box.search{
     padding:10px 0 3px 27px;
     background: url('../images/search.png') no-repeat 15px 12px #2a2a2a;
-    margin-top:6px;
-
-}
-input:focus{
-background:#fff;
-color:#4d4d4d;
-width:160px;
-.grey-box.search{
- background: url("../images/search.png") no-repeat scroll 15px 12px #FFFFFF;
- box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.42) inset;
-}
+    float:right;
+    margin-top:10px;
 
 }
 .grey-box.up{
@@ -541,7 +572,7 @@ width:160px;
     background: url('../images/twitter-quote.png') no-repeat -5px 0px #2a2a2a;
     box-shadow: 8px 7px 10px 4px rgba(0, 0, 0, 0.5) inset;
     .img-mask{
-        background: none repeat scroll 0 0 transparent;
+           background: none repeat scroll 0 0 transparent;
            border-radius: 50px 50px 50px 50px;
            display: inline-block;
            float: left;
@@ -560,7 +591,7 @@ width:160px;
                      border:none;}
     }
     div{
-    		  background-clip: padding-box;
+                background-clip: padding-box;
                 background-color: #FF0000;
                 border: 2px solid #FFFFFF;
                 border-radius: 4px 4px 4px 4px;
@@ -911,12 +942,16 @@ color:#4d4d4d;
 left:10px;
 }
 
+.popup.open .set1 {
+    display: none;
+}
 .set1 {
     position: absolute;
     overflow: hidden;
     left: 445px;
     cursor: pointer;
     top:10px;
+    display:block;
 li{
     display: inline;
     float: left;
@@ -1103,9 +1138,7 @@ a{
 div.popup.child.open,div.popup.child.closed{
 margin:0 auto;
 }
-div.popup.child.open ul.set1{
-display:none;
-}
+
  div.popup.child.open .right-pop{
  ul.auto-suggestion{
        background: none repeat scroll 0 0 #FFFFFF;
@@ -1202,6 +1235,7 @@ span.name{
 span.time{
     font-size: 16px;
     color: @lightgrey;
+    cursor:default;
 }
     }
 li.b{
@@ -1227,13 +1261,14 @@ a{
 
     .like-box{
         overflow: auto;
+        border-bottom:1px solid #CCCCCC;
         padding:0 6px 0 0;
          input[type="text"]{
             border:none;
             height: 30px;
             width: 100%;
-             background: url("../images/patterna.png") repeat-x scroll 0 0 transparent;
-             border-top:1px solid #ddd;
+            background: url("../images/patterna.png") repeat-x scroll 0 0 transparent;
+            border-top:1px solid #ddd;
          }
          input[type="text"].search-input-bottom{
          border-bottom:1px solid #ddd;
@@ -1316,6 +1351,7 @@ span.name{
 span.time{
     font-size: 13px;
     color: @lightgrey;
+    cursor:default;
 }
     }
 li.b{
@@ -1354,6 +1390,10 @@ a.propic{
     overflow: hidden;
     width: 50px;
     margin-right:10px;
+    img{
+    height:100%;
+    width:100%;
+    }
 }
 
 
@@ -1479,7 +1519,7 @@ width:475px;
     cursor: normal;
 .transition-dimension(@dimension:width, @duration:0.5s);
 overflow: hidden;
-.set1 li.set1-cross { display:none; }
+.set1 li.set1-cross { display:block; }
 .set2{
     display: block;
 .opacity(@opacity: 1);
@@ -1501,9 +1541,7 @@ overflow: hidden;
 .transition-dimension(@dimension:margin-left, @duration:0.5s);
     }
     }
-.popup.open ul.set1{
-display:none;
-}
+
 
 /* Profile Page */
 .pro-header-a{
@@ -1827,7 +1865,7 @@ div a{
 
 /* Custom styles */
 .footer a{ color: inherit; font-size:12px; }
-.hidden { display: none; }
+.hidden { display: none !important; }
 .fixed-top { position: fixed; top: 0; width: 100%; background-color: #ECECEC; z-index: 10; }
 div[rel=popitup], li[rel=popitup] { cursor:pointer; }
 #popup_container, #ajax_loader { position:fixed; top:0; left:0; bottom:0; right:0; text-align:center; z-index:10; display:none; width:100%; height:100%; }
@@ -1865,7 +1903,7 @@ div.left-content .limelight-content{
  margin-right:10px;
  }
 div.limelight-content{
-    padding: 15px;width: 430px;float:left;border-bottom: 1px solid #d2d2d2;border-top: 1px solid #fafafa;
+    padding:0 15px 15px;width: 430px;float:left;border-bottom: 1px solid #d2d2d2;border-top: 1px solid #fafafa;
     background-color:#fff;box-shadow: 1px 0 6px 0 rgba(0,0,0,0.3); margin-bottom:18px;
     a.pro-img-big{
        border-radius: 100px 100px 100px 100px;
@@ -1879,12 +1917,14 @@ div.limelight-content{
     }
 
 div.user-detail{
-
-
     float:left;
     margin-left:12px;
     padding-top:24px;
 
+ul{
+overflow:hidden;
+width:275px;
+}
     a{ font-size: 14px;display:block;margin-bottom: 2px;color: #aaaaaa;font-weight:bold;text-align:left;}
 
 ul.subtext{
@@ -2164,7 +2204,7 @@ padding-top:3px;
       }
       a.spotted-img{
       display: block;
-      overflow: auto;
+      overflow: hidden;
       }
 }
 li:first-child{
@@ -2295,7 +2335,7 @@ text-align:center;
    /*profile-post page*/
 
 #stream section div footer.profile-post {
-    margin: 0px 0 10px;
+    margin: 0px 0 10px 5px;
     ul {
            padding: 0;
        }
@@ -2833,7 +2873,7 @@ width:70px;
 .pro-header-s{
 box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
 height: 66px;
-
+background:#fff;
 div span{
 color: #999999;
 float: left;
@@ -2909,26 +2949,27 @@ border-bottom:1px solid #999;
 }
 ul{
  margin: 11px 0px;
+ max-height: 377px !important;
+ overflow: hidden;
 li{
   background: none repeat scroll 0 0 #FFFFFF;
     float: left;
-    margin-right: 27px;
-    margin-bottom:10px;
+    margin:0 11px 22px 10px;
     padding: 10px;
    box-shadow: 1px 0 6px 0 rgba(0, 0, 0, 0.3),-1px 0 6px 0 rgba(0, 0, 0, 0.3);
    a{
-   overflow:auto;
+   overflow:hidden;
    display:block;
    }
 }
 li:last-child{
-margin-right:0;
 float:left;
 }
 }
 }
 div.people-list{
-overflow:auto;
+overflow:hidden;
+max-height:364px;
 h1{
  border-bottom: 1px solid #CCCCCC;
     color: #797979;
@@ -2955,7 +2996,7 @@ a.header-user-none{
     font-weight: bold;
 }
 h1{
-  color: #4D4D4D;
+    color: #4D4D4D;
     font-size: 25px;
     font-weight: bold;
     margin: 2px 0 5px;
@@ -2969,18 +3010,18 @@ h1{
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #FFFFFF;
     height: auto;
-    margin: 10px 0 10px 0;
+    margin: 10px 11px;
     overflow: auto;
     padding: 31px 0 31px 20px;
-    width: auto;
+    width: 278px;
     float:left;
       box-shadow: 1px 0 6px 0 rgba(0, 0, 0, 0.3);
 }
-.profile-detail:first-child{
-    margin-left:0!important;
-}
+
 }
 .results-list{
+ max-height: 363px;
+overflow: hidden !important;
   h1{
    border-bottom: 1px solid #CCCCCC;
     box-shadow: 0 1px 0 #FFFFFF;
@@ -3004,7 +3045,7 @@ h1{
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #FFFFFF;
     padding: 23px 13px 32px;
-   margin: 10px 0 10px 35px;
+   margin: 10px 11px;
 
     text-align: center;
     width: auto;
@@ -3015,8 +3056,8 @@ h1{
     color:#666;
     a{
         color: #000000;
-            font-size: 16px;
-            font-weight: bold;
+        font-size: 16px;
+        font-weight: bold;
 
     }
     }
@@ -3032,7 +3073,8 @@ height:157px;
 }
  div.split{
   float: right;
-  height: 74px;
+  height: 69px;
+  border-right:2px solid #000;
   img{
   position: relative!important;
    float: right;
@@ -3040,8 +3082,6 @@ height:157px;
    left:0!important;
   }
 }
-
-
 }
 div.parent .popup{
 overflow:visible;
@@ -3068,7 +3108,7 @@ display:inline-block;
 }
 div.like-box .loc-img{
     background: url('../images/location-b.png') no-repeat;
-  float: right;
+    float: right;
     margin-top: 7px;
     padding: 4px;
     width:20px;
@@ -3092,6 +3132,16 @@ right:-25px;
   width: 250px;
   p { padding:10px; background-color:#000; color:#fff; font-weight:bold; }
 }
+
+#profile_section_container{
+margin-top:30px;
+}
+
+.comment-box div.comment button.button-a{
+display:none;
+}
+
+
 
 
 /*---------------------------------------------------

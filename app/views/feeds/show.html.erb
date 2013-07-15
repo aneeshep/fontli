@@ -1,25 +1,6 @@
 <% user = @photo.user %>
 <% likes_cnt, comments_cnt, fonts_cnt = @photo.likes_count, @photo.comments_count, @photo.fonts_count %>
 <% fnts_map = fonts_map_for_comments @comments %>
-<% if @perma %>
-  <% content_for :head do %>
-    <script type="text/javascript">var switchTo5x=true;</script>
-    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-    <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-  <% end %>
-  <% content_for :custom_js do %>
-    <script type='text/javascript'>stLight.options({publisher: "09dd1850-3dce-44cd-9751-1f9b467cfaa2", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
-    <script>
-      var options={ "publisher": "09dd1850-3dce-44cd-9751-1f9b467cfaa2", "position": "right", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter"]}};
-      var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
-    </script>
-  <% end %>
-<% else # update the url to photo's permalink url %>
-  <script type='text/javascript'>
-    prevPageUrl = location.href;
-    history.pushState('data', '', '<%= @photo.permalink %>');
-  </script>
-<% end %>
 
 <div class="popup <%= @open_popup ? 'open' : 'closed' %>">
   <div class="left-pop">
@@ -34,6 +15,7 @@
         <p>Place this marker on the image where the font is spotted</p>
       </div>
     </div>
+    <div class="hidden" id="permalink_url" data='<%= @photo.permalink %>'></div>
 
     <ul class="set1 icons">
       <% (['a', 'b', 'c']).each do |char| %>
@@ -81,12 +63,12 @@
       <!--  <a href="javascript:;" class="settings flt-right"></a> -->
     </header>
     <div class="content-a">
-      <a class="propic <%= 'login-req' unless logged_in? %>" href="<%= profile_path(:user_id => user.id) %>">
-        <img src="<%= user.url(:thumb) %>">
+      <a class="propic" href="<%= profile_path(:user_id => user.id) %>">
+        <img src="<%= user.url(:thumb) %>" width="100%" height="100%">
       </a>
       <ul>
         <li class="a">
-          <a class="<%= 'login-req' unless logged_in? %>" href="<%= profile_path(:user_id => user.id) %>">
+          <a href="<%= profile_path(:user_id => user.id) %>">
             <span class="name"><%= user.username %></span>
           </a>
           <span class="time"><%= timestamp(@photo.created_at) %></span>
@@ -95,10 +77,44 @@
           <span><%= @photo.caption %></span>
         </li>
         <li class="c">
-          <a href="#"></a>
+          <style type="text/css">
+            .twitter-share-button { width:55px !important }
+            iframe { width:47px !important }
+          </style>
+          <div id="fb-root"></div>
+          <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= @photo.permalink %>" data-text="@fontli, Fontli- discover and share pure type love!" data-count="none">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          <div class="fb-like" data-send="false" data-layout="button_count" data-width="150" data-show-faces="false" data-href="<%= @photo.permalink %>"></div>
         </li>
       </ul>
     </div>
+    <% if likes_cnt > 0 %>
+    <div class="like-box recent-likes">
+      <% recent_likes = @likes[0..4] %>
+      <% recent_likes.each do |l| %>
+        <% u = @users_map[l.user_id].first %>
+        <a href="<%= profile_path(:user_id => u.id) %>" class="propic">
+         <img src="<%= u.url_thumb %>" width="100%" height="auto" />
+        </a>
+      <% end %>
+      <a href="javascript:;" class="view-likes">
+        <% if likes_cnt > 0 && likes_cnt <= recent_likes.length %>
+          <br/><%= pluralize(likes_cnt, 'like') %>
+        <% end %>
+        <% if likes_cnt > recent_likes.length %>
+          <br/>+<%= pluralize(likes_cnt - recent_likes.length, 'like') %>
+        <% end %>
+      </a>
+    </div>
+    <% end %>
     <div class="like-box pop-nav">
       <a class='view-likes' href="javascript:;">
         <%= pluralize(likes_cnt, 'like') %>

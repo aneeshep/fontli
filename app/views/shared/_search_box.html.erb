@@ -1,0 +1,5 @@
+<div class="grey-box search">
+  <%= form_tag search_path, :method => 'post' do %>
+    <input type="text" name="search" placeholder="search" value="<%= params[:search] %>" />
+  <% end %>
+</div>

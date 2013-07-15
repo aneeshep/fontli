@@ -2,8 +2,7 @@
 require File.expand_path('../../config/environment', __FILE__)
 
 puts "Expiring all fragments..."
-controller = ApplicationController.new
-controller.expire_fragment /font_family_details_*/
-controller.expire_fragment /font_details_*/
-controller.expire_fragment /sub_font_details_*/
+Rails.cache.delete_matched /font_family_details_*/
+Rails.cache.delete_matched /font_details_*/
+Rails.cache.delete_matched /sub_font_details_*/
 puts "Done."
