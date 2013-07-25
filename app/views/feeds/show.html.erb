@@ -90,36 +90,17 @@
             fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));</script>
 
-          <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= @photo.permalink %>" data-text="@fontli, Fontli- discover and share pure type love!" data-count="none">Tweet</a>
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= @photo.permalink %>" data-text="@fontli, Fontli- discover and share pure type love!" data-count="none"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
           <div class="fb-like" data-send="false" data-layout="button_count" data-width="150" data-show-faces="false" data-href="<%= @photo.permalink %>"></div>
         </li>
       </ul>
     </div>
-    <% if likes_cnt > 0 %>
-    <div class="like-box recent-likes">
-      <% recent_likes = @likes[0..4] %>
-      <% recent_likes.each do |l| %>
-        <% u = @users_map[l.user_id].first %>
-        <a href="<%= profile_path(:user_id => u.id) %>" class="propic">
-         <img src="<%= u.url_thumb %>" width="100%" height="auto" />
-        </a>
-      <% end %>
-      <a href="javascript:;" class="view-likes">
-        <% if likes_cnt > 0 && likes_cnt <= recent_likes.length %>
-          <br/><%= pluralize(likes_cnt, 'like') %>
-        <% end %>
-        <% if likes_cnt > recent_likes.length %>
-          <br/>+<%= pluralize(likes_cnt - recent_likes.length, 'like') %>
-        <% end %>
-      </a>
-    </div>
-    <% end %>
     <div class="like-box pop-nav">
       <a class='view-likes' href="javascript:;">
         <%= pluralize(likes_cnt, 'like') %>
       </a>
-      <a class='view-typetalk strong' href="javascript:;">
+      <a class='view-typetalk' href="javascript:;">
         <%= pluralize(comments_cnt, 'comment') %>
       </a>
       <a class='view-spotted' data-url='<%= feed_fonts_path(:id => @photo.id) %>' href="javascript:;">
@@ -140,15 +121,35 @@
     <div class="like-box spot-preview hidden">
       <input type="text" class='search-input-bottom' name='spot-preview' placeholder="Type preview text..."  style="color:#666" />
     </div>
-
     <div class="aa-spotted content content-b" style="display:none;"></div>
     <div class="aa-spot-list content content-b" style="display:none;"></div>
     <div class="aa-spot-list-family content content-b" style="display:none;"></div>
     <div class="aa-likes content content-b" style="display:none;">
       <%= render 'liked_pop' %>
     </div>
-    <div class="aa-typetalk content content-b">
+    <div class="aa-typetalk content content-b" style='margin-bottom:50px;'>
       <div class="comment-box clr">
+        <% if likes_cnt > 0 %>
+        <div class="recent-likes" style='padding:30px 0 10px; border-bottom:1px solid #ccc;'>
+          <% recent_likes = @likes[0..4] %>
+          <% recent_likes.each do |l| %>
+            <% u = @users_map[l.user_id].first %>
+            <a href="<%= profile_path(:user_id => u.id) %>" class="propic">
+             <img src="<%= u.url_thumb %>" width="100%" height="auto" />
+            </a>
+          <% end %>
+          <a href="javascript:;" class="view-likes">
+            <% if likes_cnt > 0 && likes_cnt <= recent_likes.length %>
+              <br/><%= pluralize(likes_cnt, 'like') %>
+            <% end %>
+            <% if likes_cnt > recent_likes.length %>
+              <br/>+<%= pluralize(likes_cnt - recent_likes.length, 'like') %>
+            <% end %>
+          </a>
+          <div style='clear:left;' />
+        </div>
+      <% end %>
+
         <% @comments.each do |c| %>
           <% u = @users_map[c.user_id].first %>
           <%= render 'shared/comment_content', :c => c, :u => u, :fnts_map => fnts_map %>

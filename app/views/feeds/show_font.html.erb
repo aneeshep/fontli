@@ -1,3 +1,6 @@
+<% content_for :custom_js do %>
+  <%= render 'shared/pinned_header_js' %>
+<% end %>
 <% desc1_index = @details[:desc].index('</p>') %>
 <% desc1 = @details[:desc].first(desc1_index) %>
 <% desc2 = @details[:desc][(desc1_index+4)..-1] %>
@@ -19,14 +22,14 @@
     </div>
   </div>
 </div>
-<div class="pro-header-d">
+<div class="pro-header-d" id='pinned_header'>
   <div class="wrapper">
     <ul class="float-Lt">
-      <li class="selected">
-        <a href="javascript:;"><%= @photos.length %> Post</a>
+      <li class="font-detail-cta post <%= 'selected' if params[:type].nil? %>">
+        <a data-href="<%= show_font_path(@font.family_id, :font_id => @font.id) %>" remote=true><%= @font.tagged_photos_count %> Post</a>
       </li>
-      <li>
-        <a href="javascript:;"><%= @font.favs_count %> Favourite</a>
+      <li class="profile-cta fav <%= 'selected' if params[:type] == 'fav' %>">
+        <a data-href="<%= show_font_path(@font.family_id, :font_id => @font.id, :type => 'fav') %>" remote=true><%= @font.favs_count %> Favourite</a>
       </li>
     </ul>
     <div class="float-Rt">
@@ -37,7 +40,10 @@
     </div>
   </div>
 </div>
-<section>
+<section id="font_section_container">
   <%= render '/shared/photo_list' %>
 </section>
+<div class="loader hidden" style="width:32px;margin:10px auto;">
+  <img src='/web-assets/images/ajax-loader-sm.gif' alt='Loading...' />
+</div>
 </section>

@@ -42,8 +42,15 @@ class FeedsController < ApplicationController
     @details = Rails.cache.fetch("font_family_details_#{params[:family_id]}") do
       FontFamily.family_details(params[:family_id])
     end
-    @photos = Font.tagged_photos_for(:family_id => params[:family_id], :page => params[:page]).to_a
-    preload_photos_my_likes_comments
+
+    case params[:type]
+    when 'fav'
+      @users = @font.fav_users(params[:page], 18).to_a
+    else
+      opts = { :family_id => params[:family_id], :page => params[:page] }
+      @photos = Font.tagged_photos_for(opts, 18).to_a
+      preload_photos_my_likes_comments
+    end
   end
 
   def profile

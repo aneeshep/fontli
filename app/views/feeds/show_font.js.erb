@@ -1,13 +1,10 @@
 <% typ = params[:type] || 'post' %>
-<% section = 'profile-post' if typ == 'post' %>
-<% collection = @users || @photos || @fonts %>
+<% collection = @users || @photos %>
 
-<% contents = if params[:type] == 'fav_font' %>
-  <% render '/shared/font_list' %>
-<% elsif ['followers', 'follows'].include? params[:type] %>
+<% contents = if params[:type] == 'fav' %>
   <% render '/shared/account_list' %>
 <% else %>
-  <% render '/shared/photo_list', :section => section %>
+  <% render '/shared/photo_list' %>
 <% end %>
 
 <% if params[:page] # pagination request %>
@@ -16,7 +13,7 @@
     // and that stops further pagination requests
     docHeight = getDocHeight() + 10000;
   <% else %>
-    $('#profile_section_container').append('<%= escape_javascript(contents) %>');
+    $('#font_section_container').append('<%= escape_javascript(contents) %>');
     // set the page JS variables
     pageNum = parseInt('<%= params[:page] %>');
     docHeight = getDocHeight();
@@ -24,8 +21,8 @@
   <% end %>
   $('.loader').addClass('hidden');
 <% else %>
-  $('#profile_section_container').html('<%= escape_javascript(contents) %>');
-  $('.profile-cta').removeClass('selected');
-  $(".profile-cta.<%= typ %>").addClass('selected');
+  $('#font_section_container').html('<%= escape_javascript(contents) %>');
+  $('.font-detail-cta').removeClass('selected');
+  $(".font-detail-cta.<%= typ %>").addClass('selected');
   hideAjaxLoader();
 <% end %>

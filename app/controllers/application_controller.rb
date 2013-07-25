@@ -42,7 +42,7 @@ protected
   helper_method :owner?
 
   def mob_req?
-    mob_agent_regex = /iphone|android\s(1|2)/ # android 3|4 are tablets
+    mob_agent_regex = /iphone|windows phone|android\s(1|2|3|4)/ # android 3|4 are tablets
     agent = request.headers["HTTP_USER_AGENT"].to_s.downcase
     !agent.match(mob_agent_regex).nil?
   end

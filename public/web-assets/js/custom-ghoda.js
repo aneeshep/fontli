@@ -233,7 +233,6 @@ $(document).ready(function() {
 // window load events
 $(window).load(function() {
   loadMoreImages('next');
-
   userCountdownTimer = 0;
   $('.user-countdown strong').each(function() {
     var countArray = $.map($('.user-countdown').attr('data-count').split(''), Number);
@@ -268,6 +267,11 @@ function loadMoreImages(direction) {
     $(this).attr('src', $(this).attr('xsrc'));
     $(this).removeAttr('xsrc');
   });
+}
+function isMobReq() {
+  var ua = navigator.userAgent.toLowerCase();
+  var res = ua.match(/windows\sphone|iphone|android/) != null;
+  return res;
 }
 function photoDetailPopup(id, url) {
   showAjaxLoader(true);
@@ -316,9 +320,13 @@ function hideAjaxLoader(popup) {
 }
 function centerPopup(selector) {
   var elem = $(selector);
-  var windowHeight = $(window).height();
-  var popupHeight = elem.height();
-  var marginTop = (windowHeight - popupHeight) / 2
+  if(isMobReq()) {
+    var marginTop = 0; }
+  else {
+    var windowHeight = $(window).height();
+    var popupHeight = elem.height();
+    var marginTop = (windowHeight - popupHeight) / 2;
+  }
   elem.css('margin-top', marginTop + 'px');
 }
 function getDocHeight() {
@@ -384,8 +392,7 @@ function slideSwitch() {
 function setTypetalkHeight() {
   var totalHeight = 428; // 615px - 55px(header) - 29px(padding) - 38px(like-box) - 65px(margin-bottom)
   var captionHeight = $('.right-pop .content-a').height();
-  var recentLikesHeight = $('.right-pop .recent-likes').height(); 
-  $('.right-pop .content-b').css('height', (totalHeight - captionHeight - recentLikesHeight) + 'px');
+  $('.right-pop .content-b').css('height', (totalHeight - captionHeight) + 'px');
 }
 function updateCounter(val,digit,elem) {
   var klass = elem.attr('class');
@@ -405,10 +412,12 @@ function updateCounter(val,digit,elem) {
 function hideSpotContent() {
   $('#tag_locator').hide();
   $('.right-pop .like-box.spot-search').hide();
+  $('.right-pop .recent-likes').html('').hide();
   $('.right-pop .like-box.spot-preview').hide();
   $('.right-pop .aa-spot-list').hide();
   $('.right-pop .aa-spot-list-family').hide();
   $('.right-pop .content-a').show();
+  setTypetalkHeight();
 }
 function enableTagLocator(fontUniqueID) {
   var tagForm = $("#tag_form_" + fontUniqueID);

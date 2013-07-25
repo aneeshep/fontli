@@ -119,6 +119,12 @@ class Font
     @favs_count ||= self.fav_fonts.count
   end
 
+  def fav_users(pge, lmt = 20)
+    offst = ((pge || 1).to_i - 1) * lmt
+    fav_usr_ids = self.fav_fonts.only(:user_id).collect(&:user_id)
+    User.where(:_id.in => fav_usr_ids).desc(:points).skip(offst).limit(lmt)
+  end
+
   def hashes=(hshs)
     return true if hshs.blank?
     hshs.each do |h|
