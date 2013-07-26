@@ -48,6 +48,8 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/public/avatars #{release_path}/public/avatars"
     run "ln -nfs #{shared_path}/public/fonts #{release_path}/public/fonts"
     #run "ln -nfs #{shared_path}/Gemfile.lock #{release_path}/Gemfile.lock"
+    # Also grant 777 to `tmp` folder for caching
+    run "chmod -R 777 #{release_path}/tmp/"
   end
 
   [:start, :stop].each do |t|
