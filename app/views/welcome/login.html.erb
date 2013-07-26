@@ -1,10 +1,10 @@
 <div class="signin" >
   <div class="innershade">
     <a class="img-cross">
-      <img src="/web-assets/images/cross-signin.png" width="22" height="22" alt="" title="" />
+      <img src="<%= asset_path('cross-signin.png') %>" width="22" height="22" alt="" title="" />
     </a>
     <div class="image-container">
-      <img src="/web-assets/images/fontli-logo.png" width="150" height="85" alt="" title="" />
+      <img src="<%= asset_path('fontli-logo.png') %>" width="150" height="85" alt="" title="" />
       <h2 class="signin">Sign in</h2>
     </div>
 
@@ -24,11 +24,11 @@
           <p>Sign up now with</p>
         </div>
         <a href='<%= login_path(:facebook) %>' class="social">
-          <img src="/web-assets/images/facebook-white.png" width="12" height="25" alt="" title="" />
+          <img src="<%= asset_path('facebook-white.png') %>" width="12" height="25" alt="" title="" />
           <span>Connect with Facebook</span>
         </a>
         <a href='<%= login_path(:twitter) %>' class="social">
-          <img src="/web-assets/images/twitter-white.png" width="24" height="22" alt="" title="" class="twitter" />
+          <img src="<%= asset_path('twitter-white.png') %>" width="24" height="22" alt="" title="" class="twitter" />
           <span>Connect with Twitter</span>
         </a>
       </div>

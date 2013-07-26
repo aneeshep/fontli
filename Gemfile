@@ -22,6 +22,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.1.4'
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'less-rails'
 end
 
 gem 'jquery-rails'
@@ -33,7 +34,7 @@ gem 'jquery-rails'
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano', '2.6.0'
+gem 'capistrano', '2.8.0'
 gem 'capistrano-ext', '1.2.1'
 
 # Web page scrapper

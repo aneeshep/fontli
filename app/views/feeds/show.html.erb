@@ -11,7 +11,7 @@
       <a href="javascript:;" data-href='<%= show_feed_path %>' class="set5"></a>
 
       <div id='tag_locator' class='hidden'>
-        <img src='/web-assets/images/taglabelmark.png' id="tag_labelmark" class="draggable" />
+        <img src='<%= asset_path('taglabelmark.png') %>' id="tag_labelmark" class="draggable" />
         <p>Place this marker on the image where the font is spotted</p>
       </div>
     </div>
@@ -49,7 +49,7 @@
       <span class='pop-disclaimer'>
         <%= fnt.display_name %>
         <%= pluralize(fnt.agrees_count, 'Agree') %>
-        <img src="/web-assets/images/Agreed--Default.png" width="22" height="18" title="Agree" />
+        <img src="<%= asset_path('Agreed--Default.png') %>" width="22" height="18" title="Agree" />
       </span>
     </div>
     <% end %>
@@ -107,10 +107,10 @@
         <%= pluralize(fonts_cnt, 'spotting') %>
       </a>
       <a href="javascript:;" class="like <%= 'login-req' unless logged_in? %>">
-        <img src="/web-assets/images/heartsmall.png" />
+        <img src="<%= asset_path('heartsmall.png') %>" />
       </a>
       <a href="javascript:;" class="like spot <%= 'login-req' unless logged_in? %>">
-        <img src="/web-assets/images/Spot-Selected.png" />
+        <img src="<%= asset_path('Spot-Selected.png') %>" />
       </a>
     </div>
     <div style="clear:both;"></div>

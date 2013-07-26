@@ -2,46 +2,10 @@
  * This is a manifest file that'll automatically include all the stylesheets available in this directory
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
- *= require reset-min
+ *= require reset-grid
+ *= require style
+ *= require style1
+ *= require jquery.mCustomScrollbar
  *= require_self
 */
-
-body {
-  background-color: #fff;
-  color: #333;
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-}
-p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-}
-h1 { font-weight: bold; font-size: 26px; line-height: 34px; margin: 20px 0; }
-h3 { font-weight: bold; font-size: 18px; line-height: 24px; margin: 10px 0; }
-input, select, button, textarea { border: 2px solid blue; }
-input, select { width: 200px; height: 25px; }
-textarea { width: 200px; height: 75px; }
-a, a:visited, a:hover { color: blue; text-decoration: none; }
-a:hover { text-decoration: underline; }
-#notice { font-weight: bold; color: green; }
-#alert { font-weight: bold; color: red; }
-#errors {
-  width: 450px;
-  border: 2px solid red;
-  padding: 7px;
-  margin-bottom: 10px;
-  background-color: #f0f0f0;
-}
-#errors ul li { font-size: 12px; list-style: square; }
-
-#content { margin: 30px 50px 0 50px; }
-#header { margin-bottom: 20px; }
-#header h1 { float: left; width: 200px; margin: 0; }
-#header #logout { float: right; }
-#header #logout span { font-weight: bold; }
-.left { float: left; }
-.right { float: right; }
 .clear { clear: both; }
-.hide { display: none; }

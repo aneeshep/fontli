@@ -37,7 +37,7 @@
 
   <div class="secondary">
     <div class="mobpic">
-      <img src="/web-assets/images/phone.png">
+      <img src="<%= asset_path('phone.png') %>">
       <div id="slideshow" class='phone-top'>
         <div class="active">
           <img src="/perma-assets/images/slides/slide0a.png"/>
@@ -79,12 +79,12 @@
     <div class="qrcode">
       <div class="app-download">
         <a href="<%= apple_href %>" class='<%= apple_class %>'>
-          <img src="/web-assets/images/App-Store.png" width="160" height="50" alt="app-store" title="app-store" />
+          <img src="<%= asset_path('App-Store.png') %>" width="160" height="50" alt="app-store" title="app-store" />
         </a>
       </div>
       <div class="app-store">
         <a href="<%= wp_href %>" class='<%= wp_class %>'>
-          <img src="/web-assets/images/Windows-store.png" width="160" height="50" alt="windows-store" title="windows-store" />
+          <img src="<%= asset_path('Windows-store.png') %>" width="160" height="50" alt="windows-store" title="windows-store" />
         </a>
       </div>
     </div>

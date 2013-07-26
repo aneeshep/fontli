@@ -41,7 +41,7 @@ GEM
     bson_ext (1.8.5)
       bson (~> 1.8.5)
     builder (3.0.4)
-    capistrano (2.6.0)
+    capistrano (2.8.0)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -56,6 +56,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
+    commonjs (0.2.6)
     connection_pool (1.0.0)
     diff-lcs (1.2.4)
     erubis (2.7.0)
@@ -87,7 +88,7 @@ GEM
       connection_pool (~> 1.0)
       rubinius-actor
     hashie (2.0.4)
-    highline (1.6.18)
+    highline (1.6.19)
     hike (1.2.2)
     hpricot (0.8.6)
     httpauth (0.2.0)
@@ -99,6 +100,11 @@ GEM
     jwt (0.1.8)
       multi_json (>= 1.5)
     kgio (2.8.0)
+    less (2.3.2)
+      commonjs (~> 0.2.6)
+    less-rails (2.3.3)
+      actionpack (>= 3.1)
+      less (~> 2.3.1)
     libv8 (3.3.10.4)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -117,11 +123,11 @@ GEM
     multi_json (1.7.3)
     multi_xml (0.5.3)
     multipart-post (1.2.0)
-    net-scp (1.1.0)
+    net-scp (1.1.2)
       net-ssh (>= 2.6.5)
-    net-sftp (2.1.1)
+    net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.7)
+    net-ssh (2.6.8)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.6.0.78)
@@ -240,13 +246,14 @@ DEPENDENCIES
   airbrake (= 3.1.6)
   apn_sender (= 1.0.5)
   bson_ext
-  capistrano (= 2.6.0)
+  capistrano (= 2.8.0)
   capistrano-ext (= 1.2.1)
   coffee-rails (~> 3.1.1)
   fbgraph (= 1.9.0)
   fog
   hpricot (= 0.8.6)
   jquery-rails
+  less-rails
   mongoid (= 2.3.3)
   mongoid-rspec
   newrelic_rpm (= 3.6.0.78)

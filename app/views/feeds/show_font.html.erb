@@ -35,7 +35,7 @@
     <div class="float-Rt">
       <a href="<%= @details[:font_url] %>" target="_blank">
         <span>Buy at</span>
-        <img src="/web-assets/images/myfont.png" width="76" height="39" alt="My Fonts" title="My Fonts" />
+        <img src="<%= asset_path('myfont.png') %>" width="76" height="39" alt="My Fonts" title="My Fonts" />
       </a>
     </div>
   </div>
@@ -44,6 +44,6 @@
   <%= render '/shared/photo_list' %>
 </section>
 <div class="loader hidden" style="width:32px;margin:10px auto;">
-  <img src='/web-assets/images/ajax-loader-sm.gif' alt='Loading...' />
+  <img src='<%= asset_path('ajax-loader-sm.gif') %>' alt='Loading...' />
 </div>
 </section>

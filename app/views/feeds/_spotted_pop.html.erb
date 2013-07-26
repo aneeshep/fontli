@@ -8,11 +8,11 @@
           <span class="pop-disclaimer"><%= f.display_name %></span>
           <%= pluralize(f.agrees_count, 'Agree') %>
           <% if status == 'Tagged' %>
-            <img class="user-spotted" src="/web-assets/images/Spotted-Small.png" width="14" height="16" title="Spotted" />
+            <img class="user-spotted" src="<%= asset_path('Spotted-Small.png') %>" width="14" height="16" title="Spotted" />
           <% elsif status == 'Agreed' %>
-            <img class="selected" src="/web-assets/images/Agreed-Clicked.png" width="22" height="18" title="Agreed" />
+            <img class="selected" src="<%= asset_path('Agreed-Clicked.png') %>" width="22" height="18" title="Agreed" />
           <% else %>
-            <img src="/web-assets/images/Agreed--Default.png" width="22" height="18" title="Agree" />
+            <img src="<%= asset_path('Agreed--Default.png') %>" width="22" height="18" title="Agree" />
           <% end %>
         </span>
       </a>
