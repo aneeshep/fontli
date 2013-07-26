@@ -63,7 +63,7 @@ class FeedsController < ApplicationController
               current_user
             end
     page = params[:page] || 1
-    offset = (page.to_i - 1) * 3
+    offset = (page.to_i - 1) * 18
 
     case params[:type]
     when 'like'
@@ -80,7 +80,7 @@ class FeedsController < ApplicationController
     when 'follows'
       @users = @user.friends.limit(18).offset(offset).to_a
     else
-      @photos = @user.photos.recent(3).offset(offset).to_a
+      @photos = @user.photos.recent(18).offset(offset).to_a
       preload_photos_my_likes_comments
     end
   end
