@@ -57,12 +57,12 @@ namespace :deploy do
 
 end
 
-namespace :rake do
+namespace :raketask do
   desc "Run a task on a remote server."
-  # run like: cap rake:invoke task=db:populate
+  # run like: cap raketask:invoke task=db:populate
   task :invoke do
     run("cd #{deploy_to}/current; rake #{ENV['task']} RAILS_ENV=#{rails_env}")
   end
 end
 
-after "deploy:symlink", "deploy:symlink_shared_paths"
+after "deploy:update_code", "deploy:symlink_shared_paths"
