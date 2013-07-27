@@ -130,7 +130,7 @@
     <div class="aa-typetalk content content-b" style='margin-bottom:50px;'>
       <div class="comment-box clr">
         <% if likes_cnt > 0 %>
-        <div class="recent-likes" style='padding:30px 0 10px; border-bottom:1px solid #ccc;'>
+        <div class="recent-likes">
           <% recent_likes = @likes[0..4] %>
           <% recent_likes.each do |l| %>
             <% u = @users_map[l.user_id].first %>
