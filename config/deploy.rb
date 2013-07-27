@@ -49,7 +49,12 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/public/fonts #{release_path}/public/fonts"
     #run "ln -nfs #{shared_path}/Gemfile.lock #{release_path}/Gemfile.lock"
     # Also grant 777 to `tmp` folder for caching
-    run "chmod -R 777 #{release_path}/tmp/"
+    run "chmod -R 777 #{release_path}/tmp"
+  end
+
+  desc "Restart the app server"
+  task :restart do
+    run "cd #{deploy_to}/current; touch tmp/restart.txt;"
   end
 
   [:start, :stop].each do |t|
