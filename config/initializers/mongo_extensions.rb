@@ -23,7 +23,7 @@ module MongoExtensions
 
   def perma
     str = "#{self.class}_#{self.id.to_s}"
-    str = ActiveSupport::Base64.urlsafe_encode64(str)
+    str = Base64.urlsafe_encode64(str)
     CGI.escape(str)
   end
 

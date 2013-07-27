@@ -6,6 +6,7 @@
  *= require style
  *= require style1
  *= require jquery.mCustomScrollbar
+ *= require jquery-ui
  *= require_self
 */
 .clear { clear: both; }

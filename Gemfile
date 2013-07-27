@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rake', '10.0.3'
-gem 'rails', '3.1.12'
+gem 'rails', '3.2.14'
 gem 'therubyracer', '0.9.9'
 gem 'mongoid', '2.3.3'
 gem 'bson_ext' #Version should be same as 'mongo' gem
@@ -19,8 +19,8 @@ gem 'fog'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.1.4'
-  gem 'coffee-rails', '~> 3.1.1'
+  gem 'sass-rails',   '~> 3.2.6'
+  gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
   gem 'less-rails'
 end

@@ -47,14 +47,16 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/public/photos #{release_path}/public/photos"
     run "ln -nfs #{shared_path}/public/avatars #{release_path}/public/avatars"
     run "ln -nfs #{shared_path}/public/fonts #{release_path}/public/fonts"
-    #run "ln -nfs #{shared_path}/Gemfile.lock #{release_path}/Gemfile.lock"
-    # Also grant 777 to `tmp` folder for caching
-    run "chmod -R 777 #{release_path}/tmp"
   end
 
   desc "Restart the app server"
   task :restart do
     run "cd #{deploy_to}/current; touch tmp/restart.txt;"
+  end
+
+  desc "Grant file permissions"
+  task :set_file_perms do
+    run "chmod -R 777 #{deploy_to}/current/tmp/cache"
   end
 
   [:start, :stop].each do |t|
@@ -73,3 +75,4 @@ namespace :raketask do
 end
 
 after "deploy:update_code", "deploy:symlink_shared_paths"
+after "deploy", "deploy:set_file_perms"
