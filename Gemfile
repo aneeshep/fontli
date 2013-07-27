@@ -30,13 +30,6 @@ gem 'jquery-rails'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
-# Use unicorn as the web server
-gem 'unicorn'
-
-# Deploy with Capistrano
-gem 'capistrano', '2.8.0'
-gem 'capistrano-ext', '1.2.1'
-
 # Web page scrapper
 gem 'hpricot', '0.8.6'
 
@@ -44,10 +37,17 @@ gem 'hpricot', '0.8.6'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
-# Pretty printed test output
+  # Pretty printed test output
   gem 'turn', :require => false
 end
+
 group :development, :test do
   gem 'mongoid-rspec'
   gem 'simplecov', '>= 0.4.0'
+end
+
+group :development do
+  gem 'capistrano', '2.15.5'
+  gem 'capistrano-ext', '1.2.1'
+  gem 'unicorn'
 end
