@@ -7,7 +7,7 @@
 <ul>
   <% unless section == 'profile-post' %>
     <li class="profile-name">
-      <span><%= u.username %></span>
+      <a href="<%= profile_path(:user_id => u.id) %>"><%= u.username %></a>
     </li>
   <% end %>
   <li class="profile-detail popitup">

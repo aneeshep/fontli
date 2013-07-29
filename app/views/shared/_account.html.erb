@@ -10,7 +10,7 @@
   </a>
   <div class="user-detail">
     <a href="<%= profile_path(:user_id => u.id) %>"><%= u.username %></a>
-    <h1><a href="<%= profile_path(:user_id => u.id) %>"><%= u.full_name %></a></h1>
+    <a class='profile-name' href="<%= profile_path(:user_id => u.id) %>"><%= u.full_name %></a>
     <%= render_follow_button(u) %>
     <div class="clear"> </div>
 
