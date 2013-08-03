@@ -28,7 +28,7 @@
       <li class="font-detail-cta post <%= 'selected' if params[:type].nil? %>">
         <a data-href="<%= show_font_path(@font.family_id, :font_id => @font.id) %>" remote=true><%= @font.tagged_photos_count %> Post</a>
       </li>
-      <li class="profile-cta fav <%= 'selected' if params[:type] == 'fav' %>">
+      <li class="font-detail-cta fav <%= 'selected' if params[:type] == 'fav' %>">
         <a data-href="<%= show_font_path(@font.family_id, :font_id => @font.id, :type => 'fav') %>" remote=true><%= @font.favs_count %> Favourite</a>
       </li>
     </ul>

@@ -81,6 +81,7 @@ $(document).ready(function() {
           setTypetalkHeight();
           setupPopupNavLinks(id);
           enableScrollBars('.aa-typetalk');
+          enableScrollBars('.aa-likes');
         });
         elem.show();
         twttr.widgets.load();
@@ -150,6 +151,7 @@ $(document).ready(function() {
     $('.right-pop .like-box.pop-nav a').removeClass('strong');
     $(this).addClass('strong');
     $('.right-pop .bottom-nav').show();
+    enableScrollBars('.aa-typetalk');
   });
   $('.popup .view-likes').live('click', function() {
     animateLikesPopup();
@@ -157,6 +159,7 @@ $(document).ready(function() {
     $('.right-pop .like-box.pop-nav a').removeClass('strong');
     $('.right-pop .like-box.pop-nav a.view-likes').addClass('strong');
     $('.right-pop .bottom-nav').hide();
+    enableScrollBars('.aa-likes');
   });
   $('.right-pop .like-box.pop-nav a.spot').live('click', function() {
     $('.popup .view-spotted').trigger('click');
@@ -298,6 +301,7 @@ function photoDetailPopup(id, url) {
       centerPopup('.popup');
       setTypetalkHeight();
       enableScrollBars('.aa-typetalk');
+      enableScrollBars('.aa-likes');
       setupPopupNavLinks(id);
       twttr.widgets.load();
       FB.XFBML.parse();

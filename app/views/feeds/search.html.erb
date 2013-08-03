@@ -26,6 +26,7 @@
       <% end %>
     </ul>
   </div>
+  <div class='clear'></div>
 <% end %>
 <% if @users.any? %>
   <div class="people-list" id="users">
@@ -45,6 +46,7 @@
       <% if (i > 5) && (i == @users.length - 1) %> </div> <% end %>
     <% end %>
   </div>
+  <div class='clear'></div>
 <% end %>
 <% if @fonts.any? %>
   <div class="results-list" id="fonts">
@@ -60,5 +62,6 @@
       <% if (i > 5) && (i == @fonts.length - 1) %> </div> <% end %>
     <% end %>
   </div>
+  <div class='clear'></div>
 <% end %>
 </section>
