@@ -8,14 +8,15 @@
   <% if f.sos_approved? %><li class="mat1-b">SPOTTED</li><% end %>
 </ul>
 <span class="mat2">
-  <%= f.most_agreed_font.display_name if f.sos_approved? %>
+  <%= show_appropriate_font_name(f) %>
 </span>
 <span class="mat3"></span>
 
 <% liked = @my_lks.nil? || @my_lks[f.id] %>
 <%= render_photo_like_button(f, liked) %>
 <span class="mat5">
-  <%= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 40) %>
+  <%#= truncate(@my_cmts[f.id].try(:first).try(:body), :length => 40) %>
+  <%= truncate(f.caption, :length => 40) %>
 </span>
 <% spotted = false && current_user.spotted_on?(f) %>
 <a class="loc-img <%= 'selected' if spotted %> bg-tooltip" href="#"><label class="tooltip"><%= spotted ? 'spotted' : 'spot' %></label></a>

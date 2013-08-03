@@ -61,6 +61,14 @@ class Font
       Photo.where(:_id.in => fids.collect(&:photo_id)).desc(:created_at).skip(offst).limit(lmt)
     end
 
+    # considers :reject_in_header attr and returns one foto
+    def tagged_photo_for_header(opts, lmt = 3)
+      fids = self.where(opts).only(:photo_id).collect(&:photo_id)
+      return [] if fids.empty?
+      fotos = Photo.where(:_id.in => fids).desc(:created_at).limit(lmt).to_a
+      fotos.delete_if(&:reject_in_header).first # assumes 1/3 fotos will not be rejected for header
+    end
+
     # get popular family fonts(grouped) based on total tags_count, for a month
     # total tags_count, includes the count of subfonts as well.
     def cached_popular
@@ -104,10 +112,10 @@ class Font
       res
     end
 
-    def search_autocomplete(name)
+    def search_autocomplete(name, lmt=20)
       return [] if name.blank?
-      res = self.where(:family_name => /^#{name}.*/i).only(:family_name).collect(&:family_name)
-      res + self.where(:subfont_name => /^#{name}.*/i).only(:subfont_name).collect(&:subfont_name)
+      res = self.where(:family_name => /^#{name}.*/i).only(:family_name).limit(lmt).collect(&:family_name)
+      res + self.where(:subfont_name => /^#{name}.*/i).only(:subfont_name).limit(lmt).collect(&:subfont_name)
     end
   end
 

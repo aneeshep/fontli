@@ -104,7 +104,7 @@ h5{color: @lightgrey;font-size: 14px;float: right;}
     background-color: #fff;
 }
 #banner.small{
-    height: 148px;
+    height: 150px;
     background-color: #1a1a1a;
     padding:10px 0px;
     box-shadow: 0 -1px 3px 0 #333333;
@@ -259,7 +259,7 @@ i{
      margin:0px 10px 20px 0;
  section{
      background-color: #f9f9f9;
-     margin-left:5px !important;
+     margin-left:10px !important;
      height:350px;
      width:320px;
      border:1px solid #cfcfcf;
@@ -290,9 +290,10 @@ i{
  }
 
  footer{
-     margin:20px 0px 10px 0px;
+     margin:20px 0px 10px 10px;
      padding-left:7px;
      height:80px;
+     width:315px;
   a.profile-img{
     position:relative;
     border-radius: 50px;
@@ -315,13 +316,15 @@ i{
     }
  }
  ul{
-     padding: 0px 0px 0px 60px;
+   padding-left:10px;
+   overflow:auto;
+   min-height:70px;
  li{
      text-align: left;
      padding: 3px 0;
  }
  li.profile-name{
- span{
+ a{
      color: @darkgrey;
      font-size:18px;
      font-weight: bold;
@@ -1679,6 +1682,7 @@ float:right;
 .pro-header-d{
   background:url('<%= asset_path('Asset-fontli-2a.png') %>') repeat-x;
   box-shadow:0 3px 3px rgba(0,0,0,0.15);
+  margin-bottom:30px;
   div{
    span{
        color: #999999;
@@ -1695,7 +1699,8 @@ float:right;
    }
   }
   div{
-  overflow:auto;
+    height:50px;
+    overflow:hidden;
   }
   ul:last-child{
   margin-right:4px;
@@ -1926,7 +1931,7 @@ ul{
 overflow:hidden;
 width:275px;
 }
-    a{ font-size: 14px;display:block;margin-bottom: 2px;color: #aaaaaa;font-weight:bold;text-align:left;}
+    a{ font-size: 14px;display:block;margin-bottom: 2px;color: #aaaaaa;font-weight:bold;text-align:left;height:66px;}
 
 ul.subtext{
 float:right;
@@ -1934,7 +1939,7 @@ color:#666;
 font-weight:bold;
 margin-top:10px;
 a{
-    display:block;margin-left:5px;color: #999;font-size: 12px;font-weight: normal;text-shadow: 0 2px rgba(255,255,255,0.5);
+    display:block;height:10px;margin-left:5px;color: #999;font-size: 12px;font-weight: normal;text-shadow: 0 2px rgba(255,255,255,0.5);
 }
 }
 .subtext a:hover
@@ -1953,7 +1958,7 @@ button{
 }
 
 ul li{
-    list-style: none;float:left;text-align:right;
+    list-style: none;float:left;text-align:right;border-right:1px solid #ccc;
 
 span{
     font-size:11px;
@@ -1966,7 +1971,8 @@ p{
     font-weight: bold;
     text-shadow: 1px 1px #F2BBBA;
 }
-    }
+}
+ul li:last-child { border:none; }
     }
     }
 
@@ -2112,7 +2118,7 @@ div.pop-text{
 #slideshow div.last-active { z-index:9; }
 #slideshow div img { height: 271px; display: block; border: 0; width:180px;}
 #popup_container { background-color:rgba(0, 0, 0, 0.8); }
-.wrap { overflow:hidden; height:158px;position:relative; }
+.wrap { overflow:hidden; height:158px;position:relative;border-bottom: 1px solid #2C2C2C;border-top: 1px solid #000000; }
 .twitter-share-button { width:90px !important; }
 div.wrap.slide-banner{
 height:305px;
@@ -2199,13 +2205,13 @@ background:#fff;
 box-shadow: 1px 0 6px 0 #666666;
 li{
 float:left;
-padding-top:3px;
       h5{
       margin:10px 0;
       }
       a.spotted-img{
       display: block;
       overflow: hidden;
+      height:206px;
       }
 }
 li:first-child{
@@ -2940,8 +2946,6 @@ border-bottom:1px solid #999;
 }
 ul{
  margin: 11px 0px;
- max-height: 377px !important;
- overflow: hidden;
 li{
   background: none repeat scroll 0 0 #FFFFFF;
     float: left;
@@ -2959,8 +2963,6 @@ float:left;
 }
 }
 div.people-list{
-overflow:hidden;
-max-height:364px;
 h1{
  border-bottom: 1px solid #CCCCCC;
     color: #797979;
@@ -3011,8 +3013,6 @@ h1{
 
 }
 .results-list{
- max-height: 363px;
-overflow: hidden !important;
   h1{
    border-bottom: 1px solid #CCCCCC;
     box-shadow: 0 1px 0 #FFFFFF;
@@ -3028,7 +3028,6 @@ overflow: hidden !important;
   a:hover {
   border-bottom:1px solid #999;
   }
-  overflow:auto;
     .result{
     cursor:pointer;
      box-shadow: 1px 0 6px 0 rgba(0, 0, 0, 0.3);
@@ -3054,6 +3053,8 @@ overflow: hidden !important;
     }
     }
 }
+#users_more, #posts_more, #fonts_more { display: none; }
+
 .img-tile-container{
     overflow: hidden;
     width: 300px;
@@ -3064,7 +3065,7 @@ height:150px;
 }
  div.split{
   float: right;
-  height: 69px;
+  height: 75px;
   border-right:2px solid #000;
   img{
   position: relative!important;
@@ -3145,7 +3146,12 @@ border-bottom:1px solid #eee;
 color:#666;
 font-size:14px;
 }
-
+.wrapper.recently_spotted li{
+border-right:1px solid #ccc;
+}
+.wrapper.recently_spotted li:first-child,.wrapper.recently_spotted li:last-child{
+border:none;
+}
 
 /*---------------------------------------------------
     LESS Elements 0.7

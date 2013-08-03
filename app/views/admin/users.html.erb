@@ -27,7 +27,7 @@
   <tbody>
     <% @users.each_with_index do |u, i| %>
     <% fotos_cnt = u.photos_count %>
-    <tr>
+    <tr id='usr_<%= u.id.to_s %>'>
       <td><%= (@page - 1) * @lmt + i + 1 %></td>
       <td><img src='<%= u.url_thumb %>' /></td>
       <td><%= u.username %></td>
@@ -55,6 +55,11 @@
         <% end %>
         <% if @delete_user %>
           <%= link_to('Delete', '/admin/delete_user?id='+u.id.to_s) %>
+        <% end %>
+        <% if @reject_header %>
+          <% lnk_text = u.reject_in_header ? 'Show Header' : 'Reject Header' %>
+          <% reject_param = "&reject=#{!u.reject_in_header}" %>
+          <%= link_to(lnk_text, '/admin/reject_header?id='+u.id.to_s+reject_param+'&modal=User', :remote => true) %>
         <% end %>
       </td>
     </tr>

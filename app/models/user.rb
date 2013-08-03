@@ -30,6 +30,7 @@ class User
   field :likes_count, :type => Integer, :default => 0
   field :follows_count, :type => Integer, :default => 0
   field :user_flags_count, :type => Integer, :default => 0
+  field :reject_in_header, :type => Boolean, :default => false
 
   include MongoExtensions::CounterCache
   index :username, :unique => true
@@ -123,10 +124,10 @@ class User
       res
     end
 
-    def search_autocomplete(uname)
+    def search_autocomplete(uname, lmt=20)
       return [] if uname.blank?
-      res = self.where(:username => /^#{uname}.*/i).only(:username).collect(&:username)
-      res + self.where(:full_name => /^#{uname}.*/i).only(:full_name).collect(&:full_name)
+      res = self.where(:username => /^#{uname}.*/i).only(:username).limit(lmt).collect(&:username)
+      res + self.where(:full_name => /^#{uname}.*/i).only(:full_name).limit(lmt).collect(&:full_name)
     end
 
     # uname can be username or email
@@ -224,7 +225,9 @@ class User
     end
 
     def random_popular(lmt = 5)
-      self.recommended.shuffle.first(lmt)
+      usrs = self.recommended
+      usrs.delete_if(&:reject_in_header)
+      usrs.shuffle.first(lmt)
     end
   end
 
@@ -592,6 +595,10 @@ class User
   def spotted_on?(foto)
     @spotted_foto_ids ||= self.fonts.only(:photo_id).collect(&:photo_id)
     @spotted_foto_ids.include?(foto.id)
+  end
+
+  def spotted_font(foto)
+    self.fonts.where(:photo_id => foto.id).first
   end
 
 private

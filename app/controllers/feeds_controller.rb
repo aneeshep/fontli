@@ -151,12 +151,12 @@ class FeedsController < ApplicationController
   end
 
   def search_autocomplete
-    term = params[:term]
-    users = User.search_autocomplete(term)
-    posts = Photo.search_autocomplete(term)
-    fonts = Font.search_autocomplete(term)
+    term, lmt = params[:term], 7
+    users = User.search_autocomplete(term, lmt)
+    posts = Photo.search_autocomplete(term, lmt)
+    fonts = Font.search_autocomplete(term, lmt)
 
-    results = users + posts + fonts
+    results = (users + posts + fonts).first(lmt)
     render :json => results.sort_by(&:length)
   end
 

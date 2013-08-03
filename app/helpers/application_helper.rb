@@ -158,4 +158,14 @@ module ApplicationHelper
   def not_homepage?
     @homepage.nil?
   end
+
+  # show user tagged font on profile-spotted page or most_agreed_font
+  def show_appropriate_font_name(foto)
+    fnt = if params[:type].to_s == 'spotted'
+      @user.spotted_font(foto)
+    elsif foto.sos_approved?
+      foto.most_agreed_font
+    end
+    fnt.try(:display_name)
+  end
 end

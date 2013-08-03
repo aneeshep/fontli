@@ -186,6 +186,10 @@ $(document).ready(function() {
       }
     });
   });
+  $('.search-results-container a.expand-results').click(function() {
+    var targetId = $(this).closest('div').attr('id') + '_more';
+    $('#'+targetId).toggle();
+  });
   $('.qrcode a, .qrcode-links a').click(function() {
     var klass = $(this).attr('class');
     var offset = $(window).scrollTop();

@@ -1,0 +1,7 @@
+<% if @res %>
+  <% resp_text = params[:reject].to_s == 'true' ? 'Rejected' : 'Selected' %>
+  <% obj_type = params[:modal].to_s == 'Photo' ? 'foto' : 'usr' %>
+  $('#<%= obj_type %>_<%= params[:id] %> td:last strong').text('<%= resp_text %>');
+<% else %>
+  alert('Request Failed!');
+<% end %>

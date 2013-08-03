@@ -24,7 +24,7 @@ module FontFamily
   end
 
   def self.sub_font_details(font_unique_id)
-    params = {:uniqueid => font_unique_id}
+    params = {:uniqueid => font_unique_id, :render => {:text => PREVIEW_TEXT, :foreground => '666666'}}
     resp = request('MyFontsDetails/getDetails.json', params) || []
 
     resp.collect do |result|
@@ -40,7 +40,7 @@ module FontFamily
   end
 
   def self.family_details(family_id)
-    params = {:idlist => family_id}
+    params = {:idlist => family_id, :render => {:text => PREVIEW_TEXT, :foreground => '666666'}}
     resp = request('MyFontsDetails/getFontFamilyDetails.json', params)
 
     if resp

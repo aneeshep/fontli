@@ -23,6 +23,7 @@ class Photo
   field :sos_requested_by, :type => Integer
   field :sos_approved_at, :type => Time
   field :show_in_homepage, :type => Boolean, :default => false
+  field :reject_in_header, :type => Boolean, :default => false
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
@@ -194,7 +195,9 @@ class Photo
     # return no of popular photos in random
     # assumes there are enough popular photos in DB
     def random_popular(lmt = 1)
-      self.popular.shuffle.first(lmt)
+      fotos = self.popular
+      fotos.delete_if(&:reject_in_header)
+      fotos.shuffle.first(lmt)
     end
 
     def all_by_hash_tag(tag_name, pge = 1, lmt = 20)
@@ -233,9 +236,9 @@ class Photo
       res
     end
 
-    def search_autocomplete(text)
+    def search_autocomplete(text, lmt=20)
       return [] if text.blank?
-      self.where(:caption => /^#{text}.*/i).only(:caption).collect(&:caption)
+      self.where(:caption => /^#{text}.*/i).only(:caption).limit(lmt).collect(&:caption)
     end
   end
 

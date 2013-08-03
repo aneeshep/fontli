@@ -10,28 +10,28 @@
     </ul>
   </div>
 </div>
-<div class="wrapper">
+<div class="wrapper search-results-container">
 <% if @posts.any? %>
   <div class="font-list" id="posts">
-    <h1><a href="javascript:<%= "$('#posts_more').toggle()" if @posts.length > 3 %>;">Post (<%= @posts.length %>)</a></h1>
+    <h1><a href="javascript:;" class='expand-results'>Post (<%= @posts.length %>)</a></h1>
     <ul>
       <% @posts.each_with_index do |p, i| %>
-        <% if i == 3 %> <div id="posts_more"> <% end %>
+        <% if i == 10 %> <div id="posts_more"> <% end %>
         <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= p.id %>'>
           <a href="javascript:;">
             <img src="<%= p.url_thumb %>" />
           </a>
         </li>
-        <% if (i > 2) && (i == @posts.length - 1) %> </div> <% end %>
+        <% if (i > 9) && (i == @posts.length - 1) %> </div> <% end %>
       <% end %>
     </ul>
   </div>
 <% end %>
 <% if @users.any? %>
   <div class="people-list" id="users">
-    <h1><a href="javascript:<%= "$('#users_more').toggle()" if @users.length > 3 %>;">People (<%= @users.length %>)</a></h1>
+    <h1><a href="javascript:;" class='expand-results'>People (<%= @users.length %>)</a></h1>
     <% @users.each_with_index do |u, i| %>
-      <% if i == 3 %> <div id="users_more"> <% end %>
+      <% if i == 6 %> <div id="users_more"> <% end %>
       <div class="profile-detail">
         <a href="<%= profile_path(:user_id => u.id) %>" class="pro-img-big-none">
           <img width="100%" height="auto" src="<%= u.url_thumb %>" />
@@ -39,22 +39,22 @@
         </a>
         <div class="block-b-none">
           <a class="header-user-none" href="<%= profile_path(:user_id => u.id) %>">@<%= u.username %></a>
-          <h1><%= u.full_name %></h1>
+          <h1><%= link_to truncate(u.full_name, :length => 12), profile_path(:user_id => u.id), :title => u.full_name %></h1>
         </div>
       </div>
-      <% if (i > 2) && (i == @users.length - 1) %> </div> <% end %>
+      <% if (i > 5) && (i == @users.length - 1) %> </div> <% end %>
     <% end %>
   </div>
 <% end %>
 <% if @fonts.any? %>
   <div class="results-list" id="fonts">
-    <h1><a href="javascript:<%= "$('#fonts_more').toggle()" if @fonts.length > 6 %>;">Fonts (<%= @fonts.length %>)</a></h1>
+    <h1><a href="javascript:;" class='expand-results'>Fonts (<%= @fonts.length %>)</a></h1>
     <% @fonts.each_with_index do |f, i| %>
       <% if i == 6 %> <div id="fonts_more"> <% end %>
       <div class="result">
-        <img width="270" height="64" src="<%= f.thumb_url %>" />
+        <img width="270" height="64" src="<%= f.img_url %>" />
         <span>
-          <a href="#"><%= f.display_name %></a>
+          <a href="<%= show_font_path(f.family_id, :font_id => f.id) %>"><%= f.display_name %></a>
         </span>
       </div>
       <% if (i > 5) && (i == @fonts.length - 1) %> </div> <% end %>

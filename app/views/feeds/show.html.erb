@@ -146,9 +146,9 @@
               <br/>+<%= pluralize(likes_cnt - recent_likes.length, 'like') %>
             <% end %>
           </a>
-          <div style='clear:left;' />
+          <div style='clear:left;'></div>
         </div>
-      <% end %>
+        <% end %>
 
         <% @comments.each do |c| %>
           <% u = @users_map[c.user_id].first %>
