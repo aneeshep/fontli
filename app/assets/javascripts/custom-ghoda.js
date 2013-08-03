@@ -80,8 +80,6 @@ $(document).ready(function() {
           $('#popup_container .right-pop').show();
           setTypetalkHeight();
           setupPopupNavLinks(id);
-          enableScrollBars('.aa-typetalk');
-          enableScrollBars('.aa-likes');
         });
         elem.show();
         twttr.widgets.load();
@@ -300,8 +298,6 @@ function photoDetailPopup(id, url) {
 
       centerPopup('.popup');
       setTypetalkHeight();
-      enableScrollBars('.aa-typetalk');
-      enableScrollBars('.aa-likes');
       setupPopupNavLinks(id);
       twttr.widgets.load();
       FB.XFBML.parse();
