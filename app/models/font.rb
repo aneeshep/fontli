@@ -26,7 +26,7 @@ class Font
   validates :photo_id, :user_id, :presence => true
 
   attr_accessor :img_url
-  after_create :save_preview_image
+  after_save :save_preview_image
 
   POPULAR_API_LIMIT = 20
   PICK_STATUS_MAP = { :expert_pick => 1, :publisher_pick => 2, :expert_publisher_pick => 3 }
@@ -192,7 +192,7 @@ class Font
   end
 
   def img_url
-    request_domain + "/fonts/#{self.id.to_s}.png"
+    request_domain + sample_image_path(true)
   end
 
   # Thumb url is set after font creation.
@@ -200,7 +200,7 @@ class Font
   def thumb_url=(my_fnts_thumb_url)
     return true if my_fnts_thumb_url.blank?
     return true if my_fnts_thumb_url.to_s == '(null)'
-    img_path = "public/fonts/#{self.id.to_s}_thumb.png"
+    img_path = self.thumb_image_path
     return true if File.exist? img_path
     Rails.logger.info "Creating thumb image for font - #{self.id.to_s}"
     io = open(URI.parse(my_fnts_thumb_url))
@@ -215,8 +215,8 @@ class Font
   end
 
   def thumb_url
-    tpath = "/fonts/#{self.id.to_s}_thumb.png"
-    tpath = '/font_thumb_missing.jpg' unless File.exist?('public' + tpath)
+    tpath = self.thumb_image_path(true)
+    tpath = '/font_thumb_missing.jpg' unless has_thumb_image?
     request_domain + tpath
   end
 
@@ -224,15 +224,41 @@ class Font
     self.subfont_id.blank? ? self.family_name : self.subfont_name
   end
 
+  # alternate id - '(:family_id)_(:subfont_id)'
+  # used as unique identifier for sample and thumb images
+  def id_alt
+    id_alt = [self.family_id]
+    id_alt << self.subfont_id unless self.subfont_id.blank?
+    id_alt.compact.join('_')
+  end
+
   def photo_ids
     [self.photo_id]
-  end 
+  end
+
+  def sample_image_path(for_url = false)
+    path = "/fonts/#{self.id_alt.to_s}.png"
+    for_url ? path : 'public' + path
+  end
+
+  def thumb_image_path(for_url = false)
+    path = "/fonts/#{self.id_alt.to_s}_thumb.png"
+    for_url ? path : 'public' + path
+  end
+
+  def has_sample_image?
+    File.exist?(self.sample_image_path)
+  end
+
+  def has_thumb_image?
+    File.exist?(self.thumb_image_path)
+  end
 
 private
 
   def save_preview_image
     return true if @img_url.blank?
-    img_path = "public/fonts/#{self.id.to_s}.png"
+    img_path = self.sample_image_path
     io = open(URI.parse(@img_url))
     Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
     `convert #{io.path} #{img_path}`

@@ -54,9 +54,11 @@ module FontFamily
     end
   end
 
-  def self.font_sample(id, text)
+  def self.font_sample(id, text = nil)
+    text ||= PREVIEW_TEXT
     params = { :id => id, :render_string => text }
-    request('MyFontsSample/familySample.json', params)
+    resp = request('MyFontsSample/familySample.json', params)
+    resp.match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
   end
 
 private

@@ -1,20 +1,20 @@
 # All fontli rake tasks
 namespace :fontli do
 
-  desc 'Update the font image_url from MyFonts, if changed'
-  task :update_font_img_url => :environment do
+  desc 'Fetch the font image_url from MyFonts for broken fonts'
+  task :fetch_font_img_url => :environment do
     require 'font_family'
 
-    fnts = Font.popular
-    puts "Trying to update #{fnts.length} fonts.."
+    fnts = Font.only(:family_id, :subfont_id).to_a
+    puts "Checking #{fnts.length} fonts.."
     updated_fnts_cnt = 0
     fnts.each do |f|
-      dets = FontFamily.font_sample(f.family_id, f.family_name)
+      dets = FontFamily.font_sample(f.family_id)
       puts("Sample Image not available for #{f.family_id}") || next if dets.blank?
 
       img_url = dets.match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
       puts "Image url from API is empty!" if img_url.blank?
-      #next if img_url == f.img_url
+      next if f.has_sample_image?
       f.update_attribute(:img_url, img_url) && updated_fnts_cnt += 1
     end
     puts "Done. Updated #{updated_fnts_cnt} font image urls."
@@ -37,6 +37,34 @@ namespace :fontli do
       f.update_attribute(:thumb_url, thmb_url) && updated_fnts_cnt += 1
     end
     puts "Done. Updated #{updated_fnts_cnt} font thumb urls."
+  end
+
+  desc 'Migrate to new font images path'
+  task :migrate_font_images_path => :environment do
+    fnts = Font.only(:id, :family_id, :subfont_id).to_a
+    puts "Checking #{fnts.length} fonts.."
+    removed_paths_cnt = renamed_paths_cnt = 0
+
+    fnts.each do |f|
+      old_sample_img_path = "public/fonts/#{f.id.to_s}.png"
+      old_thumb_img_path  = "public/fonts/#{f.id.to_s}_thumb.png"
+      has_old_sample_img  = File.exist?(old_sample_img_path)
+      has_old_thumb_img   = File.exist?(old_thumb_img_path)
+
+      if has_old_sample_img
+        unless f.has_sample_image? # in new path location
+          system("cp #{old_sample_img_path} #{f.sample_image_path}") && renamed_paths_cnt += 1
+        end
+        system("rm -f #{old_sample_img_path}") && removed_paths_cnt += 1
+      end
+      if has_old_thumb_img
+        unless f.has_thumb_image? # in new location
+          system("cp #{old_thumb_img_path} #{f.thumb_image_path}") && renamed_paths_cnt += 1
+        end
+        system("rm -f #{old_thumb_img_path}") && removed_paths_cnt += 1
+      end
+    end
+    puts "Completed. Renamed #{renamed_paths_cnt} files and Removed #{removed_paths_cnt} files."
   end
 
   desc 'Display app statistics'
