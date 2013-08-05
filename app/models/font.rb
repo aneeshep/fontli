@@ -198,10 +198,9 @@ class Font
   # Thumb url is set after font creation.
   # So its ok to create the image right here, if not created already.
   def thumb_url=(my_fnts_thumb_url)
-    return true if my_fnts_thumb_url.blank?
+    return true if my_fnts_thumb_url.blank? || self.has_thumb_image?
     return true if my_fnts_thumb_url.to_s == '(null)'
     img_path = self.thumb_image_path
-    return true if File.exist? img_path
     Rails.logger.info "Creating thumb image for font - #{self.id.to_s}"
     io = open(URI.parse(my_fnts_thumb_url))
     `convert #{io.path} #{img_path}`
@@ -257,7 +256,7 @@ class Font
 private
 
   def save_preview_image
-    return true if @img_url.blank?
+    return true if @img_url.blank? || self.has_sample_image?
     img_path = self.sample_image_path
     io = open(URI.parse(@img_url))
     Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
