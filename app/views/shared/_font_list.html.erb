@@ -8,7 +8,7 @@
     <li>
       <a href="<%= show_font_path(f.family_id, :font_id => f.id) %>">
         <img src="<%= f.img_url %>" width="290" height="auto">
-        <h5><span><%= f.display_name %></span>by MyFonts</h5>
+        <h5><span><%= f.display_name %></span><label>by MyFonts</label></h5>
         <span><%= pluralize(f.tagged_photos_count, 'Photo') %></span>
         <span><%= f.favs_count %> Favourite</span>
       </a>

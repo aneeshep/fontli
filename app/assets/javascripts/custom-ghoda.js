@@ -12,6 +12,8 @@ $(document).ready(function() {
   prevPageUrl = '';
   $('.popup .cross,.signin .img-cross').live('click', function() {
     $('#popup_container').html('').hide();
+    if($('.popup').hasClass('open'))
+      $('.popup').toggleClass('open closed');
     $('#popup_loader').hide(); // just in case
     $("body").css("overflow", "inherit");
     if(prevPageUrl != '') {
@@ -21,6 +23,8 @@ $(document).ready(function() {
   $(document).keyup(function(e) {
     if (e.keyCode == 27) { //ESC key
       $('#popup_container').html('').hide();
+      if($('.popup').hasClass('open'))
+        $('.popup').toggleClass('open closed');
       $('#popup_loader').hide(); // just in case
       if(prevPageUrl != '') {
         history.pushState('data', '', prevPageUrl);
@@ -362,7 +366,13 @@ function animateLikesPopup() {
   $('.popup .right-pop .aa-typetalk').hide();
 }
 function setupPopupNavLinks(id) {
-  //excepts photoIds variable set on the main page
+  //expects photoIds variable set on the main page
+  //if not just hide the left/right arrows
+  if(photoIds.length == 0) {
+    $('.popup .set5').hide();
+    $('.popup .set4').hide();
+    return false;
+  }
   var i = photoIds.indexOf(id);
   var last = photoIds.length - 1;
   var nextID = photoIds[i+1];

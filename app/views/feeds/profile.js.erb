@@ -10,6 +10,10 @@
   <% render '/shared/photo_list', :section => section %>
 <% end %>
 
+<% if @photos %>
+  photoIds = <%= @photos.collect(&:id).to_json.html_safe %>;
+<% end %>
+
 <% if params[:page] # pagination request %>
   <% if collection.blank? # stop paginating %>
     // set the docHeight greater than actual height

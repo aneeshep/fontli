@@ -112,7 +112,6 @@ li div{
 img{
     position: absolute;
     left:5px;
-    top:2px;
 }
 box-shadow: 0 37px 58px -21px #000000 inset;
 position: relative;
@@ -399,7 +398,8 @@ section:hover{
 
 footer{
      margin:20px 0px 10px 0px;
-     height:80px;
+     min-height:80px;
+     overflow:auto;
  a.profile-img{
    position:relative;
    border-radius: 50px;
@@ -1231,7 +1231,7 @@ ul{
     float: left;
 li{
     padding:3px 0px;
-
+    clear:both;
 }
 
 li.view-link{
@@ -1247,12 +1247,13 @@ span.name{
     color: @darkgrey;
     margin-right: 10px;
     font-weight: bold;
+    float:left;
 }
 span.time{
     font-size: 13px;
     color: @lightgrey;
     cursor:default;
-    float:right;
+    float:left;
 }
     }
 li.b{
@@ -1355,7 +1356,7 @@ ul{
     width: 279px;
 li{
     padding:3px 0px;
-
+    clear:both;
 }
 li.a{
 span.name{
@@ -1363,12 +1364,13 @@ span.name{
     color: @darkgrey;
     margin-right: 8px;
     font-weight: bold;
+    float:left;
 }
 span.time{
     font-size: 13px;
     color: @lightgrey;
     cursor:default;
-    float:right;
+    float:left;
 }
     }
 li.b{
@@ -1402,6 +1404,7 @@ a{
 a.propic{
     border-radius: 50px 50px 50px 50px;
     display: inline-block;
+    position: relative;
     float: left;
     height: 50px;
     overflow: hidden;
@@ -1641,6 +1644,7 @@ a.header-user{
     font-size:16px;
     color: #999;
     font-weight: bold;
+    cursor:auto;
 }
     }
 ul{
@@ -1813,6 +1817,7 @@ a.pro-img-big{
     float:left;
     overflow: hidden;
     position: relative;
+    cursor:auto;
 }
 .block-a{
     width:250px;
@@ -1954,7 +1959,7 @@ a.profile-name{
     float: left;
     color: #4d4d4d;
     text-shadow: 3px 1px #FFFFFF;
-    margin-top:6px;
+    margin-top:1px;
 }
 
 button{
@@ -1962,7 +1967,7 @@ button{
 }
 
 ul li{
-    list-style: none;float:left;text-align:right;border-right:1px solid #ccc;
+    list-style: none;float:left;text-align:right;
 
 span{
     font-size:11px;
@@ -2211,6 +2216,9 @@ li{
 float:left;
       h5{
       margin:10px 0;
+      }
+      label{
+      display:inline-block;
       }
       a.spotted-img{
       display: block;
@@ -2506,6 +2514,7 @@ top:10px;
      overflow: hidden;
      position: relative;
      width: 75px;
+     cursor:auto;
 
      .overlap-a-none{
          border-radius: 75px;
@@ -2534,6 +2543,10 @@ h1{
     font-weight: bold;
     margin:2px 0px 5px 0px;
 }
+a{
+    color: #666666;
+    font-size: 14px;
+}
 p{
     font-size:14px;
     color: #666;
@@ -2549,6 +2562,7 @@ a.header-user-none{
     font-size:16px;
     color: #999;
     font-weight: bold;
+    cursor:auto;
 }
     }
 
@@ -3155,7 +3169,16 @@ border-right:1px solid #ccc;
 .wrapper.recently_spotted li:first-child,.wrapper.recently_spotted li:last-child{
 border:none;
 }
-.profile-name > a { color: #333333; }
+.profile-name > a { color: #333333; font-weight:bold; }
+.overlap{
+  border-radius: 50px 50px 50px 50px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3) inset;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
 
 /*---------------------------------------------------
     LESS Elements 0.7

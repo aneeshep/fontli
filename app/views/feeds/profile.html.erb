@@ -13,6 +13,9 @@
   <div class="block-b<%= '-none' if no_info %>">
     <a href="javascript:;" class="header-user<%= '-none' if no_info %>">@<%= @user.username %></a>
     <h1><%= @user.full_name %></h1>
+    <% unless @user.website.blank? %>
+      <a href="javascript:;"><%= @user.website %></a>
+    <% end %>
     <% unless no_info %>
       <p><%= @user.description %></p>
     <% end %>
@@ -22,13 +25,6 @@
       <%#= render_follow_button(@user) %>
       <%#= render_flag_button(@user) %>
     </div>
-    <ul class='contact'>
-      <% unless @user.website.blank? %>
-        <li>
-          <a href="javascript:;"><%= @user.website %></a>
-        </li>
-      <% end %>
-    </ul>
   </div>
 </div>
 </div>
