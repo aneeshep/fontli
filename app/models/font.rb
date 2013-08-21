@@ -64,7 +64,7 @@ class Font
     # considers :reject_in_header attr and returns one foto
     def tagged_photo_for_header(opts, lmt = 3)
       fids = self.where(opts).only(:photo_id).collect(&:photo_id)
-      return [] if fids.empty?
+      return nil if fids.empty?
       fotos = Photo.where(:_id.in => fids).desc(:created_at).limit(lmt).to_a
       fotos.delete_if(&:reject_in_header).first # assumes 1/3 fotos will not be rejected for header
     end

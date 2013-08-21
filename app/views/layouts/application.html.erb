@@ -5,6 +5,9 @@
     <meta  content="charset=utf-8">
     <meta name="description" content="Fontli lets designers and type-enthusiasts discover new fonts and great Typography. Using Fontli, you can capture interesting Typography from everyday life and share it with a vibrant community of type lovers." />
     <meta name="keywords" content="typography,fontli,type love,font sharing" />
+    <% if @noindex %>
+      <meta name="robots" content="noindex" />
+    <% end %>
 
     <%= stylesheet_link_tag "application" %>
     <% if session[:test_version] %>
