@@ -13,11 +13,11 @@
   <div class="block-b<%= '-none' if no_info %>">
     <a href="javascript:;" class="header-user<%= '-none' if no_info %>">@<%= @user.username %></a>
     <h1><%= @user.full_name %></h1>
-    <% unless @user.website.blank? %>
-      <a href="javascript:;"><%= @user.website %></a>
-    <% end %>
     <% unless no_info %>
       <p><%= @user.description %></p>
+    <% end %>
+    <% unless @user.website.blank? %>
+      <a href="<%= @user.website %>" target="blank"><%= @user.website %></a>
     <% end %>
   </div>
   <div class="block-c<%= '-none' if no_info %>">

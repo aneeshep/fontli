@@ -257,7 +257,7 @@ i{
      display: inline-block;
      margin:0px 10px 20px 0;
  section{
-     background-color: #f9f9f9;
+     background-color: #eee;
      margin-left:10px !important;
      height:350px;
      width:320px;
@@ -293,6 +293,7 @@ i{
      padding-left:7px;
      min-height:80px;
      overflow:auto;
+     float:left;
      width:315px;
   a.profile-img{
     position:relative;
@@ -335,11 +336,12 @@ i{
      }
  li.profile-detail{
  span, a{
-     font-size:14px;
+     font-size:12px;
      color: @lightgrey;
-     margin-right:10px;
+     margin-right:5px;
      display: inline-block;
  }
+ a:last-child { margin-right:0; }
  a{
      text-decoration: underline;
  }
@@ -365,7 +367,7 @@ section{
 div{
     display: inline-block;
 section{
-    background-color: #f9f9f9;
+    background-color: #eee;
     margin-left:5px !important;
     height:350px;
     width:320px;
@@ -1940,6 +1942,13 @@ ul{
 overflow:hidden;
 width:275px;
 }
+li{
+  border-right: 1px solid #CCCCCC !important;
+  float: left;
+  height: 68px !important;
+  list-style: none outside none;
+  text-align: right;
+}
     a{ font-size: 14px;display:block;margin-bottom: 2px;color: #aaaaaa;font-weight:bold;text-align:left;}
 
 ul.subtext{
@@ -1947,6 +1956,7 @@ float:right;
 color:#666;
 font-weight:bold;
 margin-top:10px;
+li{ border-right:none !important; }
 a{
     display:block;height:10px;margin-left:5px;color: #999;font-size: 12px;font-weight: normal;text-shadow: 0 2px rgba(255,255,255,0.5);
 }
@@ -2219,6 +2229,7 @@ float:left;
       }
       label{
       display:inline-block;
+      margin-top:5px;
       }
       a.spotted-img{
       display: block;
@@ -2562,7 +2573,7 @@ a.header-user-none{
     font-size:16px;
     color: #999;
     font-weight: bold;
-    cursor:auto;
+    cursor:default;
 }
     }
 
@@ -2968,6 +2979,7 @@ li{
     float: left;
     margin:0 11px 22px 10px;
     padding: 10px;
+    width:150px;
    box-shadow: 1px 0 6px 0 rgba(0, 0, 0, 0.3),-1px 0 6px 0 rgba(0, 0, 0, 0.3);
    a{
    overflow:hidden;
@@ -3178,6 +3190,10 @@ border:none;
   position: absolute;
   top: 0;
   width: 100%;
+}
+.block-b > a {
+  color: #666666;
+  font-size: 14px;
 }
 
 /*---------------------------------------------------
