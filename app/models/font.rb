@@ -192,7 +192,13 @@ class Font
   end
 
   def img_url
-    request_domain + sample_image_path(true)
+    #request_domain + sample_image_path(true)
+    url = 'http://apicdn.myfonts.net/v1/fontsample?text=fargopudmixy&format=png&fg=666666&size=60'
+    url << if self.subfont_id.blank?
+      "&id=#{self.family_id}&idtype=familyid"
+    else
+      "&id=#{self.subfont_id}"
+    end
   end
 
   # Thumb url is set after font creation.
