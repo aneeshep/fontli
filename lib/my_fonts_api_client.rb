@@ -4,71 +4,48 @@ require 'json'
 
 module MyFontsApiClient
   class << self
-
     def font_autocomplete(query)
       params = { :name => query, :name_type => 'startswith' }
-      fonts = request(params) || {}
+      fonts = request(params)
       fonts.values.collect { |f| f['name'] }.uniq
     end
 
+    # with exact font name, find its variants
     def fonts_list(query)
-      params = {:searchText => query, :resultType => "fonts"}
-      resp = request('MyFontsSearch/search.json', params) || {'results' => []}
+      params = { :name => query } # name_type => 'exact'
+      fonts = request(params)
 
-      resp["results"].collect do |result|
-        sub_font_count = result["description"].match(/\d/).to_s
-        img_url = result["sampleImage"].match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
-        {
-          :name => result["name"], :image => img_url,
-          :font_url => result["myfontsURL"], :uniqueid => result["uniqueID"],
-          :id => result["id"], :count => sub_font_count
-        }
+      fonts.values.collect do |f|
+        fnt = get_attrs(f)
       end
     end
 
-    def sub_fonts_list(font_unique_id)
-      params = {:uniqueid => font_unique_id}
-      resp = request('MyFontsDetails/getDetails.json', params) || []
-
-      resp.collect do |result|
-        result["styles"].collect do |style|
-          font_url = style["myfontsURL"].blank? ? "" : "http://new.myfonts.com/" + style["myfontsURL"]
-          img_url = style["sampleImage"].match(/(.*)src=(.*)style=(.*)/) && $2.to_s.strip.gsub("\"", '')
-          {
-            :name => style["name"], :image => img_url,
-            :font_url => font_url, :uniqueid => result["uniqueID"], :id => style["id"]
-          }
-        end
-      end.flatten
-    end
-
-    # get details for a single font/sub font
-    def font_details(family_id, style_id = nil)
-      params = { :extra_data => 'meta|article_abstract' }
-      style_id.blank? ? params[:id] = family_id : params[:style_id] = style_id
-      fonts = request(params) || {}
+    # with a family_id find its complete details - styles, desc, publisher
+    def font_details(family_id)
+      params = { :id => family_id, :extra_data => 'details|styles|article_abstract' }
+      fonts = request(params)
 
       details = fonts.values.first
-      if details
-        img_url = font_sample(family_id, style_id)
-        owner = details['foundry'].first['name']
-        {
-          :name => details['name'], :image => img_url, :font_url => details['url'],
-          :id => details['id'], :desc => details['article_abstract'].first, :owner => owner
-        }
+      return [] unless details
+
+      fnt = get_attrs(details)
+      f = { :id => details['id'] }
+      fnt[:styles] = details['styles'].collect do |style|
+        get_attrs(f, style)
       end
+      fnt
     end
 
-    # To periodically store foundry details for new fonts in local DB
-    def font_foundry_details(family_ids = [])
-      params = { :id => family_ids.join('|'), :extra_data => 'meta' }
-      fonts = request(params) || {}
-
-      fonts.values.inject({}) do |res, fnt|
-        res.merge(fnt['id'] => fnt['foundry'].first['name'])
-      end
+    # There's no way to find details of a sub font, directly
+    # Its only a wrapper to find it using `font_details`
+    # Also returns the font publisher and article_abstract
+    def sub_font_detail(family_id, style_id)
+      details = font_details(family_id)
+      style = details[:styles].detect { |s| s[:id] == style_id.to_i }
+      style.merge(:desc => details[:desc], :owner => details[:owner])
     end
 
+    # generate the myfonts cdn url to the samples. No real API call here.
     def font_sample(family_id, style_id = nil, opts = {})
       opts.reverse_update(:text => 'fargopudmixy', :format => 'png', :fg => 666666, :size => 60)
       url = 'http://apicdn.myfonts.net/v1/fontsample?' + opts.to_param
@@ -99,12 +76,12 @@ module MyFontsApiClient
 
       if res.code == '200'
         total_results = parsed_res['total_results'].to_i
-        results = parsed_res['results']
+        results = parsed_res['results'] || {}
         return results unless can_paginate
         fetch_all_results(total_results, results, params)
       else
         logger.fatal parsed_res['error']
-        nil
+        return {}
       end
     end
 
@@ -118,6 +95,20 @@ module MyFontsApiClient
       prev_page = params[:page] || 0
       params.update(:page => prev_page + 1)
       request(params)
+    end
+
+    # return hash of :name, :id, ... for a font or subfont
+    def get_attrs(font, style = nil)
+      owner = font['publisher'].try(:first).try(:[], 'name')
+      abstract = font['article_abstract'].try(:first)
+      family_id, style_id = font['id'], style.try(:[], 'id')
+      img_url = font_sample(family_id, style_id)
+
+      style ||= font
+      {
+        :name => style['name'], :image => img_url, :id => style['id'].to_i,
+        :font_url => style['url'], :owner => owner, :desc => abstract
+      }
     end
   end # class#self
 end # module
