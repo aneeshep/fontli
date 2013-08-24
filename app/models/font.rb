@@ -187,18 +187,16 @@ class Font
     current_user.fav_font_ids.include? self.id
   end
 
+  # TODO:: Remove all image storage mechanism once
+  # we are happy with the new CDN images
+  # Thumb urls can also go away after confirmation from the team.
   def img_url=(my_fnts_url)
     @img_url = my_fnts_url
   end
 
   def img_url
     #request_domain + sample_image_path(true)
-    url = 'http://apicdn.myfonts.net/v1/fontsample?text=fargopudmixy&format=png&fg=666666&size=60'
-    url << if self.subfont_id.blank?
-      "&id=#{self.family_id}&idtype=familyid"
-    else
-      "&id=#{self.subfont_id}"
-    end
+    MyFontsApiClient.font_sample(self.family_id, self.subfont_id)
   end
 
   # Thumb url is set after font creation.
