@@ -81,6 +81,21 @@ class Photo
       self.where(:_id => foto_id.to_s).first
     end
 
+    # mostly used in scripts to batch process the photos
+    def in_batches(batch_size = 1000, conds = nil)
+      conds ||= { :_id.ne => nil }
+      scpe = self.where(conds)
+      fetched_cnt = 0
+
+      while scpe.count > fetched_cnt do
+        fotos = scpe.asc(:created_at).skip(fetched_cnt).limit(batch_size).to_a
+        fetched_cnt += fotos.length
+
+        yield fotos
+        logger.fatal "Processed #{fetched_cnt}/#{scpe.count} records."
+      end
+    end
+
     def human_attribute_name(attr, opts = {})
       humanized_attrs = {
         :data_filename => 'Filename',
