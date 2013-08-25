@@ -96,7 +96,8 @@ module MyFontsApiClient
         return results unless can_paginate
         fetch_all_results(total_results, results, params)
       else
-        logger.fatal parsed_res['error']
+        logger.fatal(parsed_res['error']) if defined?(logger)
+        puts parsed_res['error']
         return {}
       end
     end

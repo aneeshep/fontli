@@ -4,9 +4,10 @@ class Font
   include MongoExtensions
 
   field :family_unique_id, :type => String
-  field :family_name, :type => String
   field :family_id, :type => String
-  field :subfont_name, :type => String
+  # Names are reduntant here and will be derived from FontDetail
+  #field :family_name, :type => String
+  #field :subfont_name, :type => String
   field :subfont_id, :type => String
   field :agrees_count, :type => Integer, :default => 0
   field :font_tags_count, :type => Integer, :default => 0
@@ -27,6 +28,9 @@ class Font
 
   attr_accessor :img_url
   after_save :save_preview_image
+  after_create :populate_details
+
+  delegate :desc, :owner, :image, :to => :details, :allow_nil => true # also :name, :url
 
   POPULAR_API_LIMIT = 20
   PICK_STATUS_MAP = { :expert_pick => 1, :publisher_pick => 2, :expert_publisher_pick => 3 }
@@ -239,6 +243,19 @@ class Font
     [self.photo_id]
   end
 
+  def details
+    @details ||= FontDetail.for(self.family_id, self.subfont_id)
+  end
+
+  def family_name
+    @details.try(:name)
+  end
+  alias_method :subfont_name, :family_name
+
+  def myfonts_url
+    @details.try(:url)
+  end
+
   def sample_image_path(for_url = false)
     path = "/fonts/#{self.id_alt.to_s}.png"
     for_url ? path : 'public' + path
@@ -270,5 +287,10 @@ private
     Airbrake.notify(ex)
   ensure
     io && io.close
+  end
+
+  def populate_details
+    fnt_details = MyFontsApiClient.details_for(self.family_id, self.subfont_id)
+    FontDetail.ensure_create(fnt_details)
   end
 end

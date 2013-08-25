@@ -1,24 +1,19 @@
 <% content_for :custom_js do %>
   <%= render 'shared/pinned_header_js' %>
 <% end %>
-<% desc1_index = @details[:desc].index('</p>') %>
-<% desc1 = @details[:desc].first(desc1_index) %>
-<% desc2 = @details[:desc][(desc1_index+4)..-1] %>
+
 <section id="stream">
 <div class="font-details">
   <div class="wrapper">
     <div class="left-panel">
-      <span><%= @details[:owner] %></span>
-      <h1><%= @details[:name] %></h1>
-      <%= desc1.html_safe %>
-      <div class='desc2 hidden'><%= desc2.html_safe %></div>
-      <% unless desc2.blank? %>
-        <a href="javascript:;" class="font-desc-view-more">View more</a>
-      <% end %>
+      <span><%= @font.owner %></span>
+      <h1><%= @font.display_name %></h1>
+      <%= @font.desc %>
+      <a href="<%= @font.myfonts_url || "#" %>" class="font-desc-view-more" target="blank">View more</a>
     </div>
     <div class='right-panel'>
-      <img src="<%= @details[:image] %>" width="290" height="auto" />
-      <span><%= @details[:name] %></span>
+      <img src="<%= @font.image %>" width="290" height="auto" />
+      <span><%= @font.display_name %></span>
     </div>
   </div>
 </div>
@@ -33,7 +28,7 @@
       </li>
     </ul>
     <div class="float-Rt">
-      <a href="<%= @details[:font_url] %>" target="_blank">
+      <a href="<%= @font.myfonts_url || "#" %>" target="_blank">
         <span>Buy at</span>
         <img src="<%= asset_path('myfont.png') %>" width="76" height="39" alt="My Fonts" title="My Fonts" />
       </a>

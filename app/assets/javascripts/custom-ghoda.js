@@ -223,17 +223,6 @@ $(document).ready(function() {
     input.val('').blur();
     return false;
   });
-  $('.font-desc-view-more').click(function() {
-    var text = $(this).html();
-    var desc2 = $('.desc2');
-    if(text == 'View more') {
-      desc2.removeClass('hidden');
-      $(this).html('View less'); }
-    else {
-      desc2.addClass('hidden');
-      $(this).html('View more');
-    }
-  });
   $('.spot-this').live('click', function() {
     var uniqueID = $(this).parent().attr('data-id');
     enableTagLocator(uniqueID);

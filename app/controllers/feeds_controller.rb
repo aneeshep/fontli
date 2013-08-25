@@ -39,9 +39,9 @@ class FeedsController < ApplicationController
 
   def show_font
     @font = Font[params[:font_id]]
-    @details = Rails.cache.fetch("font_family_details_#{params[:family_id]}") do
-      FontFamily.family_details(params[:family_id])
-    end
+    # @details = Rails.cache.fetch("font_family_details_#{params[:family_id]}") do
+    #  FontFamily.family_details(params[:family_id])
+    # end
 
     case params[:type]
     when 'fav'
