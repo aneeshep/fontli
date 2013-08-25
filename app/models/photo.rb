@@ -92,7 +92,7 @@ class Photo
         fetched_cnt += fotos.length
 
         yield fotos
-        logger.fatal "Processed #{fetched_cnt}/#{scpe.count} records."
+        puts "Processed #{fetched_cnt}/#{scpe.count} records."
       end
     end
 

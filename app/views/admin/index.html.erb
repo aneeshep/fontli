@@ -44,6 +44,9 @@
     <% end %>
     <span id="status">&nbsp;</span>
   </li>
+  <% @stat.misc_attrs.each do |k, v| %>
+    <li><%= k.humanize %>: <%= link_to v, 'javascript:;' %></li>
+  <% end %>
 </ul><br/>
 
 <h3>Utilities</h3>

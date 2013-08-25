@@ -23,13 +23,17 @@ namespace :photos do
 
   desc "Verify all thumbnails are available in S3 and are of correct dimensions"
   task :verify_thumbnails => :environment do
-    Mongoid.logger = Logger.new(STDOUT)
-    Mongoid.logger.level = Logger::ERROR
+    Fog::Logger[:warning] = nil # suppress s3 bucket name warnings
+    logger = Logger.new('verify_thumbnails_report.rb')
+    logger.info "#### Report on #{Time.now.utc} ######"
+
     aws_dir = Photo::AWS_STORAGE_CONNECTIVITY.directories.get(Photo::AWS_BUCKET)
     thumbs = Photo::THUMBNAILS
+    last_ran_at = Stat.current.photo_verify_thumbs_ran_at || Photo.asc(:created_at).first.created_at
     missing, size_issues = {}, {}
+    start = Time.now.utc
 
-    Photo.in_batches(1000) do |fotos|
+    Photo.in_batches(1000, :created_at.gt => last_ran_at) do |fotos|
       fotos.each do |f|
         foto_size = {}
         thumbs.each do |style, size|
@@ -45,20 +49,99 @@ namespace :photos do
         end # thumbs
 
         miss = missing[f.id.to_s]
-        if foto_size[:large] < foto_size[:medium] && miss && !miss.include?(:large)
+        if foto_size[:large] < foto_size[:medium] && (miss.nil? || !miss.include?(:large))
           size_issues[f.id.to_s] ||= []
           size_issues[f.id.to_s] << :large
         end
 
-        if foto_size[:medium] < foto_size[:thumb] && miss && !miss.include?(:medium)
+        if foto_size[:medium] < foto_size[:thumb] && (miss.nil? || !miss.include?(:medium))
           size_issues[f.id.to_s] ||= []
           size_issues[f.id.to_s] << :medium
         end
       end # fotos
     end # batches
 
-    puts missing.inspect
-    puts "--------------"
-    puts size_issues.inspect
+    Stat.current.update_attribute(:photo_verify_thumbs_ran_at, Time.now.utc - 5.minutes) # 5 mins buffer
+
+    logger.info "@missing = #{missing}"
+    logger.info "@size_issues = #{size_issues}"
+    logger.info "#####################################"
+    puts "Completed in #{(Time.now.utc - start) / 60} mins."
+    puts "Detected #{size_issues.length} size issues and #{missing.length} missing issues"
+  end
+
+  desc "Fix missing medium/thumb sizes or incorrect photo thumbnail dimensions in S3"
+  task :fixup_thumbnails => :verify_thumbnails do
+    require File.join(Rails.root, 'verify_thumbnails_report.rb')
+    Fog::Logger[:warning] = nil # suppress s3 bucket name warnings
+    aws_dir = Photo::AWS_STORAGE_CONNECTIVITY.directories.get(Photo::AWS_BUCKET)
+    missing_fixed = missing_failed = size_issue_fixed = size_issue_failed = 0
+    puts "\n\nTrying to fixup thumbnails..."
+    start = Time.now.utc
+
+    total_missing = @missing.length
+
+    @missing.each do |id, styles|
+      orig_fpath, orig_file = "#{id}_original.jpg", nil
+      # we need the :large version or the orig file to fix the rest, else move on
+      if styles.include?(:large) && (orig_file = aws_dir.files.get(orig_fpath)).nil?
+        puts "Can't fix photo #{id}. Its missing original, #{styles.join(', ')}"
+        next
+      end
+      
+      s3_file = orig_file || aws_dir.files.get("#{id}_large.jpg")
+      File.open('image.jpg', 'wb') { |fp| fp.write(s3_file.body) }
+
+      styles.each do |style|
+        size = Photo::THUMBNAILS[style]
+        res = system("convert image.jpg -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 image_conv.jpg")
+        res ? missing_fixed += 1 : missing_failed += 1
+
+        new_file = File.open('image_conv.jpg')
+        aws_dir.files.create(
+          :key => "#{id}_#{style.to_s}.jpg",
+          :body => new_file,
+          :public => true,
+          :content_type => 'image/jpg'
+        )
+        new_file.close
+      end
+
+      total_processed = missing_fixed + missing_failed
+      if total_missing > 5 && (total_processed % 5).zero?
+        # if there's more than 1 style missing on a photo, this message will look weird.
+        puts "Processed #{total_processed}/#{total_missing} photos..."
+      end
+    end
+
+    @size_issues.each do |id, styles|
+      orig_fpath, orig_file = "#{id}_original.jpg", nil
+      # we need the :large version or the orig file to fix the rest, else move on
+      if styles.include?(:large) && (orig_file = aws_dir.files.get(orig_fpath)).nil?
+        puts "Can't fix photo #{id}. Its missing original and has size issues for #{styles.join(', ')}"
+        next
+      end
+
+      s3_file = orig_file || aws_dir.files.get("#{id}_large.jpg")
+      File.open('image.jpg', 'wb') { |fp| fp.write(s3_file.body) }
+
+      styles.each do |style|
+        size = Photo::THUMBNAILS[style]
+        res = system("convert image.jpg -resize '#{size}' -quality 85 -strip -unsharp 0.5x0.5+0.6+0.008 image_conv.jpg")
+        res ? size_issue_fixed += 1 : size_issue_failed += 1
+
+        new_file = File.open('image_conv.jpg')
+        file = aws_dir.files.get("#{id}_#{style.to_s}.jpg")
+        file.body = new_file
+        file.save
+        new_file.close
+      end
+    end
+
+    Stat.current.update_attribute(:photo_fixup_thumbs_ran_at, Time.now.utc - 5.minutes) # 5 mins buffer
+
+    puts "Completed in #{(Time.now.utc - start) / 60} mins."
+    puts "Fixed #{size_issue_fixed} size issues and #{missing_fixed} missing issues"
+    puts "Failed to fix #{size_issue_failed} size issues and #{missing_failed} missing issues"
   end
 end
