@@ -49,12 +49,12 @@ namespace :photos do
         end # thumbs
 
         miss = missing[f.id.to_s]
-        if foto_size[:large] < foto_size[:medium] && (miss.nil? || !miss.include?(:large))
+        if foto_size[:large] <= foto_size[:medium] && (miss.nil? || !miss.include?(:large))
           size_issues[f.id.to_s] ||= []
           size_issues[f.id.to_s] << :large
         end
 
-        if foto_size[:medium] < foto_size[:thumb] && (miss.nil? || !miss.include?(:medium))
+        if foto_size[:medium] <= foto_size[:thumb] && (miss.nil? || !miss.include?(:medium))
           size_issues[f.id.to_s] ||= []
           size_issues[f.id.to_s] << :medium
         end
