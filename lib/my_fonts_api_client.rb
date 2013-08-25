@@ -21,8 +21,14 @@ module MyFontsApiClient
     end
 
     # with a family_id find its complete details - styles, desc, publisher
-    def font_details(family_id)
+    def font_details(family_id, style_id = nil)
       params = { :id => family_id, :extra_data => 'details|styles|article_abstract' }
+      # When style_id is available, its safer to find details by style_id,
+      # coz there's no guarantee that we have the correct family_id passed.
+      unless style_id.blank?
+        params.delete(:id)
+        params[:style_id] = style_id
+      end
       fonts = request(params)
 
       details = fonts.values.first
@@ -36,13 +42,23 @@ module MyFontsApiClient
       fnt
     end
 
-    # There's no way to find details of a sub font, directly
+    # There's no API to find details of a sub font, directly
     # Its only a wrapper to find it using `font_details`
-    # Also returns the font publisher and article_abstract
-    def sub_font_detail(family_id, style_id)
-      details = font_details(family_id)
-      style = details[:styles].detect { |s| s[:id] == style_id.to_i }
-      style.merge(:desc => details[:desc], :owner => details[:owner])
+    # Returns the font details with just one :style
+    def subfont_details(family_id, style_id)
+      details = self.font_details(family_id, style_id)
+      style = details.delete(:styles).detect { |s| s[:id] == style_id.to_i }
+      details.merge(:styles => [style].compact)
+    end
+
+    # Wrapper to get details of a font(without styles) or subfont
+    def details_for(family_id, style_id = nil)
+      details = if style_id.blank?
+        self.font_details(family_id).merge(:styles => [])
+      else
+        self.subfont_details(family_id, style_id)
+      end
+      details
     end
 
     # generate the myfonts cdn url to the samples. No real API call here.
@@ -107,7 +123,7 @@ module MyFontsApiClient
       style ||= font
       {
         :name => style['name'], :image => img_url, :id => style['id'].to_i,
-        :font_url => style['url'], :owner => owner, :desc => abstract
+        :url => style['url'], :owner => owner, :desc => abstract
       }
     end
   end # class#self
