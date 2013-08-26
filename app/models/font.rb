@@ -27,6 +27,7 @@ class Font
   validates :family_unique_id, :family_id, :presence => true
   validates :photo_id, :user_id, :presence => true
 
+  attr_accessor :img_url, :thumb_url # BC patch
   after_create :populate_details
 
   delegate :desc, :owner, :image, :to => :details, :allow_nil => true # also :name, :url
