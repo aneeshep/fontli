@@ -64,7 +64,7 @@ namespace :fonts do
 
   # Check if we have crossed the hourly limit. If so, sleep for an hour
   def handle_myfonts_api_limit
-    return if can_access_myfonts?
+    return if Stat.current.can_access_myfonts?
 
     puts "Sleeping for an hour...zzzzzz"
     sleep(3660) # a minute buffer

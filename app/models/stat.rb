@@ -30,16 +30,23 @@ class Stat
 
   def increment_myfonts_api_access_count!
     cur_time = Time.now.utc
+    if self.myfonts_api_access_start.nil?
+      self.update_attribute(:myfonts_api_access_start, cur_time)
+    end
+
     # MyFonts API limit is 500 per hour, so we reset the counts every hour
     if cur_time - self.myfonts_api_access_start <= MYFONTS_API_RESET_TIME
-      cnt = self.myfonts_api_access_count
+      cnt = self.myfonts_api_access_count || 0
       self.update_attribute(:myfonts_api_access_count, cnt + 1)
     else
       self.update_attributes(myfonts_api_access_start: cur_time, myfonts_api_access_count: 0)
     end
   end
 
+  # Used in the fonts:build_details_cache script
+  # We save atleast 100 calls for the app, so it doesn't break
   def can_access_myfonts?
-    self.myfonts_api_access_count < (MYFONTS_API_LIMIT - 5) # 5 buffer and thread safety
+    cnt = self.myfonts_api_access_count || 0
+    cnt < (MYFONTS_API_LIMIT - 100)
   end
 end
