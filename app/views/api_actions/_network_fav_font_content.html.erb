@@ -6,7 +6,7 @@
   </div>
   <div class="clearfix">
     <% feeds[0,6].each do |fav_fnt| %>
-      <a href="http://openfont/<%= @fonts_map[fav_fnt.font_id].first.family_id %>/<%= @fonts_map[fav_fnt.font_id].first.family_unique_id %>/<%= fav_fnt.font_id %>/<%= @fonts_map[fav_fnt.font_id].first.subfont_id %>"><img class="ref-img-med autoscale" src="<%= @fonts_map[fav_fnt.font_id].first.thumb_url %>" /></a>
+      <a href="http://openfont/<%= @fonts_map[fav_fnt.font_id].first.family_id %>/<%= @fonts_map[fav_fnt.font_id].first.family_unique_id %>/<%= fav_fnt.font_id %>/<%= @fonts_map[fav_fnt.font_id].first.subfont_id %>"><%= @fonts_map[fav_fnt.font_id].first.family_name %></a>
     <% end %>
   </div>
   <div class="timestamp"><%= timestamp(feeds.first.created_at) %></div>

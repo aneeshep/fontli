@@ -25,7 +25,7 @@ namespace :fonts do
         puts "Completed #{i+1}/#{total_cnt} sub-fonts."
       end
     end
-    puts "NOTE: Can't find details for #{missing_fnts.length} sub fonts. Run fixup"
+    puts "\nNOTE: Can't find details for #{missing_fnts.length} sub fonts. Run fixup\n"
     logger.info "@missing_subfonts = #{missing_fnts}"
 
 
@@ -49,7 +49,7 @@ namespace :fonts do
         puts "Completed #{i+1}/#{total_cnt} family fonts."
       end
     end
-    puts "NOTE: Can't find details for #{missing_fnts.length} family fonts. Run fixup"
+    puts "\nNOTE: Can't find details for #{missing_fnts.length} family fonts. Run fixup\n"
     logger.info "@missing_fonts = #{missing_fnts}"
 
     puts "\nDone."

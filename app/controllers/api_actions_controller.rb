@@ -143,7 +143,6 @@ class ApiActionsController < ApiBaseController
     @font_id = nil if fnt.nil? # hack to avoid invalid fonts
     fav = @current_user.fav_fonts.build(:font_id => @font_id)
     resp, error = fav.my_save(true)
-    fnt && (fnt.thumb_url = @thumb_url) # update thumb_url
     render_response(resp, !resp.nil?, error)
   end
 
