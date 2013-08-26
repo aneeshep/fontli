@@ -46,7 +46,6 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
     run "ln -nfs #{shared_path}/public/photos #{release_path}/public/photos"
     run "ln -nfs #{shared_path}/public/avatars #{release_path}/public/avatars"
-    run "ln -nfs #{shared_path}/public/fonts #{release_path}/public/fonts"
   end
 
   desc "Restart the app server"

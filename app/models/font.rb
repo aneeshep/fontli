@@ -23,11 +23,9 @@ class Font
   has_many :fav_fonts, :dependent => :destroy
   has_many :hash_tags, :as => :hashable, :autosave => true, :dependent => :destroy
 
-  validates :family_unique_id, :family_name, :family_id, :presence => true
+  validates :family_unique_id, :family_id, :presence => true
   validates :photo_id, :user_id, :presence => true
 
-  attr_accessor :img_url
-  after_save :save_preview_image
   after_create :populate_details
 
   delegate :desc, :owner, :image, :to => :details, :allow_nil => true # also :name, :url
@@ -191,52 +189,12 @@ class Font
     current_user.fav_font_ids.include? self.id
   end
 
-  # TODO:: Remove all image storage mechanism once
-  # we are happy with the new CDN images
-  # Thumb urls can also go away after confirmation from the team.
-  def img_url=(my_fnts_url)
-    @img_url = my_fnts_url
-  end
-
   def img_url
-    #request_domain + sample_image_path(true)
     MyFontsApiClient.font_sample(self.family_id, self.subfont_id)
-  end
-
-  # Thumb url is set after font creation.
-  # So its ok to create the image right here, if not created already.
-  def thumb_url=(my_fnts_thumb_url)
-    return true if my_fnts_thumb_url.blank? || self.has_thumb_image?
-    return true if my_fnts_thumb_url.to_s == '(null)'
-    img_path = self.thumb_image_path
-    Rails.logger.info "Creating thumb image for font - #{self.id.to_s}"
-    io = open(URI.parse(my_fnts_thumb_url))
-    `convert #{io.path} #{img_path}`
-    true
-  rescue Exception => ex
-    Rails.logger.info "Error while saving font thumb image with url - #{my_fnts_thumb_url}: #{ex.message}"
-    Airbrake.notify(ex)
-    false
-  ensure
-    io && io.close
-  end
-
-  def thumb_url
-    tpath = self.thumb_image_path(true)
-    tpath = '/font_thumb_missing.jpg' unless has_thumb_image?
-    request_domain + tpath
   end
 
   def display_name
     self.subfont_id.blank? ? self.family_name : self.subfont_name
-  end
-
-  # alternate id - '(:family_id)_(:subfont_id)'
-  # used as unique identifier for sample and thumb images
-  def id_alt
-    id_alt = [self.family_id]
-    id_alt << self.subfont_id unless self.subfont_id.blank?
-    id_alt.compact.join('_')
   end
 
   def photo_ids
@@ -256,38 +214,7 @@ class Font
     @details.try(:url)
   end
 
-  def sample_image_path(for_url = false)
-    path = "/fonts/#{self.id_alt.to_s}.png"
-    for_url ? path : 'public' + path
-  end
-
-  def thumb_image_path(for_url = false)
-    path = "/fonts/#{self.id_alt.to_s}_thumb.png"
-    for_url ? path : 'public' + path
-  end
-
-  def has_sample_image?
-    File.exist?(self.sample_image_path)
-  end
-
-  def has_thumb_image?
-    File.exist?(self.thumb_image_path)
-  end
-
 private
-
-  def save_preview_image
-    return true if @img_url.blank? || self.has_sample_image?
-    img_path = self.sample_image_path
-    io = open(URI.parse(@img_url))
-    Rails.logger.info "Creating preview image for font - #{self.id.to_s}"
-    `convert #{io.path} #{img_path}`
-  rescue Exception => ex
-    Rails.logger.info "Error while saving font preview image: #{ex.message}"
-    Airbrake.notify(ex)
-  ensure
-    io && io.close
-  end
 
   def populate_details
     fnt_details = MyFontsApiClient.details_for(self.family_id, self.subfont_id)
