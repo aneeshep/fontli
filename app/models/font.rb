@@ -5,9 +5,10 @@ class Font
 
   field :family_unique_id, :type => String
   field :family_id, :type => String
-  # Names are reduntant here and will be derived from FontDetail
-  #field :family_name, :type => String
-  #field :subfont_name, :type => String
+  # Names are reduntant here as its derived from FontDetail
+  # We use this only when the details are not available
+  field :family_name, :type => String
+  field :subfont_name, :type => String
   field :subfont_id, :type => String
   field :agrees_count, :type => Integer, :default => 0
   field :font_tags_count, :type => Integer, :default => 0
@@ -206,12 +207,15 @@ class Font
   end
 
   def family_name
-    @details.try(:name)
+    details.try(:name) || self.read_attribute(__method__)
   end
-  alias_method :subfont_name, :family_name
+
+  def subfont_name
+    details.try(:name) || self.read_attribute(__method__)
+  end
 
   def myfonts_url
-    @details.try(:url)
+    details.try(:url)
   end
 
 private

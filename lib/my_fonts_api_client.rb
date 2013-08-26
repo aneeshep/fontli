@@ -32,7 +32,7 @@ module MyFontsApiClient
       fonts = request(params)
 
       details = fonts.values.first
-      return [] unless details
+      return {} unless details
 
       fnt = get_attrs(details)
       f = { :id => details['id'] }
@@ -47,6 +47,8 @@ module MyFontsApiClient
     # Returns the font details with just one :style
     def subfont_details(family_id, style_id)
       details = self.font_details(family_id, style_id)
+      return details if details.blank?
+
       style = details.delete(:styles).detect { |s| s[:id] == style_id.to_i }
       details.merge(:styles => [style].compact)
     end
@@ -88,6 +90,7 @@ module MyFontsApiClient
 
       req = Net::HTTP::Get.new(path)
       res = client.request(req)
+      Stat.current.increment_myfonts_api_access_count!
       parsed_res = JSON.parse(res.body)
 
       if res.code == '200'

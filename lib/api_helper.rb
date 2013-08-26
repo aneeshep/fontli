@@ -29,7 +29,7 @@ module ApiHelper
                          :returns => [:id] },
     :publish_photo  => { :accepts => [:photo_id, :caption, [:latitude, :longitude, :address, :font_help, :font_tags, :hashes]],
                          :returns => [:id, :user_id, :caption, :created_dt, :url, :permalink],
-                         :collection => {:font_tags => [:family_unique_id, :family_id, :subfont_id, :img_url, :coords],
+                         :collection => {:font_tags => [:family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :coords],
                                          :hashes => [:name] }},
 
     :photo_detail   => { :accepts => [:photo_id],
@@ -50,7 +50,7 @@ module ApiHelper
                          :returns => true },
     :comment_photo  => { :accepts => [:photo_id, :body, [:font_tags, :hashes, :foto_ids]],
                          :returns => [:id, :body, :user_url_thumb, :username, :user_id, :created_dt, :fonts],
-                         :collection => {:font_tags => [:family_unique_id, :family_id, :subfont_id, :img_url, :coords],
+                         :collection => {:font_tags => [:family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :img_url, :coords],
                                          :hashes => [:name]},
                          :fonts    => [:id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :my_agree_status, :pick_status, :img_url, :my_fav?, :coords, :expert_tagged] },
 

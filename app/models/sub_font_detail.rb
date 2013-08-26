@@ -31,11 +31,12 @@ private
   # every time a subfont is created/updated check if the Fonts collection
   # also has the same family_id for all fonts with this subfont_id
   def fixup_font_family_id
-    scpe = Font.where(:subfont_id => self.style_id.to_s, :family_id.ne => self.family_id.to_s)
+    family_id = self.font_detail.family_id
+    scpe = Font.where(:subfont_id => self.style_id.to_s, :family_id.ne => family_id.to_s)
     affected_cnt = scpe.count
     return true if affected_cnt.zero?
 
     logger.fatal "fixup_font_family_id - Updating #{scpe.count} font records"
-    scpe.update(:family_id => self.family_id)
+    scpe.update(:family_id => family_id)
   end
 end

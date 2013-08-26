@@ -9,14 +9,14 @@ class FontDetail
   field :family_id, :type => Integer
   field :name, :type => String
   field :url, :type => String # MyFonts URL
-  field :desc, :type => String # article_abstract
+  field :desc, :type => String # article_abstract, can be empty
   field :owner, :type => String # publisher name
 
   index :family_id, :unique => true
 
   embeds_many :sub_font_details
 
-  validates :family_id, :name, :url, :desc, :owner, :presence => true
+  validates :family_id, :name, :url, :owner, :presence => true
 
   # assumes to be always successful, unless just leaves a message in the log.
   def self.ensure_create(details)
@@ -39,6 +39,7 @@ class FontDetail
     fnt_detail = self.where(:family_id => family_id).first
     return fnt_detail if fnt_detail.nil? || style_id.blank?
 
+    puts "error"
     subfnt = fnt_detail.subfont(style_id)
     subfnt && subfnt.to_obj
   end
