@@ -45,12 +45,14 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <img src='<%= fnt.img_url %>' width="350px" />
-      <span class='pop-disclaimer'>
-        <%= fnt.display_name %>
-        <%= pluralize(fnt.agrees_count, 'Agree') %>
-        <img src="<%= asset_path('Agreed--Default.png') %>" width="22" height="18" title="Agree" />
-      </span>
+      <a href="<%= session[:test_version] ? show_font_path(fnt.family_id, :font_id => fnt.id) : 'javascript:;'%>">
+        <img src='<%= fnt.img_url %>' width="350px" />
+        <span class='pop-disclaimer'>
+          <%= fnt.display_name %>
+          <%= pluralize(fnt.agrees_count, 'Agree') %>
+          <img src="<%= asset_path('Agreed--Default.png') %>" width="22" height="18" title="Agree" />
+        </span>
+      </a>
     </div>
     <% end %>
   </div>

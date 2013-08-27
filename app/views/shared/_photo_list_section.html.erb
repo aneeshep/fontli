@@ -1,15 +1,23 @@
+<% fnt_name = show_appropriate_font_name(f) %>
+
 <img src="<%= f.url_medium %>" class='popitup'>
-<div class="overlap-b popitup"></div>
+<% if f.font_help? || f.sos_approved? || !fnt_name.blank? %>
+  <div class="overlap-b popitup"></div>
+<% end %>
 <% unless section == 'profile-post'%>
   <i></i>
 <% end %>
-<ul class="mat1">
-  <% if f.font_help? %><li class="mat1-a">SOS</li><% end %>
-  <% if f.sos_approved? %><li class="mat1-b">SPOTTED</li><% end %>
-</ul>
-<span class="mat2">
-  <%= show_appropriate_font_name(f) %>
-</span>
+<% if f.font_help? || f.sos_approved? %>
+  <ul class="mat1">
+    <% if f.font_help? %><li class="mat1-a">SOS</li><% end %>
+    <% if f.sos_approved? %><li class="mat1-b">SPOTTED</li><% end %>
+  </ul>
+<% end %>
+<% unless fnt_name.blank? %>
+  <span class="mat2">
+    <%= fnt_name %>
+  </span>
+<% end %>
 <span class="mat3"></span>
 
 <% liked = @my_lks.nil? || @my_lks[f.id] %>

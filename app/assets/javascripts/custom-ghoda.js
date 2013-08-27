@@ -107,7 +107,18 @@ $(document).ready(function() {
   $('a[remote=true],button.follow-btn').live('click', function() {
     var url = $(this).attr('data-href');
     showAjaxLoader();
-    $.ajax({ url: url, dataType: 'script', complete: hideAjaxLoader });
+    $.ajax({ url: url, dataType: 'script',
+      complete: function() {
+        // on pages with infite scroll, scroll to the top
+        // after loading the new content via ajax
+        if($('#pinned_header')) {
+          $('#pinned_header').removeClass('fixed-top');
+          var pos = $('#pinned_header').position().top;
+          $('html, body').animate({scrollTop: pos+'px'}, 500);
+        }
+        hideAjaxLoader();
+      }
+    });
   });
   // ajax request forms with remote=true
   $('form[data-remote=true]').live('submit', function(e) {
