@@ -10,7 +10,7 @@ module MyFontsApiClient
       fonts.values.collect { |f| f['name'] }.uniq
     end
 
-    # with exact font name, find its variants
+    # with exact font name, find its variants from different publishers
     def fonts_list(query)
       params = { :name => query } # name_type => 'exact'
       fonts = request(params)
@@ -18,6 +18,17 @@ module MyFontsApiClient
       fonts.values.collect do |f|
         fnt = get_attrs(f)
       end
+    end
+
+    # Get details with name. Only to be used when 
+    # there's just one font in this exact same name.
+    def font_details_with_name(name)
+      params = { :name => name, :extra_data => 'details|article_abstract' }
+      fonts = request(params)
+
+      details = fonts.values.first || {}
+      return details if details.empty?
+      get_attrs(details)
     end
 
     # with a family_id find its complete details - styles, desc, publisher
