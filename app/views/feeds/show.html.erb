@@ -45,7 +45,7 @@
     <% if @photo.fonts_count > 0 %>
     <% fnt = @photo.fonts.desc(:agrees_count).first %>
     <div class="set3b">
-      <a href="<%= session[:test_version] ? show_font_path(fnt.family_id, :font_id => fnt.id) : 'javascript:;'%>">
+      <a href="<%= show_font_path(fnt.family_id, :font_id => fnt.id) %>">
         <img src='<%= fnt.img_url %>' width="350px" />
         <span class='pop-disclaimer'>
           <%= fnt.display_name %>

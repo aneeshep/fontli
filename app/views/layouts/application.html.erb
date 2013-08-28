@@ -10,11 +10,7 @@
     <% end %>
 
     <%= stylesheet_link_tag "application" %>
-    <% if session[:test_version] %>
-      <link href="<%= asset_path('mobile.css') %>" rel="stylesheet/less" type="text/css" />
-    <% end %>
     <link rel="image_src" type="image/jpeg" href="http://www.fontli.com<%= asset_path('logo_150.png') %>" />
-
     <%= javascript_include_tag "application" %>
 
     <% slider_height = logged_in? ? 148 : 305 %>
@@ -50,6 +46,7 @@
         <%= render 'shared/footer' %>
       </footer>
     </div>
+    <div id="scroll_top" class='fixed-bottom hidden'>Back to Top</div>
 
     <script type="text/javascript">
       $(document).ready(function() {

@@ -1,6 +1,6 @@
 <% typ = params[:type] || 'post' %>
 <% section = 'profile-post' if typ == 'post' %>
-<% collection = @users || @photos || @fonts %>
+<% collection = @users || @photos || @fonts || [] %>
 
 <% contents = if params[:type] == 'fav_font' %>
   <% render '/shared/font_list' %>
@@ -24,7 +24,7 @@
     // set the page JS variables
     pageNum = parseInt('<%= params[:page] %>');
     docHeight = getDocHeight();
-    doPagination = true;
+    doPagination = <%= (collection.length >= 18).to_json %>;
   <% end %>
   $('.loader').addClass('hidden');
 <% else %>
@@ -32,4 +32,8 @@
   $('.profile-cta').removeClass('selected');
   $(".profile-cta.<%= typ %>").addClass('selected');
   hideAjaxLoader();
+  //reset the pagination vars
+  pageNum = 1;
+  docHeight = getDocHeight();
+  doPagination = <%= (collection.length >= 18).to_json %>;
 <% end %>

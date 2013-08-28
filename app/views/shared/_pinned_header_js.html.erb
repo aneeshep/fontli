@@ -3,10 +3,11 @@ var headerTop = header.position().top;
 var headerHeight = header.innerHeight() + 2; // 2px borders
 var nextElem = header.next();
 var nextElemMargin = parseInt(nextElem.css('margin-top'));
+var scrollElem = $('#scroll_top');
 var didScroll = false;
 pageNum = 1;
 docHeight = getDocHeight();
-doPagination = true;
+doPagination = <%= (@users || @photos || @fonts || []).length >= 18 %>;
 
 $(window).scroll(function() {
   didScroll = true;
@@ -20,17 +21,22 @@ setInterval(function() {
     if ( winScroll >= headerTop ) {
       header.addClass('fixed-top');
       nextElem.css('margin-top', headerHeight + nextElemMargin + 'px');
+      if ( winScroll > headerTop ) scrollElem.removeClass('hidden');
+      else scrollElem.addClass('hidden');
     } else {
       header.removeClass('fixed-top');
       nextElem.css('margin-top', nextElemMargin + 'px');
+      scrollElem.addClass('hidden');
     }
 
     // pagination
-    if ( doPagination && (winScroll + $(window).height() > docHeight - 200) ) {
+    var nearBottom = (winScroll + $(window).height() > docHeight - 250);
+    if ( doPagination && nearBottom ) {
       $('.loader').removeClass('hidden');
       doPagination = false; // halt the pagination until the ajax request is complete
       var url = $('li.selected a').attr('data-href');
       $.ajax({ url: url, dataType: 'script', data: {page: pageNum + 1} });
     }
+      
   }
 }, 10);

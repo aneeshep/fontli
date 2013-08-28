@@ -68,13 +68,13 @@ class FeedsController < ApplicationController
 
     case params[:type]
     when 'like'
-      @photos = @user.fav_photos(page, 18)
+      @photos = @user.fav_photos(page, 18).to_a
       preload_photos_my_likes_comments(:skip_likes => true)
     when 'fav_font'
-      @fonts = @user.my_fav_fonts(page, 18)
+      @fonts = @user.my_fav_fonts(page, 18).to_a
       #preload_fonts_photos # this is more tricky
     when 'spotted'
-      @photos = @user.spotted_photos(page, 18)
+      @photos = @user.spotted_photos(page, 18).to_a
       preload_photos_my_likes_comments
     when 'followers'
       @users = @user.followers.limit(18).offset(offset).to_a

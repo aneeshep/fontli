@@ -106,6 +106,7 @@ $(document).ready(function() {
   // ajax request links with remote=true
   $('a[remote=true],button.follow-btn').live('click', function() {
     var url = $(this).attr('data-href');
+    $('#scroll_top').addClass('hidden');
     showAjaxLoader();
     $.ajax({ url: url, dataType: 'script',
       complete: function() {
@@ -114,6 +115,7 @@ $(document).ready(function() {
         if($('#pinned_header')) {
           $('#pinned_header').removeClass('fixed-top');
           var pos = $('#pinned_header').position().top;
+          headerTop = pos;
           $('html, body').animate({scrollTop: pos+'px'}, 500);
         }
         hideAjaxLoader();
@@ -239,6 +241,10 @@ $(document).ready(function() {
     enableTagLocator(uniqueID);
     $('.right-pop .set3c .spotted').css('display', 'none'); // hide all
     $(this).parent().css('display', 'block'); // show relevant
+  });
+  $('#scroll_top').click(function() {
+    $('#pinned_header').removeClass('fixed-top');
+    $('html, body').animate({scrollTop: '0px'}, 0);
   });
 });
 

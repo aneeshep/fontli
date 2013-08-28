@@ -3,13 +3,13 @@
   <div id="slider1" class="slider">
     <ul>
       <% foto = Photo.random_popular.first %>
-      <li class='banner-cta' href='<%= popular_path(:type => 'post') %>'>
+      <li class='banner-cta' href='<%= popular_path(:type => 'post') %>' style='box-shadow: 0px 1px rgba(255,255,255,0.1);border: 2px solid #000;height:146px;'>
         <div style="width:305px;height:150px;background:url('<%= foto.try(:url_medium) %>') no-repeat scroll 0 -75px;">
           <span>Popular</span>
         </div>
       </li>
       <% usrs = User.random_popular %>
-      <li class='banner-cta' href='<%= popular_path %>'>
+      <li class='banner-cta' href='<%= popular_path %>' style='box-shadow: 0px 1px rgba(255,255,255,0.1);border: 2px solid #000;height:146px;'>
         <div class='img-tile-container'>
           <div class='img-tile' style="background:url('<%= usrs[0].try(:url_large) %>') no-repeat;">
             <span>Limelight</span>
@@ -28,8 +28,8 @@
       </li>
       <% fnt = Font.random_popular.first %>
       <% foto = fnt && Font.tagged_photo_for_header(:family_id => fnt.family_id) %>
-      <li class='banner-cta' href='<%= popular_path(:type => 'font') %>'>
-        <div style="width:305px;height:150px;background:url('<%= foto.try(:url_medium) %>') no-repeat scroll 0 -75px;">
+      <li class='banner-cta' href='<%= popular_path(:type => 'font') %>' style='box-shadow: 0px 1px rgba(255,255,255,0.1);border: 2px solid #000;height:146px;'>
+        <div style="width:305px;height:146px;background:url('<%= foto.try(:url_medium) %>') no-repeat scroll 0 -75px;">
           <span>Recently Spotted</span>
         </div>
       </li>
@@ -44,12 +44,14 @@
           <span>Network Updates</span>
           <span class='subtext'>Coming Soon</span>
         </div>
+        <i></i>
       </li>
       <li class='banner-cta' href='javascript:;'>
         <div style="width:305px;height:150px;background:url('<%= asset_path('pok2.png') %>') no-repeat;">
           <span>My Updates</span>
           <span class='subtext'>Coming Soon</span>
         </div>
+        <i></i>
       </li>
     </ul>
   </div>

@@ -32,7 +32,6 @@ Fontli::Application.routes.draw do
 
   # welcome controller
   root :to => 'welcome#index'
-  match 'test-version' => 'welcome#index_new', :as => :test
 
   match 'keepalive' => 'welcome#keepalive', :as => :keepalive
   match 'signup/:platform' => 'welcome#signup', :as => :signup

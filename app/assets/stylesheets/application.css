@@ -8,6 +8,7 @@
  *= require jquery.mCustomScrollbar
  *= require jquery-ui
  *= require jquery-ui-overrides
+ *= require mobile
  *= require_self
 */
 .clear { clear: both; }

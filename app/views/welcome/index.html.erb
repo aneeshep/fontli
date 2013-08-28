@@ -32,10 +32,13 @@
       <span>Join <%= number_with_delimiter(User.count) %></span>
       <span>typoholics</span>
     </button>
-  <% elsif session[:test_version] %>
+  <% elsif true %>
     <button id="join_fontli" href="<%= popular_path(:type => 'post') %>">
-      <span><%= number_with_delimiter(User.count) %></span>
-      <span>typoholics</span>
+      <span class='join-cta'>
+        Join
+        <span><%= number_with_delimiter(User.count) %></span>
+        typoholics
+      </span>
     </button>
   <% else %>
     <button style='cursor:default;'>
