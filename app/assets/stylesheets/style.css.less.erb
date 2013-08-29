@@ -123,6 +123,7 @@ span{
     left:10px;
     font-size:25px;
     text-shadow: 0px 2px #000;
+    z-index:999;
 }
 span.subtext{
     font-size: 14px;
@@ -3191,7 +3192,7 @@ border: 2px solid #000;
 height: 146px;
 }
 .banner-cta.-before > i {
-    background: repeating-linear-gradient(-60deg, #FFFFFF, #FFFFFF 3px, #000000 1px, #000000 4px) repeat scroll 0 0 transparent;
+    background-image: url('<%= asset_path('header-pattern.png') %>');
     bottom: 0;
     left: 0;
     opacity: 0.2;
