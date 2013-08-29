@@ -13,10 +13,10 @@
     <link rel="image_src" type="image/jpeg" href="http://www.fontli.com<%= asset_path('logo_150.png') %>" />
     <%= javascript_include_tag "application" %>
 
-    <% slider_height = logged_in? ? 148 : 305 %>
+    <% slider_height = homepage? ? 305 : 146 %>
     <style type="text/css" media="screen">
       body div.slider    { overflow:hidden; position:relative; width:100%; }
-      body div.slider ul { margin:0; padding:0; height:<%= slider_height %>px; background-color:#000; }
+      body div.slider ul { margin:0; padding:0; height:<%= slider_height %>px; background-color:#1a1a1a; }
       body div.slider li { position:relative; float:left; list-style:none; cursor:pointer; text-align:center; line-height:160px; font-size:25px; }
       .wrap ul li div{height:<%= slider_height %>px;}
       .wrap ul li div.img-shadow { height:305px; width:305px; position:absolute; pointer-events:none; box-shadow: 0 28px 28px -18px rgba(0,0,0,0.7) inset, 0 -28px 28px -18px rgba(0,0,0,0.7) inset; }
