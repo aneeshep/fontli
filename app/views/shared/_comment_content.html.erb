@@ -7,15 +7,15 @@
   </a>
   <ul>
     <li class="a">
-    <span class="name"><%= u.username %></span>
-    <span class="time"><%= timestamp(c.created_at) %></span>
+      <a href="<%= profile_path(:user_id => u.id) %>"><span class="name"><%= u.username %></span></a>
+      <span class="time"><%= timestamp(c.created_at) %></span>
     </li>
     <li class="b">
-    <span><%= c.body %></span>
-    <% (c.font_tag_ids || []).each do |ft_id| %>
-      <% f = fnts_map[ft_id.to_s] %>
-      <span>Spotted <%= f.display_name %></span>
-    <% end %>
+      <span><%= c.body %></span>
+      <% (c.font_tag_ids || []).each do |ft_id| %>
+        <% f = fnts_map[ft_id.to_s] %>
+        <span>Spotted <%= f.display_name %></span>
+      <% end %>
     </li>
   </ul>
 </div> <!-- comment -->

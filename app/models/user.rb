@@ -467,38 +467,38 @@ class User
 
   def my_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
-    self.photos.only(:id, :data_filename).recent(lmt).offset(offst).to_a
+    self.photos.only(:id, :data_filename).recent(lmt).skip(offst).to_a
   end
 
   def my_workbooks(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
-    self.workbooks.only(:id, :title).recent(lmt).offset(offst).to_a
+    self.workbooks.only(:id, :title).recent(lmt).skip(offst).to_a
   end
 
   def fav_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     foto_ids = self.fav_photo_ids
     return [] if foto_ids.empty?
-    Photo.where(:_id.in => foto_ids).limit(lmt).offset(offst).desc(:created_at)
+    Photo.where(:_id.in => foto_ids).limit(lmt).skip(offst).desc(:created_at)
   end
 
   def spotted_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     foto_ids = self.fonts.only(:photo_id).collect(&:photo_id)
     return [] if foto_ids.empty?
-    Photo.where(:_id.in => foto_ids).limit(lmt).offset(offst).desc(:created_at)
+    Photo.where(:_id.in => foto_ids).limit(lmt).skip(offst).desc(:created_at)
   end
 
   def my_fonts(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
-    self.fonts.limit(lmt).offset(offst)
+    self.fonts.limit(lmt).skip(offst)
   end
 
   def my_fav_fonts(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     fnt_ids = self.fav_font_ids
     return [] if fnt_ids.empty?
-    Font.where(:_id.in => fnt_ids).limit(lmt).offset(offst).desc(:created_at)
+    Font.where(:_id.in => fnt_ids).limit(lmt).skip(offst).desc(:created_at)
   end
 
   # return count of favorite fonts

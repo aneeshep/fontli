@@ -33,7 +33,9 @@
 
     <ul class="set3">
       <li class="profile-name">
-        <span><%= user.username %></span>
+        <a href="<%= profile_path(:user_id => user.id) %>">
+          <span><%= user.username %></span>
+        </a>
       </li>
       <li class="profile-dialog">
         <span><%= truncate(@photo.caption, :length => 100) %></span>
