@@ -16,14 +16,11 @@
 
 <% if params[:page] # pagination request %>
   <% if collection.blank? # stop paginating %>
-    // set the docHeight greater than actual height
-    // and that stops further pagination requests
-    docHeight = getDocHeight() + 10000;
+    doPagination = false;
   <% else %>
     $('#profile_section_container').append('<%= escape_javascript(contents) %>');
     // set the page JS variables
     pageNum = parseInt('<%= params[:page] %>');
-    docHeight = getDocHeight();
     doPagination = <%= collection.length >= 18 %>;
   <% end %>
   $('.loader').addClass('hidden');
@@ -34,6 +31,5 @@
   hideAjaxLoader();
   //reset the pagination vars
   pageNum = 1;
-  docHeight = getDocHeight();
   doPagination = <%= collection.length >= 18 %>;
 <% end %>
