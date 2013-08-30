@@ -5,6 +5,7 @@ var nextElem = header.next();
 var nextElemMargin = parseInt(nextElem.css('margin-top'));
 var scrollElem = $('#scroll_top');
 var didScroll = false;
+var winHeight = $(window).height();
 pageNum = 1;
 docHeight = getDocHeight();
 doPagination = <%= (@users || @photos || @fonts || []).length >= 18 %>;
@@ -30,7 +31,7 @@ setInterval(function() {
     }
 
     // pagination
-    var nearBottom = (winScroll + $(window).height() > docHeight - 250);
+    var nearBottom = (winScroll + winHeight > docHeight - 250);
     if ( doPagination && nearBottom ) {
       $('.loader').removeClass('hidden');
       doPagination = false; // halt the pagination until the ajax request is complete

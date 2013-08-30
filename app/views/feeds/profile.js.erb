@@ -24,7 +24,7 @@
     // set the page JS variables
     pageNum = parseInt('<%= params[:page] %>');
     docHeight = getDocHeight();
-    doPagination = <%= (collection.length >= 18).to_json %>;
+    doPagination = <%= collection.length >= 18 %>;
   <% end %>
   $('.loader').addClass('hidden');
 <% else %>
@@ -35,5 +35,5 @@
   //reset the pagination vars
   pageNum = 1;
   docHeight = getDocHeight();
-  doPagination = <%= (collection.length >= 18).to_json %>;
+  doPagination = <%= collection.length >= 18 %>;
 <% end %>
