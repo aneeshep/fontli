@@ -80,13 +80,14 @@ cite				{font-weight:bold;color:#000}
 a.storify-link { float:right; font-size:10px; color:#000; }
 aside 				{float:right; width: 255px; }
 button 			{
-     float: right;/*background:url(<%= asset_path('banner.png') %>) no-repeat;*/width:190px;height:46px;text-align:center;cursor:pointer;border:1px solid #990000;padding:0;background-color:#fb1616; border-radius: 5px; display:inline; font-weight:bold; box-shadow: 0px -3px rgba(0,0,0,0.3) inset;
+     float: right;/*background:url(<%= asset_path('banner.png') %>) no-repeat;*/width:198px;height:46px;text-align:center;cursor:pointer;border:1px solid #990000;padding:0;background-color:#fb1616; border-radius: 5px; display:inline; font-weight:bold; box-shadow: 0px -3px rgba(0,0,0,0.3) inset;
 span:first-child 	{color: #4D4D4D;display: block;font-size:28px;text-shadow: darkred 0 -1px;letter-spacing:0px;margin-bottom:8px;}
 span:last-child{ color: #ffffff;display:inline-block;font-size: 13px;font-weight:bold;margin-top:-2px;}
 strong { background-color:rgba(255,255,255,0.3);padding:5px 4px;font-weight:bold;border-radius:2px; border-top:2px solid #D43F3F; margin-left:-3px;}
-span.join-cta { color: #fff; display:block; float:right; font-size:13px; text-align:center; width:181px; margin: 11px 0px 6px; }
-    }
-.share { float: right; margin-top: 5px; margin-right: 8px; }
+span.join-cta { color: #fff; display:block; float:right; font-size:13px; text-align:center; width:190px; margin: 11px 0px 6px; }
+}
+button:hover { opacity: 0.9 }
+.share { float: right; margin-top: 5px; margin-right: 12px; }
     }
 
 footer.main{
@@ -1498,6 +1499,7 @@ visibility:visible;
 .set3b{
     bottom: 20px;
     margin: 0 auto;
+    padding-top: 10px;
     width: 420px;
     cursor:pointer;
 h2{
@@ -1908,7 +1910,6 @@ div[rel=popitup], li[rel=popitup] { cursor:pointer; }
 /*limelight clean up page styling starts*/
 
 #limelight-markup{
-    margin-top:30px;
 
 div.left-content{
 float:left;
@@ -2225,7 +2226,6 @@ body#plain{
 /*recently spotted page starts*/
 
 div.recently_spotted{
-margin-top:30px;
 margin-bottom:30px;
 
 ul{
@@ -3195,7 +3195,7 @@ height: 146px;
     background-image: url('<%= asset_path('header-pattern.png') %>');
     bottom: 0;
     left: 0;
-    opacity: 0.2;
+    opacity: 1;
     position: absolute;
     right: 0;
     top: 0;

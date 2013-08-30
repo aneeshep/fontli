@@ -349,12 +349,7 @@ function centerPopup(selector) {
   elem.css('margin-top', marginTop + 'px');
 }
 function getDocHeight() {
-  var D = document;
-  return Math.max(
-    Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
-    Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
-    Math.max(D.body.clientHeight, D.documentElement.clientHeight)
-  );
+  return ($(document).height() || $(document).innerHeight());
 }
 function animateSpottedPopup() {
   $('.popup .right-pop .aa-spotted').fadeIn(1000);
