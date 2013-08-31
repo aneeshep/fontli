@@ -51,7 +51,6 @@ class FeedsController < ApplicationController
       @photos = Font.tagged_photos_for(opts, 18).to_a
       preload_photos_my_likes_comments
     end
-    @noindex = true # don't index this page
   end
 
   def profile
