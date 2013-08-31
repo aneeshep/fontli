@@ -11,9 +11,9 @@ Fontli::Application.routes.draw do
   match 'unfollow-user/:id' => 'feeds#unfollow_user', :as => :unfollow_user
   match 'sos' => 'feeds#sos', :as => :sos
   match 'feed/:id/fonts' => 'feeds#fonts', :as => :feed_fonts
-  match 'fonts/:family_id' => 'feeds#show_font', :as => :show_font
+  match 'fonts/:family_id/:font_id' => 'feeds#show_font', :as => :show_font
   match 'recent-fonts' => 'feeds#recent_fonts', :as => :recent_fonts
-  match 'profile' => 'feeds#profile', :as => :profile
+  match 'profile/:user_id' => 'feeds#profile', :as => :profile
   match 'popular' => 'feeds#popular', :as => :popular
   match 'my-updates' => 'feeds#my_updates', :as => :my_updates
   match 'network-updates' => 'feeds#network_updates', :as => :network_updates
