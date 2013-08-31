@@ -18,6 +18,7 @@ class FeedsController < ApplicationController
     klass, id = url.split('_')
     @photo, @perma = klass.constantize.find(id.to_s), true
     preload_photo_associations
+    @meta_title = 'Photo Detail'
     render 'show', :layout => 'plain'
   rescue
     render :file => 'public/404.html', :status => '404', :layout => false
@@ -51,6 +52,7 @@ class FeedsController < ApplicationController
       @photos = Font.tagged_photos_for(opts, 18).to_a
       preload_photos_my_likes_comments
     end
+    @meta_title = 'Font Detail'
   end
 
   def profile

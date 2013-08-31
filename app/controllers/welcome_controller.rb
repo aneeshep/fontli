@@ -16,7 +16,7 @@ class WelcomeController < ApplicationController
     redirect_to(feeds_url) && return if logged_in?
     @story   = StorifyStory.random_story
     @popular = Photo.for_homepage.only(:id,:data_filename).to_a
-    @homepage = true
+    @homepage, @meta_title = true, 'Home'
   end
 
   def splash

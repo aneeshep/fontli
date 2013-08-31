@@ -1,4 +1,25 @@
 module ApplicationHelper
+  def meta_title
+    title = 'Fontli'
+    title_from_action = params[:action].titleize
+    unless params[:type].blank?
+      title_from_action << " #{params[:type].titleize.pluralize}"
+    end
+    title << ": #{@meta_title || title_from_action}"
+  end
+
+  def meta_keywords
+    kw = ['typography,fontli,type love,font sharing']
+    add_kw = if @user
+      [@user.username, @user.full_name].compact.join(',')
+    elsif @photo && !@photo.caption.blank?
+      @photo.caption
+    elsif @font
+      @font.display_name
+    end
+    (kw + [add_kw].compact).join(',')
+  end
+
   def flash_notices
     cnt = "".html_safe
     [:notice, :alert].each do |k|
