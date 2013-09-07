@@ -1,6 +1,6 @@
 <% fnt_name = show_appropriate_font_name(f) %>
 
-<img src="<%= f.url_medium %>" class='popitup'>
+<img src="<%= f.url_medium %>" class='popitup' style="display:block;">
 <% if f.font_help? || f.sos_approved? || !fnt_name.blank? %>
   <div class="overlap-b popitup"></div>
 <% end %>
