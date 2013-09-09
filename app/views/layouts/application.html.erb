@@ -10,6 +10,9 @@
     <% end %>
 
     <%= stylesheet_link_tag "application" %>
+    <% if params[:diya] %>
+      <link href="<%= asset_path('mobile.css') %>" rel="stylesheet/less" type="text/css" />
+    <% end %>
     <link rel="image_src" type="image/jpeg" href="http://www.fontli.com<%= asset_path('logo_150.png') %>" />
     <%= javascript_include_tag "application" %>
 
