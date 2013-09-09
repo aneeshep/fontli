@@ -55,11 +55,6 @@
         <% if @unselect_photo && f.show_in_homepage? %>
           <%= link_to('Unselect', '/admin/select_photo?id='+f.id.to_s+'&select=false', :remote => true) %>
         <% end %>
-        <% if @reject_header %>
-          <% lnk_text = f.reject_in_header ? 'Show Header' : 'Reject Header' %>
-          <% reject_param = "&reject=#{!f.reject_in_header}" %>
-          <%= link_to(lnk_text, '/admin/reject_header?id='+f.id.to_s+reject_param+'&modal=Photo', :remote => true) %>
-        <% end %>
       </td>
     </tr>
     <% end %>

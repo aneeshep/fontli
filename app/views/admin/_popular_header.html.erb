@@ -1,0 +1,41 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'jquery-ui' %>
+  <style type="text/css">
+    .custom-state-active { background: #eee; }
+    #to_approve, #approved { float:left; min-height:20em; width:480px; border:2px solid #eee; margin:20px 0 0 30px; }
+    #to_approve img, #approved img { padding:2px; cursor:move; }
+  </style>
+<% end %>
+<% content_for :custom_js do %>
+  $('.draggable').draggable({
+    revert: 'invalid',
+    containment: 'document',
+    helper: 'clone'
+  });
+  $("#approved").droppable({
+    accept: "#to_approve img",
+    activeClass: 'ui-state-highlight',
+    drop: function(event, ui) {
+      reportStatus(ui.draggable, true);
+    }
+  });
+  $("#to_approve").droppable({
+    accept: "#approved img",
+    activeClass: 'custom-state-active',
+    drop: function(event, ui) {
+      reportStatus(ui.draggable, false);
+    }
+  });
+  function reportStatus($item, status) {
+    var targetElem = status ? $('#approved') : $('#to_approve');
+    var id = $item.attr('data-id');
+    var modal = $item.attr('data-modal') || 'User';
+    var url = '/admin/select_for_header';
+    $.ajax({
+      url: url,
+      data: {id: id, modal: modal, status: status},
+      success: function(data) { $item.appendTo(targetElem); },
+      error: function(data) { alert('failed'); }
+    });
+  }
+<% end %>

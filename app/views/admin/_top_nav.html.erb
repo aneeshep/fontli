@@ -2,30 +2,41 @@
   <li class="<%= 'active' if params[:action] == 'index' %>">
     <a href="/admin">Home</a>
   </li>
-  <li class="<%= 'active' if params[:action] == 'users' %>">
-    <a href="/admin/users">Users</a>
+  <% # Can refactor all these dropdown options as nav_dropdown helper method %>
+  <li class="dropdown <%= 'active' if [:users, :suspended_users].include?(params[:action].to_sym) %>" id="menu1">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">Users <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a href="/admin/users">All</a></li>
+      <li><a href="/admin/suspended_users">Suspended</a></li>
+    </ul>
   </li>
-  <li class="dropdown <%= 'active' if params[:action] == 'photos' %>" id="menu1">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">Photos <b class="caret"></b></a>
+  <li class="dropdown <%= 'active' if params[:action] == 'photos' %>" id="menu2">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu2">Photos <b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li><a href='/admin/photos'>All</a></li>
       <li><a href='/admin/photos?home=true'>For homepage</a></li>
     </ul>
   </li>
-  <li class="dropdown <%= 'active' if params[:action] =~ /flagged/ %>" id="menu2">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu2">Flagged Content <b class="caret"></b></a>
+  <li class="dropdown <%= 'active' if params[:action] == 'sos' %>" id="menu3">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu3">SoS <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a href='/admin/sos'>Approved</a></li>
+      <li><a href='/admin/sos?req=true'>Requested</a></li>
+    </ul>
+  </li>
+  <li class="dropdown <%= 'active' if params[:action] =~ /^popular_.*$/ %>" id="menu4">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu4">Popular Content <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a href='/admin/popular_users'>Users</a></li>
+      <li><a href='/admin/popular_photos'>Photos</a></li>
+      <li><a href='/admin/popular_fonts'>Fonts</a></li>
+    </ul>
+  </li>
+  <li class="dropdown <%= 'active' if params[:action] =~ /^flagged_.*$/ %>" id="menu5">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu5">Flagged Content <b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li><a href='/admin/flagged_users'>Users</a></li>
       <li><a href='/admin/flagged_photos'>Photos</a></li>
     </ul>
-  </li>
-  <li class="<%= 'active' if params[:action] == 'sos' && params[:req] != 'true' %>">
-    <a href="/admin/sos">SoS photos</a>
-  </li>
-  <li class="<%= 'active' if params[:action] == 'sos' && params[:req] == 'true' %>">
-    <a href="/admin/sos?req=true">SoS Requested</a>
-  </li>
-  <li class="<%= 'active' if params[:action] == 'suspended_users' %>">
-    <a href="/admin/suspended_users">Suspended Users</a>
   </li>
 </ul>

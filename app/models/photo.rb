@@ -23,7 +23,7 @@ class Photo
   field :sos_requested_by, :type => Integer
   field :sos_approved_at, :type => Time
   field :show_in_homepage, :type => Boolean, :default => false
-  field :reject_in_header, :type => Boolean, :default => false
+  field :show_in_header, :type => Boolean, :default => false
 
   include MongoExtensions::CounterCache
   belongs_to :user, :index => true
@@ -210,8 +210,7 @@ class Photo
     # return no of popular photos in random
     # assumes there are enough popular photos in DB
     def random_popular(lmt = 1)
-      fotos = self.popular
-      fotos.delete_if(&:reject_in_header)
+      fotos = self.popular.select(&:show_in_header)
       fotos.shuffle.first(lmt)
     end
 

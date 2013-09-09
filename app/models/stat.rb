@@ -21,6 +21,13 @@ class Stat
       stat = self.where(:name => CURRENT_STAT_NAME).first
       stat ||= self.create(:name => CURRENT_STAT_NAME, :app_version => '1.2')
     end
+
+    def expire_popular_cache!
+      Rails.cache.delete 'popular_users'
+      Rails.cache.delete 'popular_photos'
+      Rails.cache.delete 'popular_fonts'
+      Rails.cache.delete 'popular_fonts_foto_ids_map'
+    end
   end
 
   def misc_attrs

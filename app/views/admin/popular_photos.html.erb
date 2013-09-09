@@ -1,0 +1,29 @@
+<%= render 'popular_header' %>
+
+<% photos_selected = @photos.select(&:show_in_header) %>
+<% photos_to_select = @photos - photos_selected %>
+
+<div class='span10'>
+  <h3 class='pull-left'>
+    Popular <%= @font_page ? 'Fonts' : 'Photos' %>
+    <span class='label label-info'>Cached for <%= @font_page ? 48 : 24 %> hours</span>
+  </h3>
+  <%= link_to('Expire cache now', '/admin/expire_popular_cache', :method => :post, :class => 'btn btn-primary pull-right', :title => 'Please run this once you are completely done curating Users, Photos and Fonts.', :rel => 'tooltip') %>
+  <div style='clear:both;'>&nbsp;</div>
+</div>
+
+<div id="to_approve" class="ui-widget ui-helper-clearfix">
+  <h5>Content to Approve</h5>
+  <% photos_to_select.each do |p| %>
+    <img src='<%= p.url_thumb %>' data-id='<%= p.id.to_s %>' data-modal='Photo' title="<%= p.caption %>" class='draggable' />
+  <% end %>
+</div>
+
+<div id="approved" class="ui-widget ui-state-default">
+  <h5>Approved Content</h5>
+  <% photos_selected.each do |p| %>
+    <img src='<%= p.url_thumb %>' data-id='<%= p.id.to_s %>' data-modal='Photo' title="<%= p.caption %>" class='draggable' />
+  <% end %>
+  &nbsp;
+</div>
+<div style="clear:left;">&nbsp;</div>

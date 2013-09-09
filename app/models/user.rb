@@ -30,7 +30,7 @@ class User
   field :likes_count, :type => Integer, :default => 0
   field :follows_count, :type => Integer, :default => 0
   field :user_flags_count, :type => Integer, :default => 0
-  field :reject_in_header, :type => Boolean, :default => false
+  field :show_in_header, :type => Boolean, :default => false
 
   include MongoExtensions::CounterCache
   index :username, :unique => true
@@ -225,8 +225,7 @@ class User
     end
 
     def random_popular(lmt = 5)
-      usrs = self.recommended
-      usrs.delete_if(&:reject_in_header)
+      usrs = self.recommended.select(&:show_in_header)
       usrs.shuffle.first(lmt)
     end
   end

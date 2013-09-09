@@ -23,7 +23,7 @@ class AdminController < ApplicationController
       @max_page  = (@users_cnt / @lmt.to_f).ceil
     end
     @suspend_user = true
-    @delete_user = @reject_header = true
+    @delete_user = true
   end
 
   def suspend_user
@@ -60,7 +60,7 @@ class AdminController < ApplicationController
       @fotos = Photo.where(:caption => /^#{params[:search]}.*/i).order_by(sort_column => sort_direction).to_a
     elsif !params[:user_id].to_s.strip.blank?
       @fotos = Photo.where(:user_id => params[:user_id]).order_by(sort_column => sort_direction).to_a
-      @select_photo = @reject_header = true
+      @select_photo = true
       params[:search] = 'Not Implemented'
     elsif params[:home].to_s == 'true'
       @title = 'Homepage Photos'
@@ -71,7 +71,7 @@ class AdminController < ApplicationController
       @fotos = Photo.all.order_by(sort_column => sort_direction).skip(offst).limit(@lmt)
       @fotos_cnt = Photo.count
       @max_page  = (@fotos_cnt / @lmt.to_f).ceil
-      @select_photo = @reject_header = true
+      @select_photo = true
     end
     @delete_photo = true
   end
@@ -144,10 +144,33 @@ class AdminController < ApplicationController
     @res = Photo[params[:id]].update_attribute(:show_in_homepage, !unselect) rescue false
   end
 
-  def reject_header
-    reject = params[:reject].to_s == 'true'
-    modal = params[:modal].constantize
-    @res = modal.find(params[:id]).update_attribute(:reject_in_header, reject) rescue false
+  def popular_users
+    @users = User.recommended
+  end
+
+  def popular_photos
+    @photos = Photo.popular
+  end
+
+  def popular_fonts
+    fonts = Font.popular
+    @photos = fonts.collect do |fnt|
+      Font.tagged_photos_popular(fnt.family_id).to_a
+    end.flatten
+    @font_page = true
+    render :action => 'popular_photos'
+  end
+
+  def select_for_header
+    klass = Kernel.const_get(params[:modal])
+    obj = klass.find(params[:id])
+    obj.show_in_header = params[:status] == 'true'
+    obj.save! && render(:nothing => true)
+  end
+
+  def expire_popular_cache
+    Stat.expire_popular_cache!
+    redirect_to :back
   end
 
   def update_stat
