@@ -158,7 +158,8 @@ class FeedsController < ApplicationController
     posts = Photo.search_autocomplete(term, lmt)
     fonts = Font.search_autocomplete(term, lmt)
 
-    results = (users + posts + fonts).first(lmt)
+    # users and fonts takes precedence over posts
+    results = (users + fonts + posts).uniq.first(lmt)
     render :json => results.sort_by(&:length)
   end
 
@@ -166,7 +167,8 @@ class FeedsController < ApplicationController
     term = params[:search]
     @users = User.search(term)
     @posts = Photo.search(term)
-    @fonts = Font.search(term)
+    # Return only uniq fonts by family_id/subfont_id
+    @fonts = Font.search(term).uniq(&:key)
   end
 
   private

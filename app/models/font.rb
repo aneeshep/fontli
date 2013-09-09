@@ -187,6 +187,12 @@ class Font
     status
   end
 
+  # Unique font key. Used to reject duplicate fonts, as
+  # a same font can be tagged across multiple photos.
+  def key
+    "#{self.family_id}_#{self.subfont_id}"
+  end
+
   def my_fav?
     current_user.fav_font_ids.include? self.id
   end
