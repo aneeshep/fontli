@@ -18,7 +18,7 @@
         <span><%= f.favs_count %> Favourite</span>
       </a>
     </li>
-    <% Font.tagged_photos_for({:family_id => f.family_id}, 3).each do |p| %>
+    <% Font.tagged_photos_popular(f.family_id).each do |p| %>
       <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= p.id %>'>
         <a class="spotted-img" href="javascript:;">
           <img src="<%= p.url_thumb %>" width="206" height="206" />

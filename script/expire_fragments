@@ -8,4 +8,5 @@ Rails.cache.delete_matched /sub_font_details_*/
 Rails.cache.delete 'popular_users'
 Rails.cache.delete 'popular_photos'
 Rails.cache.delete 'popular_fonts'
+Rails.cache.delete 'popular_fonts_foto_ids_map'
 puts "Done."

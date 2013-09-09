@@ -65,12 +65,13 @@ class Font
       Photo.where(:_id.in => fids.collect(&:photo_id)).desc(:created_at).skip(offst).limit(lmt)
     end
 
-    # considers :reject_in_header attr and returns one foto
-    def tagged_photo_for_header(opts, lmt = 3)
-      fids = self.where(opts).only(:photo_id).collect(&:photo_id)
-      return nil if fids.empty?
-      fotos = Photo.where(:_id.in => fids).desc(:created_at).limit(lmt).to_a
-      fotos.delete_if(&:reject_in_header).first # assumes 1/3 fotos will not be rejected for header
+    # Find 3 recently spotted photos for a popular font
+    # Uses the cached_popular_foto_ids
+    def tagged_photos_popular(famly_id, lmt = 3)
+      page = opts.delete(:page) || 1
+      fids = self.cached_popular_foto_ids_map[famly_id]
+      return [] if fids.blank?
+      Photo.where(:_id.in => fids).desc(:created_at).limit(lmt)
     end
 
     # get popular family fonts(grouped) based on total tags_count, for a month
@@ -89,10 +90,31 @@ class Font
       self.cached_popular.first(lmt)
     end
 
-    # return no of popular fonts in random
-    # assumes there are enough popular photos in DB
-    def random_popular(lmt = 1)
-      self.popular.shuffle.first(lmt)
+    # caches a hash of the foto_ids array for every popular font#family_id
+    # {'family_id1' => ['foto_id1', 'foto_id2'], 'family_id2' => ['foto_id1'], ..}
+    # Note: Since its based on popular cache, it should have the same expiry as the latter.
+    def cached_popular_foto_ids_map
+      Rails.cache.fetch('popular_fonts_foto_ids_map', :expires_in => 2.days.seconds.to_i) do
+        family_ids = self.popular.collect(&:family_id)
+        fnts = self.where(:family_id.in => family_ids).only(:family_id, :photo_id).to_a
+
+        ids_map = {}
+        fnts.group_by(&:family_id).each do |family_id, fnts_arr|
+          ids_map[family_id] = fnts_arr.collect(&:photo_id)
+        end
+        ids_map
+      end
+    end
+
+    # reliably find a random photo(selected for header) of all the popular fonts
+    # Uses the inefficient skip random count logic, which is the easiest option 
+    def random_popular_photo(lmt = 1)
+      fids = self.cached_popular_foto_ids_map.values
+      return [] if fids.empty?
+
+      fotos_scope = Photo.where(:_id.in => fids, :show_in_header => true)
+      rand_offset = rand(fotos_scope.count - lmt + 1)
+      fotos_scope.skip(rand_offset).limit(lmt)
     end
 
     # fonts with min 3 agrees or a publisher_pick, sorted by updated_at
