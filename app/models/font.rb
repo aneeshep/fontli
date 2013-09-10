@@ -68,7 +68,6 @@ class Font
     # Find 3 recently spotted photos for a popular font
     # Uses the cached_popular_foto_ids
     def tagged_photos_popular(famly_id, lmt = 3)
-      page = opts.delete(:page) || 1
       fids = self.cached_popular_foto_ids_map[famly_id]
       return [] if fids.blank?
       Photo.where(:_id.in => fids).desc(:created_at).limit(lmt)
@@ -109,7 +108,7 @@ class Font
     # reliably find a random photo(selected for header) of all the popular fonts
     # Uses the inefficient skip random count logic, which is the easiest option 
     def random_popular_photo(lmt = 1)
-      fids = self.cached_popular_foto_ids_map.values
+      fids = self.cached_popular_foto_ids_map.values.flatten
       return [] if fids.empty?
 
       fotos_scope = Photo.where(:_id.in => fids, :show_in_header => true)
