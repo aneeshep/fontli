@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :login_required, :set_current_controller
+  before_filter :login_required, :set_current_controller, :set_diya_session
 
   # required to be public by the mongo extensions
   def current_user
@@ -47,4 +47,9 @@ protected
     !agent.match(mob_agent_regex).nil?
   end
   helper_method :mob_req?
+
+  def set_diya_session
+    return if params[:diya].nil?
+    session[:diya] = ['t', 'yes', '1'].include?(params[:diya])
+  end
 end
