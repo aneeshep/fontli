@@ -23,6 +23,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
   gem 'less-rails'
+  gem 'turbo-sprockets-rails3'
 end
 
 gem 'jquery-rails'
