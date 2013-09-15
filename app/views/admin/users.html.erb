@@ -17,7 +17,7 @@
       <th><%=sortable("email")%></th>
       <th><%=sortable("photos_count","Photos")%></th>
       <th><%=sortable("follows_count","Follows")%></th>
-      <th><%=sortable("fav_fonts_count","Fav Fonts")%></th>
+      <th><%=sortable("platform","Platform")%></th>
       <th><%=sortable("user_flags_count", "Flag Count")%></th>
       <th><%=sortable("points")%></th>
       <th><%=sortable("created_at","Created")%></th>
@@ -39,7 +39,7 @@
         <td><%= fotos_cnt %></td>
       <% end %>
       <td><%= u.follows_count %></td>
-      <td><%= u.fav_fonts_count %></td>
+      <td><%= u.platform %></td>
       <td><%= u.user_flags_count %></td>
       <td><%= u.points %></td>
       <td><%= u.created_dt %></td>
