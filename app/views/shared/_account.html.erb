@@ -16,7 +16,7 @@
 
     <ul>
       <% fotos.each do |f| %>
-        <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= f.id %>'>
+        <li rel='popitup' href='<%= show_feed_path(f) %>' data-id='<%= f.id %>'>
           <a href="javascript:;">
             <img src="<%= f.url_thumb %>" width="68" height="68" />
           </a>

@@ -5,7 +5,7 @@ Fontli::Application.routes.draw do
 
   # new web routes
   match 'feeds' => 'feeds#index', :as => :feeds
-  match 'feeds/show' => 'feeds#show', :as => :show_feed
+  match 'feeds/show/:id' => 'feeds#show', :as => :show_feed
   match 'socialize-feed/:id' => 'feeds#socialize_feed', :as => :socialize_feed
   match 'follow-user/:id' => 'feeds#follow_user', :as => :follow_user
   match 'unfollow-user/:id' => 'feeds#unfollow_user', :as => :unfollow_user

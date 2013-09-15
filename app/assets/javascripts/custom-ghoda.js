@@ -56,6 +56,7 @@ $(document).ready(function() {
   $('a.set4, a.set5').live('click', function() {
     var url = $(this).attr('data-href');
     var id = $(this).attr('data-id');
+    url = url.replace('/0', '/'+id); // append id to the url
     var elem = $(this);
     elem.hide(); // avoid further clicks
     // bring the popup to closed state, if opened
@@ -67,7 +68,6 @@ $(document).ready(function() {
 
     $.ajax({
       url: url,
-      data: {id:id},
       success: function(data, textStatus) {
         var reponseScript = $(data).filter("script");
         $.each(reponseScript, function(idx, val) { eval(val.text); } );
@@ -298,7 +298,6 @@ function photoDetailPopup(id, url) {
   spottedContentLoaded = false;
   $.ajax({
     url: url,
-    data: {id:id},
     success: function(data, textStatus) {
       hideAjaxLoader(true);
       var reponseScript = $(data).filter("script");

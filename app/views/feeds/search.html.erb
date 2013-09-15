@@ -17,7 +17,7 @@
     <ul>
       <% @posts.each_with_index do |p, i| %>
         <% if i == 10 %> <div id="posts_more"> <% end %>
-        <li rel='popitup' href='<%= show_feed_path %>' data-id='<%= p.id %>'>
+        <li rel='popitup' href='<%= show_feed_path(p) %>' data-id='<%= p.id %>'>
           <a href="javascript:;">
             <img src="<%= p.url_thumb %>" />
           </a>

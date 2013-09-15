@@ -68,7 +68,7 @@
   <div id="slider1" class="slider">
     <ul>
       <% @popular.each_with_index do |p, i| %>
-      <li data-id='<%= p.id %>' href='<%= show_feed_path %>' rel='popitup'>
+      <li data-id='<%= p.id %>' href='<%= show_feed_path(p) %>' rel='popitup'>
         <div style='background: none no-repeat; width:305px;height:305px;'>
           <div class="img-shadow"></div>
           <% if(i < 5) # load only the first 5 images upfront %>

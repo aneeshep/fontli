@@ -5,7 +5,7 @@
 <% usr = @photos.first.try(:user) if @users_map.nil? # for user profile %>
 <% section ||= '' %>
 <% @photos.each do |f| %>
-  <div rel='popitup' href='<%= show_feed_path %>' data-id=<%= f.id %> class='feed-item'>
+  <div rel='popitup' href='<%= show_feed_path(f) %>' data-id=<%= f.id %> class='feed-item'>
     <section>
       <%= render 'shared/photo_list_section', :f => f, :section => section %>
     </section>

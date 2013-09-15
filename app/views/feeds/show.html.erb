@@ -7,8 +7,8 @@
     <div class="bigpic" data-id="<%= @photo.id.to_s %>">
       <div class="img-overlay"></div>
       <img src="<%= @photo.url(:large) %>" style="width:480px;height:480px;"/>
-      <a href="javascript:;" data-href='<%= show_feed_path %>' class="set4"></a>
-      <a href="javascript:;" data-href='<%= show_feed_path %>' class="set5"></a>
+      <a href="javascript:;" data-href='<%= show_feed_path(0) %>' class="set4"></a>
+      <a href="javascript:;" data-href='<%= show_feed_path(0) %>' class="set5"></a>
 
       <div id='tag_locator' class='hidden'>
         <img src='<%= asset_path('taglabelmark.png') %>' id="tag_labelmark" class="draggable" />
