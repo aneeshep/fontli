@@ -35,7 +35,7 @@ class FeedsController < ApplicationController
   end
 
   def recent_fonts
-    @fonts = Font.api_recent
+    @fonts = Font.popular.to_a
   end
 
   def show_font
@@ -93,7 +93,7 @@ class FeedsController < ApplicationController
       @photos = Photo.popular
       preload_photos_my_likes_comments
     when 'font'
-      @fonts = Font.popular.to_a
+      @fonts = Font.api_recent
     else
       @users = User.recommended
     end

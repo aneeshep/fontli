@@ -91,10 +91,10 @@ class Font
 
     # caches a hash of the foto_ids array for every popular font#family_id
     # {'family_id1' => ['foto_id1', 'foto_id2'], 'family_id2' => ['foto_id1'], ..}
-    # Note: Since its based on popular cache, it should have the same expiry as the latter.
+    # Note: Since its based on recent_fonts cache, it should have the same expiry as the latter.
     def cached_popular_foto_ids_map
-      Rails.cache.fetch('popular_fonts_foto_ids_map', :expires_in => 2.days.seconds.to_i) do
-        family_ids = self.popular.collect(&:family_id)
+      Rails.cache.fetch('recent_fonts_foto_ids_map', :expires_in => 2.days.seconds.to_i) do
+        family_ids = self.api_recent.collect(&:family_id)
         fnts = self.where(:family_id.in => family_ids).only(:family_id, :photo_id).to_a
 
         ids_map = {}
@@ -119,12 +119,14 @@ class Font
     # fonts with min 3 agrees or a publisher_pick, sorted by updated_at
     def api_recent
       lmt = POPULAR_API_LIMIT
-      fnts = self.where(:agrees_count.gte => 3).to_a
-      fnts += self.where(:pick_status.gte => PICK_STATUS_MAP[:publisher_pick]).to_a
-      fnts = fnts.sort_by(&:updated_at).reverse
-      return [] if fnts.empty?
-      resp = fnts.group_by { |f| f[:family_id] }
-      resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
+      Rails.cache.fetch('recent_fonts', :expires_in => 2.days.seconds.to_i) do
+        fnts = self.where(:agrees_count.gte => 3).to_a
+        fnts += self.where(:pick_status.gte => PICK_STATUS_MAP[:publisher_pick]).to_a
+        fnts = fnts.sort_by(&:updated_at).reverse
+        return [] if fnts.empty?
+        resp = fnts.group_by { |f| f[:family_id] }
+        resp.collect { |fam_id, dup_fts| dup_fts.first }.first(lmt)
+      end
     end
 
     def search(name,sort = nil,dir = nil)

@@ -26,7 +26,8 @@ class Stat
       Rails.cache.delete 'popular_users'
       Rails.cache.delete 'popular_photos'
       Rails.cache.delete 'popular_fonts'
-      Rails.cache.delete 'popular_fonts_foto_ids_map'
+      Rails.cache.delete 'recent_fonts'
+      Rails.cache.delete 'recent_fonts_foto_ids_map'
     end
   end
 

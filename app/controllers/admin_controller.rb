@@ -153,7 +153,7 @@ class AdminController < ApplicationController
   end
 
   def popular_fonts
-    fonts = Font.popular
+    fonts = Font.api_recent
     @photos = fonts.collect do |fnt|
       Font.tagged_photos_popular(fnt.family_id).to_a
     end.flatten
