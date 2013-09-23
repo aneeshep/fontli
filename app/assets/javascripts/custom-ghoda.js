@@ -89,7 +89,7 @@ $(document).ready(function() {
         });
         elem.show();
         twttr.widgets.load();
-        FB.XFBML.parse();
+        //FB.XFBML.parse();
       },
       error: function() {
         hideAjaxLoader(true);
@@ -125,7 +125,7 @@ $(document).ready(function() {
   // ajax request forms with remote=true
   $('form[data-remote=true]').live('submit', function(e) {
     var url = $(this).attr('action');
-    var params = $(this).serializeArray(); 
+    var params = $(this).serializeArray();
     showAjaxLoader();
     $.ajax({
       url: url,
@@ -314,7 +314,7 @@ function photoDetailPopup(id, url) {
       enableScrollBars('.aa-likes');
       setupPopupNavLinks(id);
       twttr.widgets.load();
-      FB.XFBML.parse();
+      //FB.XFBML.parse();
     },
     error: function() {
       hideAjaxLoader(true);

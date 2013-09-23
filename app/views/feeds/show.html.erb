@@ -84,20 +84,10 @@
         <li class="c">
           <style type="text/css">
             .twitter-share-button { width:60px !important }
-            iframe { width:47px !important }
           </style>
-          <div id="fb-root"></div>
-          <script>(function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-            fjs.parentNode.insertBefore(js, fjs);
-          }(document, 'script', 'facebook-jssdk'));</script>
-
           <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= @photo.permalink %>" data-text="@fontli, Fontli- discover and share pure type love!" data-count="none"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-          <div class="fb-like" data-send="false" data-layout="button_count" data-width="150" data-show-faces="false" data-href="<%= @photo.permalink %>"></div>
+          <a href="javascript:;" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=<%= CGI.escape(@photo.permalink) %>','facebook-share-dialog','width=626,height=436'); return false;" style="height:24px;width:64px;vertical-align:bottom;display:inline-block;"><img src="<%= asset_path('fb_share_button.png') %>" /></a>
         </li>
       </ul>
     </div>
