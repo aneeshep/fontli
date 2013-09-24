@@ -10,7 +10,7 @@ class ApiSession
   index :device_id
   index [:auth_token, :device_id]
 
-  SESSION_EXPIRY_TIME = 4.weeks
+  SESSION_EXPIRY_TIME = 40.weeks
 
   belongs_to :user, :index => true
 
