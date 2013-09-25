@@ -3,7 +3,7 @@
 @lightgrey: #999999;
 @darkgrey: #333;
 
-@media only screen and (max-device-width: 800px) and (max-width: 800px) {
+@media screen and (max-device-width: 800px), screen and (max-width: 800px) {
   body{
   min-width:100%;
 
@@ -456,42 +456,316 @@
         #stream section div{
         width:100%;
         height:auto;
-        section{
-        width:100%;
-        height:auto;
-        img{
-        width:100%;
-        height:auto;
-        }
-        .overlap-b{
-        width:100%;
-        height:auto;
-        }
-        i{
-        display:none;
-        }
-        .mat1{
-        top:14px;
-        left:14px;
-         li{
-        font-size:20px;
-        padding:10px;
-        }
-        }
-        .mat2{
-        top:60px;
-        font-size:36px;
-        }
-        }
-        footer
-        a.profile-img{
-        width:75px;
-        height:75px;
-        }
-        ul{
-        padding:0 0 0 90px;
+          section{
+          width:100%;
+          height:auto;
+            img{
+            width:100%;
+            height:auto;
+            }
+            .overlap-b{
+            width:100%;
+            height:auto;
+            }
+            i{
+            display:none;
+            }
+            .mat1{
+            top:14px;
+            left:14px;
+               li{
+              font-size:20px;
+              padding:10px;
+              }
+            }
+            .mat2{
+            top:60px;
+            font-size:36px;
+            }
+          }
+
+          footer {
+          a.profile-img{
+          width:75px;
+          height:75px;
+          }
+
+          ul{
+          padding:0 0 0 90px;
+
+          }
 
         }
-        }
-
       }
+
+/* .........................Common Inside Page Header css..........................................
+.......... Fontli Logo and Search bar............................. */
+
+header.main {
+    padding: 3% 2% 2% 2% !important;
+  .tertiary {
+  padding: 0;
+  height: auto;
+
+    #logo {
+    background: url(<%= asset_path('logo.png') %>) no-repeat;
+    height: 50px;
+    width: 30%;
+    background-size: auto 100%;
+    text-indent: -9999px;
+    display: block;
+    float: left;
+    }
+
+    .grey-box.search {
+    padding: 2% 1% 1% 9%;
+    margin: 2% 0 0 0;
+    background-size: auto 50%;
+    width: 40%;
+
+      input {
+      width: 90%;
+      font-size: 16px;
+      margin: 0;
+      padding: 2%;
+      }
+    }
+  }
+}
+
+
+#banner.small{
+  height: 105px;
+
+  .wrap {
+    height: 115px;
+
+    #slider1.slider ul li .banner-cta.-before {
+    height: 100px !important;
+
+        div {
+        width: 100px !important;
+        height: 100px !important;
+
+            span {
+            font-size: 18px;
+            top: -65%;
+            left: 5%;
+            word-wrap: normal;
+            overflow: visible;
+
+              .img-tile-container div.split{
+               display: none;
+              }
+            }
+        }
+     }
+  }
+}
+
+/* ............................ Stream Section Popular ............... */
+
+#stream section {
+  #popular_section_container{
+    padding: 0;
+    margin: 5% 2% 0 2%;
+
+      div{
+        width: 96%;
+        display: block;
+
+        .feed-item {
+          margin-bottom: 3%;
+        }
+          section{
+          width:95%;
+          border: 5px solid #fff;
+          margin: 0 auto;
+          border-radius: 1%;
+
+            .mat4 {
+              display: block;
+              background-color: #fff;
+              background-image: none;
+              width: 100%;
+              height: 9%;
+              right: 0;
+
+                .mat5 {
+                  bottom: 1%;
+                  left: 1%;
+                }
+            }
+          }
+
+          footer{
+            width: 100%;
+            height: auto;
+            padding: 1% 3% 0 3%;
+            margin: 1% 0 0 0;
+
+            a.profile-img{
+            width: 18%;
+            height: auto;
+            max-width: 75px;
+            }
+
+            ul{
+            width: 77%;
+            margin: 1% 0 0 20%;
+            padding: 0;
+
+            }
+          }
+       }
+    }
+  }
+
+/* ............................ Stream Section Limelight ............. */
+
+  #limelight-markup div{
+
+    .left-content{
+      display: block;
+      float: center;
+      margin: 0 auto;
+      width: 100%;
+
+      .limelight-content {
+        width: 100%;
+        padding: 2%;
+        margin: 0 0 5% 0;
+        float: center;
+
+        a.pro-img-big {
+          width: 30%;
+          height: auto;
+        }
+
+        div.user-detail {
+        width: 67%;
+        margin: 0 0 0 2%;
+
+          ul {
+            width: 100%;
+            padding: 0;
+            height: auto;
+            margin-top: 2%;
+
+              li {
+                width: 24.5%;
+                height: auto !important;
+
+                a {
+                  margin: 0;
+
+                  img {
+                    width: 100%;
+                    height: 100%;
+                  }
+                }
+              }
+
+            .subtext li {
+              width: auto;
+              padding: 0 2% 0 0;
+              left: 0;
+
+              a {
+                margin: 0;
+                height: auto;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .right-content {
+      display: block;
+      float: center;
+      margin: 0 auto;
+      width: 100%;
+
+      .limelight-content {
+        width: 100%;
+        padding: 2%;
+        margin: 0 0 5% 0;
+        float: center;
+
+        a.pro-img-big {
+          width: 30%;
+          height: auto;
+        }
+
+        div.user-detail {
+        width: 67%;
+        margin: 0 0 0 2%;
+
+          ul {
+            width: 100%;
+            padding: 0;
+            height: auto;
+            margin-top: 2%;
+
+              li {
+                width: 24.5%;
+                height: auto !important;
+
+                a {
+                  margin: 0;
+
+                  img {
+                    width: 100%;
+                    height: 100%;
+                  }
+                }
+              }
+
+            .subtext li {
+              width: auto;
+              padding: 0 2% 0 0;
+              left: 0;
+
+              a {
+                margin: 0;
+                height: auto;
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+}
+
+/* ............................ Stream Section Recently Spotted ............. */
+
+#popular_section_container {
+    padding: 0;
+    margin: 0 2%;
+
+
+     .wrapper.recently_spotted ul{
+        width: 100%;
+        padding: 0;
+        margin: 4% 0;
+
+        li {
+          display: none;
+
+          li:first-child {
+            display: block;
+            width: 94%;
+            margin: 0 auto;
+            padding: 5% 3%;
+          }
+
+            h5 {
+              margin: 1% 0 0 0;
+            }
+          }
+        }
+      }
+}
