@@ -34,7 +34,7 @@ protected
     resp = formatted_response(result, status, error)
     respond_to do |format|
       format.json { render :json => resp.as_json }
-      format.html { render :text => resp.as_json.inspect }
+      format.html { render :json => resp.as_json }
     end
   end
 
