@@ -5,7 +5,7 @@ class Follow
   include Scorable
   include Notifiable
 
-  belongs_to :user, :index => true
+  belongs_to :user, :index => true, :counter_cache => true, :inverse_of => :follows
   belongs_to :follower, :class_name => 'User', :index => true
 
   validates :follower_id, :user_id, :presence => true

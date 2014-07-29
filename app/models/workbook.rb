@@ -2,7 +2,6 @@ class Workbook
   include Mongoid::Document
   include MongoExtensions
   include Mongoid::Timestamps
-  include MongoExtensions::CounterCache
 
   field :title, :type => String
   field :description, :type => String

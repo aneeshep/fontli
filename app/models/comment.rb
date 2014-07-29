@@ -3,13 +3,12 @@ class Comment
   include Mongoid::Timestamps::Created
   include MongoExtensions
   include Scorable
-  include MongoExtensions::DynamicScope
 
   field :body, :type => String
   field :font_tag_ids, :type => Array
   field :foto_ids, :type => Array  #mentioned photo_ids
 
-  belongs_to :photo, :index => true
+  belongs_to :photo, :index => true, :counter_cache => true
   belongs_to :user, :index => true
   has_many :mentions, :as => :mentionable, :dependent => :destroy
 

@@ -5,28 +5,25 @@ module AuthClient
   SOCIAL_API_CREDS_MAP = Fontli.load_erb_config 'social_api.yml'
 
   #FB methods
-  def fb_client(reload = false)
-    opts = {
-      :client_id => fb_config['app_key'],
-      :secret_id => fb_config['app_secret'],
-      :token => session[:fb_access_token]
-    }
+  def fb_client
+    return @fb_client if @fb_client
 
-    @fb_client = FBGraph::Client.new(opts) if reload
-    @fb_client ||= FBGraph::Client.new(opts)
+    fb_auth = FbGraph::Auth.new(fb_config['app_key'], fb_config['app_secret'])
+    @fb_client = fb_auth.client
+    @fb_client.redirect_uri = fb_config['callback_url']
+    @fb_client.access_token = session[:fb_access_token]
+    @fb_client
   end
 
   def fb_authorize
-    fb_client.authorization.authorize_url(
-      :redirect_uri => fb_config['callback_url'],
-      :scope => 'email,publish_stream'
+    fb_client.authorization_uri(
+      :scope => [:email, :publish_stream]
     )
   end
 
   def fb_get_token(code)
-    fb_client.authorization.process_callback(code,
-      :redirect_uri => fb_config['callback_url']
-    )
+    fb_client.authorization_code = code
+    fb_client.access_token! :client_auth_body
   end
 
   # TODO:: we may need to check the access token validity as well.

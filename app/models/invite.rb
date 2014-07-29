@@ -10,8 +10,8 @@ class Invite
 
   belongs_to :user, :index => true
 
-  index :email
-  index [:extuid, :platform]
+  index :email => 1
+  index :extuid => 1, :platform => 1
   PLATFORMS = ['twitter', 'facebook']
 
   validates :email, :format => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, :allow_blank => true

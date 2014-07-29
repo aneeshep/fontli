@@ -4,10 +4,9 @@ class Like
   include MongoExtensions
   include Scorable
   include Notifiable
-  include MongoExtensions::DynamicScope
 
-  belongs_to :user, :index => true
-  belongs_to :photo, :index => true
+  belongs_to :user, :index => true, :counter_cache => true
+  belongs_to :photo, :index => true, :counter_cache => true
 
   validates :user_id, :uniqueness => { :scope => :photo_id, :message => "has already liked!" }
 

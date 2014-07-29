@@ -32,9 +32,8 @@ class User
   field :user_flags_count, :type => Integer, :default => 0
   field :show_in_header, :type => Boolean, :default => false
 
-  include MongoExtensions::CounterCache
-  index :username, :unique => true
-  index :email, :unique => true
+  index({:username => 1}, {:unique => true})
+  index({:email => 1}, {:unique => true})
 
   FOTO_DIR = File.join(Rails.root, 'public/avatars')
   FOTO_PATH = File.join(FOTO_DIR, ':id/:filename_:style.:extension')

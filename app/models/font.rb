@@ -16,8 +16,7 @@ class Font
   field :pick_status, :type => Integer, :default => 0
   field :expert_tagged, :type => Boolean, :default => false
 
-  include MongoExtensions::CounterCache
-  belongs_to :photo, :index => true
+  belongs_to :photo, :index => true, :counter_cache => true
   belongs_to :user, :index => true
   has_many :agrees, :dependent => :destroy
   has_many :font_tags, :autosave => true, :dependent => :destroy

@@ -25,9 +25,8 @@ class Photo
   field :show_in_homepage, :type => Boolean, :default => false
   field :show_in_header, :type => Boolean, :default => false
 
-  include MongoExtensions::CounterCache
   belongs_to :user, :index => true
-  belongs_to :workbook, :index => true
+  belongs_to :workbook, :index => true, :counter_cache => true
   has_many :fonts, :autosave => true, :dependent => :destroy
   has_many :likes, :dependent => :destroy
   has_many :flags, :dependent => :destroy

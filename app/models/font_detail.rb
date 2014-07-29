@@ -12,7 +12,7 @@ class FontDetail
   field :desc, :type => String # article_abstract, can be empty
   field :owner, :type => String # publisher name
 
-  index :family_id, :unique => true
+  index({:family_id => 1}, {:unique => true})
 
   embeds_many :sub_font_details
 

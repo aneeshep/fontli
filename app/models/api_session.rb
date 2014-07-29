@@ -7,8 +7,7 @@ class ApiSession
   field :auth_token, :type => String
   field :expires_at, :type => Time
 
-  index :device_id
-  index [:auth_token, :device_id]
+  index :auth_token => 1, :device_id => 1
 
   SESSION_EXPIRY_TIME = 40.weeks
 

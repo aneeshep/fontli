@@ -9,7 +9,7 @@ class FontTag
   field :coords_y, :type => Float
 
   belongs_to :user, :index => true
-  belongs_to :font, :index => true
+  belongs_to :font, :index => true, :counter_cache => true
 
   validates :font_id, :coords_x, :coords_y, :presence => true
 

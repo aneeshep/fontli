@@ -19,15 +19,6 @@ class WelcomeController < ApplicationController
     @homepage, @meta_title = true, 'Home'
   end
 
-  def splash
-    if request.post?
-      regis = Registration.new(:email => params[:email])
-      resp_msg = 'Registered successfully. Thanks for your interest.'
-      @resp = regis.save ? resp_msg : regis.errors.full_messages.join
-    end
-    render 'splash', :layout => false
-  end
-
   def login
     return if request.get?
     self.send(params[:platform] + "_login")
@@ -60,8 +51,8 @@ private
 
   def facebook_login
     if fb_authorized?
-      usr_obj = fb_client.selection.me.info!
-      check_and_handle_fb_user(usr_obj.data)
+      usr_obj = FbGraph::User.me(fb_client.access_token)
+      check_and_handle_fb_user(usr_obj)
     else
       auth_url = fb_authorize
       redirect_to auth_url
@@ -125,9 +116,9 @@ private
     token = fb_get_token(params[:code])
 
     if token
-      session[:fb_access_token] = token
-      usr_obj = fb_client(true).selection.me.info!
-      check_and_handle_fb_user(usr_obj.data)
+      session[:fb_access_token] = token.token
+      usr_obj = FbGraph::User.me(token)
+      check_and_handle_fb_user(usr_obj)
     else
       redirect_to login_url(:default), :alert => 'Facebook Auth failed!'
     end
@@ -156,14 +147,14 @@ private
     usr = User.by_extid(usr_obj.id)
     if usr.nil? # new user
       @user = User.new(
-        :username => usr_obj.username,
+        :username => usr_obj.identifier,
         :email => usr_obj.email,
         :full_name => usr_obj.name,
         :extuid => usr_obj.id,
-        :description => usr_obj.bio,
+        :description => usr_obj.description,
         :website => usr_obj.link
       )
-      @avatar_url = fb_client.selection.me.picture
+      @avatar_url = usr_obj.picture
       render :signup, :layout => 'old'
     else
       session[:user_id] = usr.id

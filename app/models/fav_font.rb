@@ -3,7 +3,7 @@ class FavFont
   include Mongoid::Timestamps::Created
   include MongoExtensions
 
-  belongs_to :user, :index => true
+  belongs_to :user, :index => true, :counter_cache => true
   belongs_to :font, :index => true
 
   validates :user_id, :font_id, :presence => true
