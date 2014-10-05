@@ -1,77 +1,63 @@
-require 'capistrano/ext/multistage'
-require 'new_relic/recipes'
-require 'bundler/capistrano'
-
-#############################################################
-#	Application
-#############################################################
+# config valid only for Capistrano 3.1
+lock '3.2.1'
 
 set :application, "typestry"
-set :deploy_to, "/data/www/#{application}"
-set :rake, "rake"
-set :migrate_target, :latest
-set :default_stage, "production"
-set :stages, %w(production staging)
-
-
-#############################################################
-#	Settings
-#############################################################
-
-ssh_options[:keys] = %w(/home/sathish/.ssh/id_rsa)
-set :ssh_options, { :forward_agent => true }
-set :keep_releases, 2
+set :repo_url,  "git@github.com:Imaginea/fontli.git"
 set :user, "root"
-set :use_sudo, false
-default_run_options[:pty] = true
+#set :use_sudo, false
 
-#############################################################
-#	Git
-#############################################################
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-set :repository,  "git@github.com:Imaginea/fontli.git"
-set :repository_cache, "git_cache"
-set :deploy_via, :checkout
-set :git_shallow_clone, 1
-set :scm, :git
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, '/data/www/typestry'
 
-#############################################################
-#	Passenger
-#############################################################
+# Default value for :scm is :git
+# set :scm, :git
+
+# Default value for :format is :pretty
+# set :format, :pretty
+
+# Default value for :log_level is :debug
+# set :log_level, :debug
+
+# Default value for :pty is false
+# set :pty, true
+
+# Default value for :linked_files is []
+set :linked_files, %w{config/mongoid.yml}
+
+# Default value for linked_dirs is []
+set :linked_dirs, %w{log tmp/pids tmp/cache public/system public/photos public/avatars public/assets}
+
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# Default value for keep_releases is 5
+# set :keep_releases, 5
+#
+set :rvm_type, :system
+set :rvm_ruby_version, '1.9.3-p547@fontli'
 
 namespace :deploy do
-  desc "Updating symlinks"
-  task :symlink_shared_paths do
-    run "rm #{release_path}/config/mongoid.yml"
-    run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
-    run "ln -nfs #{shared_path}/public/photos #{release_path}/public/photos"
-    run "ln -nfs #{shared_path}/public/avatars #{release_path}/public/avatars"
-  end
 
-  desc "Restart the app server"
+  desc 'Restart application'
   task :restart do
-    run "cd #{deploy_to}/current; touch tmp/restart.txt;"
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      execute :touch, release_path.join('tmp/restart.txt')
+    end
   end
 
-  desc "Grant file permissions"
-  task :set_file_perms do
-    run "chmod -R 777 #{deploy_to}/current/tmp/cache"
-  end
+  after :publishing, :restart
 
-  [:start, :stop].each do |t|
-    desc "#{t} task is a no-op with mod_rails"
-    task t, :roles => :app do ; end
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      within release_path do
+        execute 'chmod -R 777 tmp/cache'
+      end
+    end
   end
 
 end
-
-namespace :raketask do
-  desc "Run a task on a remote server."
-  # run like: cap raketask:invoke task=db:populate
-  task :invoke do
-    run("cd #{deploy_to}/current; rake #{ENV['task']} RAILS_ENV=#{rails_env}")
-  end
-end
-
-after "deploy:update_code", "deploy:symlink_shared_paths"
-after "deploy", "deploy:set_file_perms"

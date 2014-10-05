@@ -48,6 +48,8 @@ end
 
 group :development do
   gem 'capistrano', '3.2.1'
-  gem 'capistrano-ext', '1.2.1'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
   gem 'unicorn'
 end
