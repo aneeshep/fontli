@@ -34,6 +34,7 @@ class Photo
   has_many :comments, :autosave => true, :dependent => :destroy
   has_many :mentions, :as => :mentionable, :autosave => true, :dependent => :destroy
   has_many :hash_tags, :as => :hashable, :autosave => true, :dependent => :destroy
+  has_and_belongs_to_many :collections, :dependent => :destroy
 
   FOTO_DIR = File.join(Rails.root, 'public/photos')
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
