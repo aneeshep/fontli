@@ -50,8 +50,9 @@ class User
   has_many :font_tags, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
   has_many :fav_workbooks, :dependent => :destroy
-  has_many :notifications, :foreign_key => :to_user_id, :dependent => :destroy
-  has_many :sent_notifications, :class_name => 'Notification', :foreign_key => :from_user_id, :dependent => :destroy
+  has_many :notifications, :foreign_key => :to_user_id, :dependent => :destroy, :inverse_of => :to_user
+  has_many :sent_notifications, :class_name => 'Notification',
+    :foreign_key => :from_user_id, :dependent => :destroy, :inverse_of => :from_user
   has_many :follows, :dependent => :destroy
   has_many :my_followers, :class_name => 'Follow', :foreign_key => :follower_id, :dependent => :destroy
   has_many :likes, :dependent => :destroy
