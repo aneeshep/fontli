@@ -10,6 +10,8 @@ module ApiHelper
                       :returns => true },
     :stats       => { :accepts => [],
                       :returns => [:app_version] },
+    :features    => { :accepts => [],
+                      :returns => [:name, :active] },
     :signin      => { :accepts => [:username, :password, :device_id],
                       :returns => 'Auth Token' },
     :signup      => { :accepts => [:username, :email, :password, [:full_name, :description, :website, :platform, :extuid, :avatar]],
@@ -77,6 +79,9 @@ module ApiHelper
                           :returns => [:name, :photos_count] },
     :hash_tag_photos => { :accepts => [:name, [:page]],
                           :returns => [:id, :url_thumb] },
+    :hash_tag_feeds => { :accepts => [:name, [:page]],
+                         :returns => [:id, :user_id, :caption, :created_dt, :url_large, :username, :user_url_thumb, :permalink, :likes_count, :fonts_count, :comments_count, :fonts_ord, :address, :latitude, :longitude, :font_help, :liked?, :commented?, :liked_user, :commented_user],
+                         :fonts_ord => [:user_id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id, :tags_count, :agrees_count, :pick_status, :img_url, :my_fav?, :expert_tagged] },
     :leaderboard    => { :accepts => [],
                          :returns => [:id, :username, :full_name, :points, :url_thumb, :photos_count, :fonts_count, :created_dt, :friendship_state ] },
 
@@ -163,7 +168,7 @@ module ApiHelper
  }
 
   GUEST_USER_ALLOWED_APIS = [:signin, :signup, :check_token, :popular_photos, :photo_detail, :comments_list, :likes_list]
-  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check, :stats, :log_crash]
+  AUTHLESS_APIS           = [:signin, :signup, :forgot_pass, :check_token, :login_check, :stats, :features, :log_crash]
 
   ERROR_MESSAGE_MAP =
   {

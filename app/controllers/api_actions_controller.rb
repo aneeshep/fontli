@@ -15,6 +15,11 @@ class ApiActionsController < ApiBaseController
     render_response(stat, !stat.new_record?, :record_not_found)
   end
 
+  def features
+    features = Feature.all.to_a
+    render_response(features)
+  end
+
   def signin
     token, error = User.api_login(@username, @password, @device_id)
     reset_current_user_and_session # reset to use the new token
@@ -170,6 +175,17 @@ class ApiActionsController < ApiBaseController
 
   def hash_tag_photos
     photos = Photo.all_by_hash_tag(@name, @page || 1)
+    photos = photos.desc(:created_at).only(:id, :data_filename).to_a
+    render_response(photos)
+  end
+
+  # hash_tag_photos rendered in feed view, sorted by likes_count
+  def hash_tag_feeds
+    photos = Photo.all_by_hash_tag(@name, @page || 1)
+    photos = photos.desc(:likes_count, :created_at).to_a
+    return render_response([]) if photos.empty?
+
+    populate_likes_comments_info(photos)
     render_response(photos)
   end
 
@@ -360,28 +376,7 @@ class ApiActionsController < ApiBaseController
   def my_feeds
     photos = Photo.feeds_for(@current_user, (@page || 1)).to_a
     return render_response([]) if photos.empty?
-    foto_ids = photos.collect(&:id)
-
-    foto_lks = Like.where(:photo_id.in => foto_ids).desc(:created_at).to_a
-    foto_cmts = Comment.where(:photo_id.in => foto_ids).desc(:created_at).to_a
-
-    usr_ids = (foto_lks.collect(&:user_id) + foto_cmts.collect(&:user_id))
-    usr_ids = usr_ids.flatten.uniq
-    usrs_map = [] if usr_ids.empty?
-    usrs_map ||= User.where(:_id.in => usr_ids).only(:id, :username).to_a
-
-    # generate #Hash's for faster lookup
-    foto_lks = foto_lks.group_by(&:photo_id)
-    foto_cmts = foto_cmts.group_by(&:photo_id)
-    usrs_map = usrs_map.group_by(&:id)
-
-    # populate 'liked_user' and 'commented_user' flags
-    photos.each do |p|
-      lks, cmts = [ foto_lks[p.id], foto_cmts[p.id] ]
-      # get the last two usernames(seperated by ||) who liked/commented on the photo
-      p.liked_user =  lks[0..1].collect { |l| usrs_map[l.user_id].first.username }.join('||') unless lks.nil?
-      p.commented_user = cmts[0..1].collect { |c| usrs_map[c.user_id].first.username }.join('||') unless cmts.nil?
-    end
+    populate_likes_comments_info(photos)
     render_response(photos)
   end
 

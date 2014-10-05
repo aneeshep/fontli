@@ -219,7 +219,7 @@ class Photo
       hsh_tags = HashTag.where(:name => /^#{tag_name}$/i).only(:hashable_id, :hashable_type)
       foto_ids = HashTag.photo_ids(hsh_tags)
       offst = (pge.to_i - 1) * lmt
-      self.where(:_id.in => foto_ids).desc(:created_at).only(:id, :data_filename).skip(offst).limit(lmt).to_a
+      self.where(:_id.in => foto_ids).skip(offst).limit(lmt)
     end
 
     def sos(pge = 1, lmt = 20)
