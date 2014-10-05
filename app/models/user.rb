@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require 'digest'
 class User
   include Mongoid::Document
   include Mongoid::Timestamps::Created
@@ -264,7 +264,7 @@ class User
   def hash_password(pass = nil)
     self.salt ||= generate_rand
     pass ||= self.password
-    Digest::SHA1.hexdigest(pass, self.salt)
+    Digest::HMAC.hexdigest(pass, self.salt, Digest::SHA1)
   end
 
   def pass_match?(pass)

@@ -9,8 +9,8 @@ class Notification
   # store related photo_id(for like) or font_id(for font_tag) to avoid additional DB hits
   field :extid, :type => String
 
-  belongs_to :from_user, :class_name => 'User'
-  belongs_to :to_user, :class_name => 'User', :index => true
+  belongs_to :from_user, :class_name => 'User', :inverse_of => :sent_notifications
+  belongs_to :to_user, :class_name => 'User', :index => true, :inverse_of => :notifications
   belongs_to :notifiable, :polymorphic => true, :index => true
 
   validates :from_user_id, :to_user_id, :presence => true
