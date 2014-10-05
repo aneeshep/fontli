@@ -3,8 +3,6 @@ lock '3.2.1'
 
 set :application, "typestry"
 set :repo_url,  "git@github.com:Imaginea/fontli.git"
-set :user, "root"
-#set :use_sudo, false
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -55,7 +53,7 @@ namespace :deploy do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       within release_path do
-        execute 'chmod -R 777 tmp/cache'
+        # execute 'custom script'
       end
     end
   end
