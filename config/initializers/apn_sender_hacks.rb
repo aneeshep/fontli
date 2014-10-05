@@ -1,31 +1,4 @@
 module APN
-  module Connection
-    module Base
-
-      # Open socket to Apple's servers
-      def setup_connection
-        log_and_die("Missing apple push notification certificate") unless @apn_cert
-        return true if @socket && @socket_tcp
-        log_and_die("Trying to open half-open connection") if @socket || @socket_tcp
-
-        ctx = OpenSSL::SSL::SSLContext.new
-        ctx.cert = OpenSSL::X509::Certificate.new(@apn_cert)
-        if @opts[:cert_pass]
-          ctx.key = OpenSSL::PKey::RSA.new(@apn_cert, @opts[:cert_pass])
-        else
-          ctx.key = OpenSSL::PKey::RSA.new(@apn_cert)
-        end
-
-        @socket_tcp = TCPSocket.new(apn_host, apn_port)
-        @socket = OpenSSL::SSL::SSLSocket.new(@socket_tcp, ctx)
-        @socket.sync = true
-        @socket.connect
-      rescue SocketError => error
-        log_and_die("Error with connection to #{apn_host}: #{error}")
-      end
-    end
-  end
-
   class SenderDaemon
 
     def initialize(args)

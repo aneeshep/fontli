@@ -59,7 +59,7 @@ private
     return send_wp_toast_notif if to_usr.iphone_token.blank?
     notif_cnt = to_usr.notifications.unread.count
     opts = { :badge => notif_cnt, :alert => self.message, :sound => true }
-    APN.notify(to_usr.iphone_token, opts)
+    APN.notify_async(to_usr.iphone_token, opts)
     true
   end
 
