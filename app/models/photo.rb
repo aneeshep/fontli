@@ -418,8 +418,10 @@ private
   def self.add_interaction_for(photo_id, klass, opts = {} )
     photo = self[photo_id]
     return [nil, :photo_not_found] if photo.nil?
+
+    return_bool = opts.delete(:return_bool)
     obj = photo.send(klass.to_sym).build(opts)
-    obj.save ? (opts[:return_bool] || photo.reload) : [nil, obj.errors.full_messages]
+    obj.save ? (:return_bool || photo.reload) : [nil, obj.errors.full_messages]
   end
 
   def self.build_font_tags(opts, foto, coords)
