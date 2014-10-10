@@ -182,7 +182,11 @@ class ApiActionsController < ApiBaseController
   # hash_tag_photos rendered in feed view, sorted by likes_count
   def hash_tag_feeds
     photos = Photo.all_by_hash_tag(@name, @page || 1)
-    photos = photos.desc(:likes_count, :created_at).to_a
+    photos = if @recent
+      photos.desc(:created_at).to_a
+    else
+      photos.desc(:likes_count, :created_at).to_a
+    end
     return render_response([]) if photos.empty?
 
     populate_likes_comments_info(photos)
