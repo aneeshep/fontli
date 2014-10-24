@@ -28,10 +28,15 @@
 
 <%= render 'flash_notices' %>
 
-<h3>Current Statistics</h3>
-
+<h3>App Stats</h3>
 <ul>
   <li>Total Users: <%= link_to @users_count, '/admin/users' %></li>
+  <% new_users_count = User.where(:created_at.gte => Time.now.beginning_of_month).count %>
+  <li>New users since <%= Time.now.beginning_of_month %>: <%= new_users_count %></li>
+  <% users_in_past_30_days = User.where(:created_at.gte => 30.days.ago).count %>
+  <li>New users in past 30 days: <%= users_in_past_30_days %></li>
+  <% users_with_photos = Photo.distinct(:user_id).count %>
+  <li>Users with atleast one photo: <%= users_with_photos %></li>
   <li>Total Photos: <%= link_to @fotos_count, '/admin/photos' %></li>
   <li>Homepage Photos: <%= link_to @homepage_fotos_count, '/admin/photos?home=true' %></li>
   <li>
@@ -44,6 +49,10 @@
     <% end %>
     <span id="status">&nbsp;</span>
   </li>
+</ul><br/>
+
+<h3>Backend Stats</h3>
+<ul>
   <% @stat.misc_attrs.each do |k, v| %>
     <li><%= k.humanize %>: <%= link_to v, 'javascript:;' %></li>
   <% end %>
