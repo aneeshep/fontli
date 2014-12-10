@@ -31,6 +31,7 @@ class User
   field :follows_count, :type => Integer, :default => 0
   field :user_flags_count, :type => Integer, :default => 0
   field :show_in_header, :type => Boolean, :default => false
+  field :followed_collection_ids, :type => Array, :default => []
 
   index({:username => 1}, {:unique => true})
   index({:email => 1}, {:unique => true})
@@ -46,6 +47,7 @@ class User
 
   has_many :workbooks, :dependent => :destroy
   has_many :photos, :dependent => :destroy
+  has_many :collections # can exist even after the user is destroyed
   has_many :fonts, :dependent => :destroy
   has_many :font_tags, :dependent => :destroy
   has_many :fav_fonts, :dependent => :destroy
@@ -90,6 +92,7 @@ class User
   scope :non_admins, where(:admin => false)
   scope :experts, where(:expert => true)
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)
+  scope :following_collection, lambda { |c_id| where(:followed_collection_ids.in => [c_id]) }
 
   class << self
     def [](uname)
@@ -589,6 +592,21 @@ class User
   def can_flag?(usr)
     return false if usr.id == self.id # Same user
     self.flags.where(:from_user_id => usr.id).first.nil?
+  end
+
+  def can_follow_collection?(collection)
+    !self.followed_collection_ids.include?(collection.id)
+  end
+
+  def follow_collection(collection)
+    return false unless can_follow_collection?(collection)
+    self.followed_collection_ids << collection.id
+    self.save
+  end
+
+  def unfollow_collection(collection)
+    self.followed_collection_ids.delete(collection.id)
+    self.save
   end
 
   def spotted_on?(foto)

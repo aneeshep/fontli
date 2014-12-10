@@ -76,6 +76,38 @@ class AdminController < ApplicationController
     @delete_photo = true
   end
 
+  def collections
+    @collections = Collection.all.to_a
+  end
+
+  def create_collection
+    opts = params[:collection]
+    collection = Collection.new(name: opts[:name], description: opts[:description])
+    if collection.save
+      flash[:notice] = 'Created successfully'
+    else
+      flash[:alert] = collection.errors.full_messages.join('<br/>')
+    end
+    redirect_to '/admin/collections'
+  end
+
+  def activate_collection
+    collection = Collection.find(params[:id])
+    if collection.update_attribute(active: true)
+      flash[:notice] = 'Activated successfully'
+    else
+      flash[:alert] = 'Activation failed'
+    end
+    redirect_to '/admin/collections'
+  end
+
+  def photos_list_for_collection
+    @collections = Collection.all.to_a
+    page = params[:page] || 1
+    @photos = Photos.only(:id, :data_filename, :collection_ids).
+      desc(:created_at).page(page).per_page(50)
+  end
+
   def flagged_users
     @page, @lmt = [1, 10]
     params[:sort] ||= 'user_flags_count'

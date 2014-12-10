@@ -34,7 +34,7 @@ class Photo
   has_many :comments, :autosave => true, :dependent => :destroy
   has_many :mentions, :as => :mentionable, :autosave => true, :dependent => :destroy
   has_many :hash_tags, :as => :hashable, :autosave => true, :dependent => :destroy
-  has_and_belongs_to_many :collections, :dependent => :destroy
+  has_and_belongs_to_many :collections, :autosave => true, :dependent => :destroy
 
   FOTO_DIR = File.join(Rails.root, 'public/photos')
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
@@ -188,8 +188,10 @@ class Photo
     def feeds_for(usr = nil, page = 1, lmt = 15)
       usr ||= current_user
       frn_ids = usr.friend_ids + [usr.id]
+      collection_ids = usr.followed_collection_ids
       offst = (page.to_i - 1) * lmt
-      Photo.where(:user_id.in => frn_ids).desc(:created_at).skip(offst).limit(lmt)
+      Photo.or({:user_id.in => frn_ids}, {:collection_ids.in => collection_ids, :likes_count.gt => 0}).
+        desc(:created_at).skip(offst).limit(lmt)
     end
 
     def cached_popular
@@ -345,6 +347,25 @@ class Photo
     hshs.each do |h|
       self.hash_tags.build(h)
     end
+  end
+
+  # Take array of collection names and populate collections
+  # New collections can also be created here.
+  def collection_names=(c_names)
+    return true if c_names.blank?
+    c_names.each do |c_name|
+      opts = { :name => c_name, :user => current_user, :active => true }
+      self.collections.build(opts)
+    end
+  end
+
+  def collection_names
+    self.collections.active.pluck(:name)
+  end
+
+  def add_to_collections(c_names)
+    collctns = Collection.where(:name.in => c_names).to_a
+    self.collections.concat(collctns)
   end
 
   def aspect_fit(frame_width, frame_height)

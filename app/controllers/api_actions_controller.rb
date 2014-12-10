@@ -63,6 +63,34 @@ class ApiActionsController < ApiBaseController
     render_response(resp == true)
   end
 
+  def collections
+    collections = Collection.active.to_a
+    render_response(collections)
+  end
+
+  def follow_collection
+    collection = Collection.find(@collection_id)
+    resp = current_user.follow_collection(collection)
+    render_response(resp)
+  end
+
+  def unfollow_collection
+    collection = Collection.find(@collection_id)
+    resp = current_user.unfollow_collection(collection)
+    render_response(resp)
+  end
+
+  def collection_detail
+    collection = Collection.where(:_id => @collection_id).first
+    render_response(collection, !collection.nil?, :collection_not_found)
+  end
+
+  def add_photo_to_collections
+    photo = Photo.find(@photo_id)
+    resp = photo.add_to_collections(@collection_names)
+    render_response(resp)
+  end
+
   def upload_data
     resp, error = Photo.save_data(current_api_accepts_map_with_user)
     render_response(resp, !resp.nil?, error)
