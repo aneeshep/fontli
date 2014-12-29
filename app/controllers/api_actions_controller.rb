@@ -82,6 +82,7 @@ class ApiActionsController < ApiBaseController
 
   def collection_detail
     collection = Collection.where(:_id => @collection_id).first
+    populate_likes_comments_info(collection.fotos)
     render_response(collection, !collection.nil?, :collection_not_found)
   end
 
@@ -235,6 +236,7 @@ class ApiActionsController < ApiBaseController
 
   def sos_photos
     fotos = Photo.sos(@page || 1)
+    populate_likes_comments_info(fotos)
     render_response(fotos)
   end
 
