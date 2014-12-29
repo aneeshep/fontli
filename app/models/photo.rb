@@ -360,7 +360,7 @@ class Photo
   end
 
   def collection_names
-    self.collections.active.pluck(:name)
+    self.collections.active.pluck(:name).join('||')
   end
 
   def add_to_collections(c_names)

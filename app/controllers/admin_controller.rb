@@ -93,7 +93,7 @@ class AdminController < ApplicationController
 
   def activate_collection
     collection = Collection.find(params[:id])
-    if collection.update_attribute(active: true)
+    if collection.update_attribute(:active, true)
       flash[:notice] = 'Activated successfully'
     else
       flash[:alert] = 'Activation failed'

@@ -31,6 +31,11 @@ class Collection
     self.photos.count
   end
 
+  # url of the recent photo added to this collection
+  def cover_photo_url
+    self.photos.desc(:created_at).only(:id, :data_filename).first.try(:url_large)
+  end
+
   # TODO: yet to test
   def followed_users
     @followed_users ||= follow_scope.to_a
@@ -42,7 +47,7 @@ class Collection
 
   # is current user following this collection
   def can_follow?
-    current_user.can_follow_collection?(self.id)
+    current_user.can_follow_collection?(self)
   end
 
   # custom collections are created by our users
@@ -58,6 +63,6 @@ class Collection
   end
 
   def auto_follow
-    self.user.follow_collection(self)
+    self.user.follow_collection(self) if custom?
   end
 end
