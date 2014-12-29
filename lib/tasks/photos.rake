@@ -21,6 +21,26 @@ namespace :photos do
     end
   end
 
+  desc "Verify likes_count of all photos with likes.count"
+  task :verify_likes_count => :environment do
+    last_ran_at = Stat.current.photo_likes_count_checked_at
+    start = Time.now.utc
+    count = 0
+
+    Photo.in_batches(100, :created_at.gt => last_ran_at) do |fotos|
+      fotos.each do |f|
+        lks_count = f.likes.count
+        next if lks_count == f.likes_count
+        f.update_attribute(:likes_count, lks_count)
+        count += 1
+      end # fotos
+    end # batches
+
+    Stat.current.update_attribute(:photo_likes_count_checked_at, Time.now.utc - 5.minutes) # 5 mins buffer
+    puts "Completed in #{(Time.now.utc - start) / 60} mins."
+    puts "Updated #{count} photos with correct likes_count."
+  end
+
   desc "Verify all thumbnails are available in S3 and are of correct dimensions"
   task :verify_thumbnails => :environment do
     Fog::Logger[:warning] = nil # suppress s3 bucket name warnings

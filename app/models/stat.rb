@@ -8,6 +8,7 @@ class Stat
   field :app_version, :type => String
   field :photo_verify_thumbs_ran_at, :type => Time
   field :photo_fixup_thumbs_ran_at, :type => Time
+  field :photo_likes_count_checked_at, :type => Time, default: '2014-12-24 00:00:00 IST'
   field :font_details_cached_at, :type => Time
   field :font_fixup_missing_ran_at, :type => Time
   field :myfonts_api_access_count, :type => Integer
