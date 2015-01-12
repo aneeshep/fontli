@@ -12,6 +12,10 @@
 </div>
 <div class="wrapper search-results-container">
 <% if @posts.any? %>
+  <% content_for :custom_js do %>
+    photoIds = <%= @posts.collect(&:id).to_json.html_safe %>;
+  <% end %>
+
   <div class="font-list" id="posts">
     <h1><a href="javascript:;" class='expand-results'>Post (<%= @posts.length %>)</a></h1>
     <ul>

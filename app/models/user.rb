@@ -469,7 +469,7 @@ class User
 
   def my_photos(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
-    self.photos.only(:id, :data_filename).recent(lmt).skip(offst).to_a
+    @my_photos ||= self.photos.recent(lmt).skip(offst).to_a
   end
 
   def my_workbooks(page = 1, lmt = 20)

@@ -277,6 +277,7 @@ class ApiActionsController < ApiBaseController
     else
       usr = @current_user
     end
+    populate_likes_comments_info(usr.my_photos)
     render_response(usr, !usr.nil?, :user_not_found)
   end
 
@@ -332,6 +333,7 @@ class ApiActionsController < ApiBaseController
   def user_photos
     usr = @user_id ? User.by_id(@user_id) : @current_user
     photos = usr.my_photos(@page || 1)
+    populate_likes_comments_info(photos)
     render_response(photos)
   end
 
