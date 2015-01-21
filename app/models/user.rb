@@ -28,7 +28,6 @@ class User
   field :fav_fonts_count, :type => Integer, :default => 0
   field :fav_workbooks_count, :type => Integer, :default => 0
   field :likes_count, :type => Integer, :default => 0
-  field :follows_count, :type => Integer, :default => 0
   field :user_flags_count, :type => Integer, :default => 0
   field :show_in_header, :type => Boolean, :default => false
   field :followed_collection_ids, :type => Array, :default => []
@@ -427,8 +426,11 @@ class User
   end
 
   def friends
-    @follws ||= self.follows.to_a
-    @frnds ||= User.where(:_id.in => @follws.collect(&:follower_id))
+    @frnds ||= User.where(:_id.in => self.friend_ids)
+  end
+
+  def follows_count
+    @follows_count ||= self.friends.count
   end
 
   def followers
@@ -437,7 +439,7 @@ class User
   end
 
   def followers_count
-    @followrs_count ||= Follow.where(:follower_id => self.id).count
+    @followrs_count ||= self.followers.count
   end
 
   # checks friendships of all frnds with the current_user(self)

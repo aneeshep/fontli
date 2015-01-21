@@ -277,7 +277,7 @@ class ApiActionsController < ApiBaseController
     else
       usr = @current_user
     end
-    populate_likes_comments_info(usr.my_photos)
+    populate_likes_comments_info(usr.my_photos) if usr
     render_response(usr, !usr.nil?, :user_not_found)
   end
 
