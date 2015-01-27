@@ -337,6 +337,13 @@ class ApiActionsController < ApiBaseController
     render_response(photos)
   end
 
+  def user_popular_photos
+    usr = @user_id ? User.by_id(@user_id) : @current_user
+    photos = usr.popular_photos(@page || 1)
+    populate_likes_comments_info(photos)
+    render_response(photos)
+  end
+
   def user_favorites
     usr = @user_id ? User.by_id(@user_id) : @current_user
     photos = usr.fav_photos(@page || 1).to_a

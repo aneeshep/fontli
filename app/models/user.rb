@@ -474,6 +474,11 @@ class User
     @my_photos ||= self.photos.recent(lmt).skip(offst).to_a
   end
 
+  def popular_photos(page = 1, lmt = 20)
+    offst = (page.to_i - 1) * lmt
+    @popular_photos ||= self.photos.desc(:likes_count).limit(lmt).skip(offst).to_a
+  end
+
   def my_workbooks(page = 1, lmt = 20)
     offst = (page.to_i - 1) * lmt
     self.workbooks.only(:id, :title).recent(lmt).skip(offst).to_a
