@@ -43,6 +43,9 @@ Fontli::Application.routes.draw do
   match 'admin' => 'admin#index', :as => :admin
   match 'admin/:action', :controller => 'admin'
 
+  # Resque Web
+  mount Resque::Server.new, :at => "/resque"
+
   # Utils
   constraints :host => /(localhost|chennai\.pramati\.com)/i do
     match 'doc' => 'welcome#api_doc'
