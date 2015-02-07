@@ -68,6 +68,11 @@ class ApiActionsController < ApiBaseController
     render_response(collections)
   end
 
+  def collection_search
+    collections = Collection.search(@name)
+    render_response(collections)
+  end
+
   def follow_collection
     collection = Collection.find(@collection_id)
     resp = current_user.follow_collection(collection)

@@ -25,6 +25,10 @@ class Collection
     def [](id)
       self.where(:_id => id).first
     end
+
+    def search(name)
+      self.active.where(:name => /^#{name}.*/i).to_a
+    end
   end
 
   # memoized version of photos to be used in collection_detail api

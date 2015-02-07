@@ -29,6 +29,8 @@ module ApiHelper
 
     :collections         => { :accepts => [],
                               :returns => [:id, :name, :description, :photos_count, :cover_photo_url, :follows_count, :can_follow?] },
+    :collection_search   => { :accepts => [:name],
+                              :returns => [:id, :name, :description, :photos_count, :cover_photo_url, :follows_count, :can_follow?] },
     :follow_collection   => { :accepts => [:collection_id],
                               :returns => true },
     :unfollow_collection => { :accepts => [:collection_id],
