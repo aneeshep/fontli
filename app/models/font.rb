@@ -130,6 +130,7 @@ class Font
 
     def search(name,sort = nil,dir = nil)
       return [] if name.blank?
+      name = Regexp.escape(name.strip)
       res = self.where(:family_name => /^#{name}.*/i).to_a
       res << self.where(:subfont_name => /^#{name}.*/i).to_a
       res = res.flatten.uniq(&:id)
@@ -140,6 +141,7 @@ class Font
 
     def search_autocomplete(name, lmt=20)
       return [] if name.blank?
+      name = Regexp.escape(name.strip)
       res = self.where(:family_name => /^#{name}.*/i).only(:family_name).limit(lmt).collect(&:family_name)
       res + self.where(:subfont_name => /^#{name}.*/i).only(:subfont_name).limit(lmt).collect(&:subfont_name)
     end

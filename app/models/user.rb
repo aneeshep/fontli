@@ -118,6 +118,7 @@ class User
 
     def search(uname,sort = nil,dir = nil)
       return [] if uname.blank?
+      uname = Regexp.escape(uname.strip)
       res = self.where(:username => /^#{uname}.*/i).to_a
       res << self.where(:full_name => /^#{uname}.*/i).to_a
       res = res.flatten.uniq(&:id)
@@ -128,6 +129,7 @@ class User
 
     def search_autocomplete(uname, lmt=20)
       return [] if uname.blank?
+      uname = Regexp.escape(uname.strip)
       res = self.where(:username => /^#{uname}.*/i).only(:username).limit(lmt).collect(&:username)
       res + self.where(:full_name => /^#{uname}.*/i).only(:full_name).limit(lmt).collect(&:full_name)
     end

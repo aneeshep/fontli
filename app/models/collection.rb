@@ -6,6 +6,7 @@ class Collection
   field :name, :type => String
   field :description, :type => String
   field :active, :type => Boolean, :default => false
+  field :cover_photo_id, :type => String
 
   belongs_to :user
   has_and_belongs_to_many :photos
@@ -27,6 +28,7 @@ class Collection
     end
 
     def search(name)
+      name = Regexp.escape(name.strip)
       self.active.where(:name => /^#{name}.*/i).to_a
     end
   end
@@ -40,9 +42,8 @@ class Collection
     self.photos.count
   end
 
-  # url of the recent photo added to this collection
   def cover_photo_url
-    self.photos.desc(:created_at).only(:id, :data_filename).first.try(:url_large)
+    Photo.where(:_id => self.cover_photo_id).first.try(:url_large)
   end
 
   # TODO: yet to test

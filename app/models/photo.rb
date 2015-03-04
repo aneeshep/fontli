@@ -40,7 +40,14 @@ class Photo
   FOTO_PATH = File.join(FOTO_DIR, ':id/:style.:extension')
   ALLOWED_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
   DEFAULT_TITLE = 'Yet to publish'
+  # :medium version is used only on the web pages.
   THUMBNAILS = { :large => '640x640', :medium => '320x320', :thumb => '150x150' }
+  # NOTE: WE still 320x version for web pages.
+  # We can delay generating versions that are not immediately required?
+  # TODO:: Check with mob team on why three versions?
+  # We may have to rename all current url_medium refs to url_web
+  # CHECK: Do we need new iOS build to support new versions?
+  NEW_THUMBNAILS = { :large => '1080x1080', :medium => '750x750', :thumb => '640x640', :web => '320x320' }
   POPULAR_LIMIT = 20
   ALLOWED_FLAGS_COUNT = 5
 
@@ -246,6 +253,7 @@ class Photo
 
     def search(text,sort = nil,dir = nil)
       return [] if text.blank?
+      text = Regexp.escape(text.strip)
       res = self.where(:caption => /^#{text}.*/i).to_a
       res = res.sort{|a,b| a.send(sort) <=> b.send(sort)} if sort
       res = res.reverse if dir == "asc"
@@ -254,6 +262,7 @@ class Photo
 
     def search_autocomplete(text, lmt=20)
       return [] if text.blank?
+      text = Regexp.escape(text.strip)
       self.where(:caption => /^#{text}.*/i).only(:caption).limit(lmt).collect(&:caption)
     end
   end
