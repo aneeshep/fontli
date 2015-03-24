@@ -363,6 +363,7 @@ class Photo
   def collection_names=(c_names)
     return true if c_names.blank?
     c_names.each do |c_name|
+      next if c_name.strip.blank?
       opts = { :name => c_name, :user => current_user, :active => true }
       c = Collection.where(:name => c_name).first || Collection.create(opts)
       self.collections.concat([c])

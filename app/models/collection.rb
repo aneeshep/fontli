@@ -35,7 +35,7 @@ class Collection
 
   # memoized version of photos to be used in collection_detail api
   def fotos
-    @fotos ||= self.photos.to_a
+    @fotos ||= self.photos.desc(:created_at).to_a
   end
 
   def photos_count
