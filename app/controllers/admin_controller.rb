@@ -119,8 +119,10 @@ class AdminController < ApplicationController
   end
 
   def unflag_user
-    @res = User.unscoped.where(:_id => params[:id]).first.user_flags.destroy_all
-    opts = @res ? {:notice => 'User account unflagged.'} : {:alert => 'Couldn\'t unflag. Please try again!'}
+    usr = User.unscoped.where(:_id => params[:id]).first
+    res = usr.user_flags.destroy_all
+    res = res && usr.update_attribute(:user_flags_count, 0)
+    opts = res ? {:notice => 'User account unflagged.'} : {:alert => 'Couldn\'t unflag. Please try again!'}
     redirect_to '/admin/flagged_users', opts
   end
 
