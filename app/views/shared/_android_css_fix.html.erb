@@ -1,0 +1,10 @@
+<script type='text/javascript'>
+  $(function() { // Wait for page to finish loading.
+    if(navigator != undefined && navigator.userAgent != undefined) {
+      user_agent = navigator.userAgent.toLowerCase();
+      if(user_agent.indexOf('android') > -1) { // Is Android.
+        $(document.body).addClass('android');
+      }
+    }
+  });
+</script>

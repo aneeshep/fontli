@@ -70,6 +70,8 @@ module ApiHelper
                          :returns => [:likes_count] },
     :unlike_photo   => { :accepts => [:photo_id],
                          :returns => [:likes_count] },
+    :add_to_sos     => { :accepts => [:photo_id],
+                         :returns => true },
     :flag_photo     => { :accepts => [:photo_id],
                          :returns => [:flags_count] },
     :flag_user      => { :accepts => [:user_id],

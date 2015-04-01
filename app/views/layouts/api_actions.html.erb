@@ -15,8 +15,10 @@
       /******reset*****/
       @media screen and (orientation:portrait) { section {width:320px;} }
       @media screen and (orientation:landscape) { section{width:480px;} }
+      body.android section { width: 100%; }
     </style>
 
+    <%= render '/shared/android_css_fix' %>
     <%= yield(:head) %>
   </head>
 

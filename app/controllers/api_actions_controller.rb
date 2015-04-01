@@ -166,6 +166,12 @@ class ApiActionsController < ApiBaseController
     render_response(resp)
   end
 
+  def add_to_sos
+    foto  = Photo[@photo_id]
+    attrs = {:sos_requested_at => Time.now.utc, :sos_requested_by => @current_user.id.to_s}
+    render_response foto.update_attributes(attrs)
+  end
+
   def agree_font
     clse_fnt_help = (@close_help.to_s == 'true')
     resp, error = Font.add_agree_for(@font_id, @current_user.id, clse_fnt_help)
