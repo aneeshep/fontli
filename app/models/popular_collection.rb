@@ -9,9 +9,11 @@ class PopularCollection < Collection
     self.fotos.count
   end
 
-  # url of the first popular photo
   def cover_photo_url
-    self.fotos.first.try(:url_large)
+    # a static image, for now
+    'http://s3.amazonaws.com/new_fontli_production/5288262110daa565c900000d_large.jpg'
+    # url of the first popular photo
+    #self.fotos.first.try(:url_large)
   end
 
   # cant follow dynamic collections

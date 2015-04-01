@@ -9,7 +9,7 @@ class Collection
   field :cover_photo_id, :type => String
 
   belongs_to :user
-  has_and_belongs_to_many :photos
+  has_and_belongs_to_many :photos, :dependent => :destroy
 
   validates :name, 
     :presence   => true, 
