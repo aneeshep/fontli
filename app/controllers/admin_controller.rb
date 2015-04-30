@@ -104,8 +104,9 @@ class AdminController < ApplicationController
   def photos_list_for_collection
     @collections = Collection.all.to_a
     page = params[:page] || 1
-    @photos = Photos.only(:id, :data_filename, :collection_ids).
-      desc(:created_at).page(page).per_page(50)
+    offst = (page - 1) * 50
+    @photos = Photo.only(:id, :data_filename, :collection_ids).
+      desc(:created_at).skip(offst).limit(50)
   end
 
   def flagged_users

@@ -37,7 +37,7 @@ Fontli::Application.configure do
   # config.logger = SyslogLogger.new
 
   # Use a different cache store in production
-  config.cache_store = :file_store
+  config.cache_store = :file_store, "tmp/cache"
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -59,4 +59,4 @@ Fontli::Application.configure do
   config.active_support.deprecation = :notify
 end
 
-APP_HOST_URL = 'http://chennai.pramati.com:8282'
+APP_HOST_URL = 'http://staging.fontli.com'
