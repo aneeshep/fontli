@@ -202,14 +202,15 @@ class Photo
     end
 
     def cached_popular
-      Rails.cache.fetch('popular_photos', :expires_in => 1.day.seconds.to_i) do
-        pops = self.all_popular.limit(POPULAR_LIMIT).to_a
+      pop_ids = Rails.cache.fetch('popular_photos', :expires_in => 1.day.seconds.to_i) do
+        pops = self.all_popular.limit(POPULAR_LIMIT).pluck(:_id)
         # add recent fotos if there aren't enough populars
         if pops.length < POPULAR_LIMIT
-          pops += self.recent(POPULAR_LIMIT - pops.length)
+          pops += self.recent(POPULAR_LIMIT - pops.length).pluck(:_id)
         end
         pops
       end
+      self.where(:_id.in => pop_ids).desc(:likes_count, :created_at).to_a
     end
 
     def popular
