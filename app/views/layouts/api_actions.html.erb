@@ -15,7 +15,11 @@
       /******reset*****/
       @media screen and (orientation:portrait) { section {width:320px;} }
       @media screen and (orientation:landscape) { section{width:480px;} }
-      body.android section { width: 100%; }
+      body.android section { font-family:roboto; width:100%; }
+      body.android .updates li { margin-right:5px; }
+      body.android .ref-usr img, body.android .ref-img { height:50px; width:50px; padding:0; margin:0; }
+      body.android a.author { color: #000; }
+      body.android .text { font-size:15px; }
     </style>
 
     <%= render '/shared/android_css_fix' %>
