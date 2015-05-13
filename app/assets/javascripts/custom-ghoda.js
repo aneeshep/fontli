@@ -211,6 +211,7 @@ $(document).ready(function() {
     var targetId = $(this).closest('div').attr('id') + '_more';
     $('#'+targetId).toggle();
   });
+  /**
   $('.qrcode a, .qrcode-links a').click(function() {
     var klass = $(this).attr('class');
     var offset = $(window).scrollTop();
@@ -224,6 +225,7 @@ $(document).ready(function() {
     $('#qr_pop').hide();
     $("body").css("overflow", "inherit");
   });
+  **/
   $('.comment-form').live('submit', function(e) {
     var url = $(this).attr('action');
     var input = $('.comment-form input[name=comment]');
