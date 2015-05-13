@@ -298,7 +298,7 @@ class ApiActionsController < ApiBaseController
     # because we send notifications only to recent device the user has logged in.
     push_notif_attrs = [:wp_toast_url, :iphone_token, :android_registration_id]
     if (push_notif_attrs & attrs.keys).any?
-      allowed_attr = push_notif_attrs.select { |attr| attrs[attr].present? }
+      allowed_attr = push_notif_attrs.detect { |attr| attrs[attr].present? }
       attrs_to_reset = push_notif_attrs - [allowed_attr]
       attrs_to_reset.each { |attr| attrs[attr] = nil }
       # set any additional attrs
