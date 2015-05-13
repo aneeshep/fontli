@@ -69,22 +69,28 @@
       </div>
     </div>
     <h1 style='color:#999;'>Fontli is a social network for typoholics. Capture typography around you and share it. Let the typetalk develop on Fontli.</h1>
-    <% apple_href = wp_href = 'javascript:;' %>
-    <% apple_class, wp_class = 'apple', 'wp' %>
+    <% android_href = apple_href = wp_href = 'javascript:;' %>
+    <% android_class, apple_class, wp_class = 'android', 'apple', 'wp' %>
     <% if mob_req? # take them directly to app download url %>
-      <% apple_class = wp_class = '' %>
+      <% android_class = apple_class = wp_class = '' %>
+      <% android_href = 'https://play.google.com/store/apps/details?id=com.imaginea.fontli' %>
       <% apple_href = 'http://itunes.apple.com/us/app/fontli/id506650372?ls=1&mt=8' %>
       <% wp_href = 'http://www.windowsphone.com/s?appid=0d09f01f-17de-4757-b63c-a1cb32fbd655' %>
     <% end %>
     <div class="qrcode">
       <div class="app-download">
+        <a href="<%= android_href %>" class='<%= android_class %>'>
+          <img src="<%= asset_path('Google-Play.png') %>" width="120" height="30" alt="android-store" title="Play Store" />
+        </a>
+      </div>
+      <div class="app-download">
         <a href="<%= apple_href %>" class='<%= apple_class %>'>
-          <img src="<%= asset_path('App-Store.png') %>" width="160" height="50" alt="app-store" title="app-store" />
+          <img src="<%= asset_path('App-Store.png') %>" width="120" height="30" alt="app-store" title="App Store" />
         </a>
       </div>
       <div class="app-store">
         <a href="<%= wp_href %>" class='<%= wp_class %>'>
-          <img src="<%= asset_path('Windows-store.png') %>" width="160" height="50" alt="windows-store" title="windows-store" />
+          <img src="<%= asset_path('Windows-store.png') %>" width="120" height="30" alt="windows-store" title="Windows Store" />
         </a>
       </div>
     </div>
