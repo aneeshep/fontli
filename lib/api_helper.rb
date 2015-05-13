@@ -175,7 +175,7 @@ module ApiHelper
                          :collections => [:id, :name, :can_follow?],
                          :fonts_ord => [:user_id, :family_unique_id, :family_name, :family_id, :subfont_name, :subfont_id,
                                         :tags_count, :agrees_count, :pick_status, :my_fav?, :expert_tagged] },
-    :update_profile => { :accepts => [[:email, :full_name, :description, :website, :iphone_token, :wp_toast_url, :avatar]],
+    :update_profile => { :accepts => [[:email, :full_name, :description, :website, :iphone_token, :android_registration_id, :wp_toast_url, :avatar]],
                          :returns => true },
     :user_friends   => { :accepts => [[:user_id, :page]],
                          :returns => [:url_thumb, :username, :full_name, :email, :id, :friendship_state] },

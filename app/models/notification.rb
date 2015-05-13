@@ -66,7 +66,8 @@ private
   # TODO: Background this.
   def send_wp_toast_notif
     wp_url = self.to_user.wp_toast_url
-    return true if wp_url.blank?
+    # check for android device
+    return send_android_notif if wp_url.blank?
 
     u = URI.parse(wp_url)
     req = Net::HTTP::Post.new(u.path)
@@ -88,6 +89,16 @@ private
     resp = Net::HTTP.start(u.host, u.port) do |http|
       http.request(req)
     end
+    true
+  end
+
+  def send_android_notif
+    regis_ids = [self.to_user.android_registration_id]
+    return true if regis_id.blank?
+
+    gcm = GCM.new(SECURE_TREE['gcm_api_key'])
+    options = { data: { message: self.message } }
+    response = gcm.send(regis_ids, options)
     true
   end
 end

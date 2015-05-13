@@ -294,17 +294,17 @@ class ApiActionsController < ApiBaseController
 
   def update_profile
     attrs = current_api_valid_accepts_map
-    # a user should have either an active iphone_token or wp_url
+    # a user should have either an active iphone_token, android_registration_id or wp_url
     # because we send notifications only to recent device the user has logged in.
-    if attrs.keys.include?(:iphone_token)
-      attrs[:iphone_token_updated_at] = Time.zone.now
-      attrs[:wp_toast_url] = nil
-    elsif attrs.keys.include?(:wp_toast_url)
-      # only windows mob would send 'nil' for toast url
-      # when the user opts to disable toast notification.
-      val = attrs[:wp_toast_url]
-      attrs[:iphone_token] = nil unless val.blank?
+    push_notif_attrs = [:wp_toast_url, :iphone_token, :android_registration_id]
+    if (push_notif_attrs & attrs.keys).any?
+      allowed_attr = push_notif_attrs.select { |attr| attrs[attr].present? }
+      attrs_to_reset = push_notif_attrs - [allowed_attr]
+      attrs_to_reset.each { |attr| attrs[attr] = nil }
+      # set any additional attrs
+      attrs[:iphone_token_updated_at] = Time.zone.now if allowed_attr == :iphone_token
     end
+
     resp = @current_user.update_attributes(attrs)
     render_response(resp, resp, @current_user.errors.full_messages)
   end
