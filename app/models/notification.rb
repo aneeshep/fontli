@@ -94,7 +94,7 @@ private
 
   def send_android_notif
     regis_ids = [self.to_user.android_registration_id]
-    return true if regis_id.blank?
+    return true if regis_ids.blank?
 
     gcm = GCM.new(SECURE_TREE['gcm_api_key'])
     options = { data: { message: self.message } }
