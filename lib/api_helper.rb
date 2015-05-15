@@ -14,7 +14,7 @@ module ApiHelper
                       :returns => [:name, :active] },
     :signin      => { :accepts => [:username, :password, :device_id],
                       :returns => 'Auth Token' },
-    :signup      => { :accepts => [:username, :email, :password, [:full_name, :description, :website, :platform, :extuid, :avatar]],
+    :signup      => { :accepts => [:username, :email, [:password, :full_name, :description, :website, :platform, :extuid, :avatar]],
                       :returns => [:id, :username, :email, :password, :url_thumb] },
     :signout     => { :accepts => [],
                       :returns => true },
@@ -245,6 +245,7 @@ module ApiHelper
   ERROR_MESSAGE_MAP =
   {
     :user_not_found     => 'User Not Found!',
+    :user_email_not_set => 'User has no email ID set!',
     :session_not_found  => 'Session Not Found!',
     :record_not_found   => 'Record Not Found!',
     :pass_blank         => 'Password cannot be blank.',

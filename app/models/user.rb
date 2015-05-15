@@ -68,7 +68,7 @@ class User
   has_many :suggestions, :dependent => :destroy
   has_many :sessions, :class_name => 'ApiSession', :dependent => :destroy
 
-  validates :email, :username, :presence => true, :uniqueness => { :case_sensitive => false }
+  validates :username, :presence => true, :uniqueness => { :case_sensitive => false }
   validates :password, :presence => true, :on => :create
   validates :username, :length => 5..15, :allow_blank => true
   validates :username, :format => {:with => /^[A-Z0-9._-]+$/i, :allow_blank => true, :message => "can only be alphanumeric with _-. chars."}
@@ -80,6 +80,7 @@ class User
   validates :avatar_content_type,
     :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/gif' },
     :if => lambda { has_avatar? }
+  validates :email, :presence => true, :unless => lambda { PLATFORMS.include? self.platform }
   validates :extuid, :presence => true, :if => lambda { PLATFORMS.include? self.platform }
 
   attr_accessor :password, :password_confirmation, :avatar, :avatar_url, :friendship_state, :invite_state
@@ -157,6 +158,7 @@ class User
     def forgot_pass(email_or_uname)
       u = self.by_uname_or_email(email_or_uname)
       return [nil, :user_not_found] if u.nil?
+      return [nil, :user_email_not_set] if u.email.blank?
       (u.password = rand_s) && u.hash_password
       saved = u.my_save(true)
 
@@ -708,6 +710,7 @@ private
   end
 
   def send_welcome_mail!
+    return if self.email.blank?
     AppMailer.welcome_mail(self).deliver
   end
 
