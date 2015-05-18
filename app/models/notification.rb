@@ -50,6 +50,21 @@ class Notification
     end
   end
 
+  def target
+    notifble = self.notifiable
+    case self.notifiable_type.to_s
+    when /Like|Comment/
+      notifble.photo
+    when /FontTag|Agree/
+      notifble.font.photo
+    when /Mention/
+      mentnble = notifble.mentionable
+      mentnble.is_a?(Comment) ? mentnble.photo : mentnble
+    when /Follow/
+      notifble.user
+    end
+  end
+
 private
 
   # sends push notification for every new notification
@@ -96,8 +111,16 @@ private
     regis_ids = [self.to_user.android_registration_id]
     return true if regis_ids.blank?
 
+    # additionally send notifiable_type and photo_id/user_id
+    targt = self.target
+    options = { data: {
+      message: self.message,
+      notifiable_type: self.notifiable_type,
+      target_id: targt.try(:id),
+      target_type: targt.try(:class).to_s
+    } }
+
     gcm = GCM.new(SECURE_TREE['gcm_api_key'])
-    options = { data: { message: self.message } }
     response = gcm.send(regis_ids, options)
     true
   end
