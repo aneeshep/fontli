@@ -29,7 +29,6 @@ Go to **http://localhost:3000/doc**
 
 ###Deployment:
 `cap deploy`
-`COMPILE_ASSETS=true cap deploy`
 
 ###Start push notifications:
 
