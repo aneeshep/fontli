@@ -34,4 +34,10 @@ class AppMailer < ActionMailer::Base
     mail(:to => 'info@fontli.com',
          :subject => "Feedback API - #{Rails.env}: #{feedbk.sugg_type}")
   end
+
+  def flag_notif_mail(target)
+    @target = target
+    mail(:to => 'admin@fontli.com',
+         :subject => "[#{Rails.env}] Suspension required")
+  end
 end

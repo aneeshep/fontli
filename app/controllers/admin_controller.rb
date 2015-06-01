@@ -48,8 +48,10 @@ class AdminController < ApplicationController
   end
 
   def activate_user
-    @res = User.unscoped.where(:_id => params[:id]).first.update_attribute(:active, true)
-    opts = @res ? {:notice => 'User account activated.'} : {:alert => 'Couldn\'t activate. Please try again!'}
+    usr = User.unscoped.where(:_id => params[:id]).first
+    usr.user_flags.destroy_all
+    res = usr.update_attributes(:active => true, :user_flags_count => 0)
+    opts = res ? {:notice => 'User account activated.'} : {:alert => 'Couldn\'t activate. Please try again!'}
     redirect_to '/admin/users', opts
   end
 
@@ -74,6 +76,29 @@ class AdminController < ApplicationController
       @select_photo = true
     end
     @delete_photo = true
+    @suspend_photo = true
+  end
+
+  def suspend_photo
+    @res = Photo.where(:_id => params[:id]).first.update_attribute(:active, false)
+    opts = @res ? {:notice => 'Photo suspended.'} : {:alert => 'Couldn\'t suspend. Please try again!'}
+    redirect_to '/admin/photos', opts
+  end
+
+  def suspended_photos
+    @page, @lmt = [1, 10]
+    @photos = Photo.inactive.order_by(sort_column => sort_direction).to_a
+    @title, params[:search] = ['Suspended Photos', 'Not Implemented']
+    @activate_photo = true
+    render :photos
+  end
+
+  def activate_photo
+    foto = Photo.unscoped.where(:_id => params[:id]).first
+    foto.flags.destroy_all
+    res = foto.update_attributes(:active => true, :flags_count => 0)
+    opts = res ? {:notice => 'Photo activated.'} : {:alert => 'Couldn\'t activate. Please try again!'}
+    redirect_to '/admin/photos', opts
   end
 
   def collections
@@ -112,9 +137,9 @@ class AdminController < ApplicationController
   def flagged_users
     @page, @lmt = [1, 10]
     params[:sort] ||= 'user_flags_count'
-    @users = User.unscoped.where(:user_flags_count.gte => User::ALLOWED_FLAGS_COUNT).order_by(sort_column => sort_direction).to_a
+    @users = User.flagged.order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Flagged Users', 'Not Implemented']
-    @unflag_user = true
+    @suspend_user = true
     @delete_user = true
     render :users
   end
@@ -130,9 +155,9 @@ class AdminController < ApplicationController
   def flagged_photos
     @page, @lmt = [1, 10]
     params[:sort] ||='flags_count'
-    @fotos = Photo.unscoped.where(:flags_count.gte => Photo::ALLOWED_FLAGS_COUNT).order_by(sort_column => sort_direction).desc(:flags_count).to_a
+    @fotos = Photo.flagged.order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Flagged Photos', 'Not Implemented']
-    @unflag_photo = true
+    @suspend_photo = true
     @delete_photo = true
     render :photos
   end

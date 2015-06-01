@@ -19,7 +19,7 @@ class Comment
   after_destroy :delete_assoc_font_tags
   include Notifiable
 
-  default_scope lambda { {:where => { :user_id.nin => User.inactive_ids }} }
+  default_scope lambda { where(:user_id.nin => User.inactive_ids) }
 
   class << self
     # delete_comment api finds comment bypassing the assoc photo, though its not recommended.

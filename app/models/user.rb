@@ -86,11 +86,13 @@ class User
   attr_accessor :password, :password_confirmation, :avatar, :avatar_url, :friendship_state, :invite_state
 
   before_save :set_hashed_password
-  after_save :save_avatar_to_file, :save_thumbnail
+  after_save :save_avatar_to_file, :save_thumbnail, :notify_flag
   after_destroy :delete_file
 
-  default_scope where(:active => true, :user_flags_count.lt => ALLOWED_FLAGS_COUNT)
+  default_scope where(:active => true)
   scope :non_admins, where(:admin => false)
+  scope :inactive, where(:active => false)
+  scope :flagged, where(:user_flags_count.gt => ALLOWED_FLAGS_COUNT)
   scope :experts, where(:expert => true)
   scope :leaders, non_admins.desc(:points).limit(LEADERBOARD_LIMIT)
   scope :following_collection, lambda { |c_id| where(:followed_collection_ids.in => [c_id]) }
@@ -199,9 +201,7 @@ class User
     end
 
     def inactive_ids
-      uids = self.unscoped.where(:active => false).only(:id).collect(&:id)
-      uids += self.unscoped.where(:user_flags_count.gte => ALLOWED_FLAGS_COUNT).only(:id).collect(&:id)
-      uids.uniq
+      self.inactive.pluck(:id)
     end
 
     # users with highest no. of posts within last 15 days.
@@ -630,6 +630,14 @@ class User
     self.fonts.where(:photo_id => foto.id).first
   end
 
+  def recent_photos
+    self.photos.limit(8).to_a
+  end
+
+  def label
+    self.username
+  end
+
 private
 
   def generate_rand(length = 8)
@@ -730,8 +738,9 @@ private
     File.extname(self.avatar_filename).gsub(/\.+/, '')
   end
 
-  def recent_photos
-    self.photos.limit(8).to_a
+  def notify_flag
+    if self.user_flags_count_changed? && self.user_flags_count > ALLOWED_FLAGS_COUNT
+      AppMailer.flag_notif_mail(self).deliver
+    end
   end
-
 end

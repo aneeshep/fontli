@@ -40,6 +40,12 @@
       <td><%= f.user.username rescue 'User Flagged' %></td>
       <td><%= f.created_dt %></td>
       <td>
+        <% if @suspend_photo %>
+          <%= link_to('Suspend', '/admin/suspend_photo?id='+f.id.to_s) %>
+        <% end %>
+        <% if @activate_photo %>
+          <%= link_to('Activate', '/admin/activate_photo?id='+f.id.to_s) %>
+        <% end %>
         <% if @approve_sos %>
           <%= link_to('Approve SoS', '/admin/approve_sos?photo_id='+f.id.to_s, :remote => true) %>
         <% end %>

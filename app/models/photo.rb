@@ -16,6 +16,7 @@ class Photo
   field :likes_count, :type => Integer, :default => 0
   field :comments_count, :type => Integer, :default => 0
   field :flags_count, :type => Integer, :default => 0
+  field :active, :type => Boolean, :default => true
   field :fonts_count, :type => Integer, :default => 0
   field :created_at, :type => Time
   field :position, :type => Integer
@@ -69,9 +70,10 @@ class Photo
 
   attr_accessor :data, :crop_x, :crop_y, :crop_w, :crop_h, :from_api, :liked_user, :commented_user, :cover
 
-  default_scope where(:caption.ne => DEFAULT_TITLE, :flags_count.lt => ALLOWED_FLAGS_COUNT) # default filters
+  default_scope lambda { where(:active => true, :caption.ne => DEFAULT_TITLE, :user_id.nin => User.inactive_ids) }
   scope :recent, lambda { |cnt| desc(:created_at).limit(cnt) }
   scope :unpublished, where(:caption => DEFAULT_TITLE)
+  scope :flagged, where(:flags_count.gt => ALLOWED_FLAGS_COUNT)
   scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:sos_requested_at)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
@@ -80,7 +82,7 @@ class Photo
   #before_save :crop_file # we receive only the cropped images from client.
   before_save :set_sos_approved_at
   after_create :populate_mentions
-  after_save :save_data_to_file, :save_thumbnail, :save_data_to_aws
+  after_save :save_data_to_file, :save_thumbnail, :save_data_to_aws, :notify_flag
   after_destroy :delete_file
 
   class << self
@@ -446,6 +448,10 @@ class Photo
     end
   end
 
+  def label
+    self.caption || self.id
+  end
+
 private
 
   def self.add_interaction_for(photo_id, klass, opts = {} )
@@ -562,6 +568,12 @@ private
       self.sos_approved_at = Time.now.utc
     end
     true
+  end
+
+  def notify_flag
+    if self.flags_count_changed? && self.flags_count > ALLOWED_FLAGS_COUNT
+      AppMailer.flag_notif_mail(self).deliver
+    end
   end
 
   #changes for hashsable polymorphic associations

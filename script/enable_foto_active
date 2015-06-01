@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require File.expand_path('../../config/environment', __FILE__)
+
+Photo.in_batches do |fotos|
+  fotos.each do |f|
+    inactive = f.flags_count > Photo::ALLOWED_FLAGS_COUNT
+    f.update_attribute(:active, !inactive)
+  end
+end
+puts "done."
