@@ -140,6 +140,7 @@ class AdminController < ApplicationController
     @users = User.flagged.order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Flagged Users', 'Not Implemented']
     @suspend_user = true
+    @unflag_user = true
     @delete_user = true
     render :users
   end
@@ -158,12 +159,15 @@ class AdminController < ApplicationController
     @fotos = Photo.flagged.order_by(sort_column => sort_direction).to_a
     @title, params[:search] = ['Flagged Photos', 'Not Implemented']
     @suspend_photo = true
+    @unflag_photo = true
     @delete_photo = true
     render :photos
   end
 
   def unflag_photo
-    @res = Photo.unscoped.where(:_id => params[:id]).first.flags.destroy_all
+    foto = Photo.unscoped.where(:_id => params[:id]).first
+    @res = foto.flags.destroy_all
+    @res = @res && foto.update_attribute(:flags_count, 0)
   end
 
   def sos
