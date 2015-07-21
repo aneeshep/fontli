@@ -18,8 +18,9 @@ module Scorable
   def self.included(klss)
     super
     klss.class_eval do
-      after_create :add_user_points
-      after_destroy :negate_user_points
+      #TODO: Cleanup all related code; we don't use points effectively anymore
+      #after_create :add_user_points
+      #after_destroy :negate_user_points
 
       def scorable_source_user
         User.unscoped.where(:_id => self.user_id).first #unscoped bec. getting inactive users

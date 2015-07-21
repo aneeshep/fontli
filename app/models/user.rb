@@ -81,6 +81,7 @@ class User
     :inclusion => { :in => ALLOWED_TYPES, :message => 'should be jpg/gif' },
     :if => lambda { has_avatar? }
   validates :email, :presence => true, :unless => lambda { PLATFORMS.include? self.platform }
+  validates :email, :uniqueness => { :case_sensitive => false }, :allow_blank => true
   validates :extuid, :presence => true, :if => lambda { PLATFORMS.include? self.platform }
 
   attr_accessor :password, :password_confirmation, :avatar, :avatar_url, :friendship_state, :invite_state
