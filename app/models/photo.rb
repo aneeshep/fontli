@@ -75,7 +75,7 @@ class Photo
   scope :sos_requested, where(:font_help => true, :sos_approved => false).desc(:sos_requested_at)
   # Instead mark the photo as inactive when sos requested(to filter it across), and activate during approval
   # But even the user who uploaded it won't be able to see it. Need confirmation on this.
-  scope :non_sos_requested, or({:font_help => false}, {:font_help => true, :sos_approved => true})
+  scope :non_sos_requested, where(:sos_approved => true)
   scope :geo_tagged, where(:latitude.ne => 0, :longitude.ne => 0)
   scope :all_popular, Proc.new { where(:likes_count.gt => 1, :created_at.gt => 7.days.ago).desc(:likes_count) }
   scope :for_homepage, where(:show_in_homepage => true).desc(:created_at)
