@@ -6,10 +6,7 @@ class AdminController < ApplicationController
   #Add option to send generic push notifications.
 
   def index
-    @users_count = User.count
-    @fotos_count = Photo.count
-    @homepage_fotos_count = Photo.for_homepage.count
-    @stat = Stat.current
+    @admin_presenter = AdminPresenter.new
   end
 
   def users
