@@ -16,3 +16,7 @@ production:
   <<: *defaults
   bucket: "new_fontli_production"
   use_s3: true
+
+test:
+  <<: *defaults
+

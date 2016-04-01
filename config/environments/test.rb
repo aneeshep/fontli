@@ -37,3 +37,5 @@ Fontli::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 end
+
+APP_HOST_URL = 'http://localhost:3000'

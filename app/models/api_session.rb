@@ -35,9 +35,9 @@ class ApiSession
     self.expires_at > current_time
   end
 
-private
+  private
+
   def token_str
     self.auth_token + '||' + self.device_id
   end
-
 end
