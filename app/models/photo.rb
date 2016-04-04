@@ -20,7 +20,7 @@ class Photo
   field :created_at, :type => Time
   field :position, :type => Integer
   field :sos_requested_at, :type => Time
-  field :sos_requested_by, :type => Integer
+  field :sos_requested_by, :type => String
   field :sos_approved_at, :type => Time
   field :show_in_homepage, :type => Boolean, :default => false
   field :show_in_header, :type => Boolean, :default => false

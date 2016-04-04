@@ -13,20 +13,16 @@ class Agree
 
   after_create :inc_font_pick_status
   after_destroy :dec_font_pick_status
-
-  def notif_context
-    ['has accepted']
-  end
-
+  
   # consider an agree from sos_requestor as publisher pick.
   def publisher_pick?
     (self.user_id == self.font.photo.user_id) || sos_requestor_pick?
   end
 
   def sos_requestor_pick?
-    self.user_id == self.font.photo.sos_requested_by
+    user_id.to_s == font.photo.sos_requested_by
   end
-
+  
   def expert_pick?
     self.user.expert
   end
@@ -48,7 +44,7 @@ class Agree
     (expert_pick? || publisher_pick?) ? 10 : 1
   end
 
-private
+  private
 
   # increment method
   def inc_font_pick_status

@@ -42,7 +42,8 @@ end
 group :test do
   gem 'turn', :require => false # Pretty printed test output
   gem 'mongoid-minitest'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails'	
   gem 'faker'
   gem 'rubocop', require: false
+  gem 'database_cleaner'
 end
