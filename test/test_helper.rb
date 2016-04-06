@@ -12,13 +12,10 @@ require 'minitest/mock'
 Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
 DatabaseCleaner[:mongoid].strategy = :truncation
 
-class ActiveSupport::TestCase
-  # Add more helper methods to be used by all tests here...
-end
-
 class MiniTest::Spec
   include Mongoid::Matchers
   include FactoryGirl::Syntax::Methods
+  include MongoExtensions
 
   before :each do
     DatabaseCleaner.start
@@ -26,5 +23,7 @@ class MiniTest::Spec
 
   after :each do
     DatabaseCleaner.clean
+    FileUtils.rm_rf(File.join(Rails.root, 'public', 'test_avatars'))
+    FileUtils.rm_rf(File.join(Rails.root, 'public', 'test_photos'))
   end
 end

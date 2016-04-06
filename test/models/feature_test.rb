@@ -7,4 +7,5 @@ describe Feature do
   it { must have_fields(:active).of_type(Boolean) }
 
   it { must validate_presence_of(:name) }
+  it { must validate_inclusion_of(:name).to_allow(Feature::VALID_FEATURES) }
 end

@@ -39,12 +39,15 @@ describe ApiSession do
   end
 
   describe '#deactivate' do
-    before do
+    it 'should set the auth_token to nil' do
       active_session.deactivate
+      active_session.auth_token.must_be_nil
     end
 
-    it 'should set the auth_token to nil' do
-      active_session.auth_token.must_be_nil
+    it 'should return nil if session is not deactivated' do
+      active_session.device_id = nil
+      active_session.save(validate: false)
+      active_session.deactivate
     end
   end
 
