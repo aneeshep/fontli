@@ -5,6 +5,7 @@ RAILS_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
 require 'rubygems'
 require 'apn'
+require 'apn/jobs/resque_notification_job'
 require 'apn/sender_daemon'
 require File.expand_path('../../config/initializers/apn_sender_hacks', __FILE__)
 
