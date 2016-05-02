@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory Collection do
-    name { Faker::Name.name }
+    name { Faker::App.name }
   end
 end

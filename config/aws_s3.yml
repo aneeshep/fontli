@@ -19,4 +19,4 @@ production:
 
 test:
   <<: *defaults
-
+  bucket: "new_fontli_test"

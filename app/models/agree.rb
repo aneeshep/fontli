@@ -63,8 +63,8 @@ class Agree
     return true unless publisher_pick? || expert_pick? # no action req.
     fnt, sts_map = [self.font, Font::PICK_STATUS_MAP.dup]
     exp_pik, pub_pik = [ sts_map[:expert_pick], sts_map[:publisher_pick] ]
-    return true if expert_pick? && fnt.agrees.any?(&:expert_pick?) # some other expert has also agreed
-    return true if sos_requestor_pick? && fnt.agrees.any?(&:publisher_pick?) # its still a publisher pick
+    return true if expert_pick? && fnt.reload.agrees.any?(&:expert_pick?) # some other expert has also agreed
+    return true if sos_requestor_pick? && fnt.reload.agrees.any?(&:publisher_pick?) # its still a publisher pick
     fnt.inc(:pick_status, -(expert_pick? ? exp_pik : pub_pik))
     true
   end

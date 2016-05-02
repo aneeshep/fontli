@@ -3,10 +3,12 @@ config/mongoid.yml
 db/*.sqlite3
 log/*.log
 tmp/
+coverage
 .sass-cache/
 public/photos/
 public/avatars/
 public/fonts/
 public/assets
+public/test_*/
 .project
-coverage
+*~
