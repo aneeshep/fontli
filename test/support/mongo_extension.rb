@@ -6,8 +6,4 @@ module MongoExtensions
   def request_domain
     'http://localhost:3000'
   end
-
-  def controller
-    Thread.current[:current_controller]
-  end
 end

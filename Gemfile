@@ -46,4 +46,5 @@ group :test do
   gem 'faker'
   gem 'rubocop', require: false
   gem 'database_cleaner'
+  gem 'mocha'
 end
