@@ -113,9 +113,8 @@ describe Notification do
     let(:notification) { create(:notification, :for_follow, to_user: create(:user, iphone_token: SecureRandom.hex(3))) }
 
     it 'should return true' do
-      APN.stub :notify_async, true do
-        notification.send(:send_apn).must_equal true
-      end
+      APN.stubs(:notify_async).returns(true)
+      notification.send(:send_apn).must_equal true
     end
   end
 
