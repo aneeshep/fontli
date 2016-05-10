@@ -2,6 +2,7 @@
 config/mongoid.yml
 db/*.sqlite3
 log/*.log
+log/*.txt
 tmp/
 coverage
 .sass-cache/

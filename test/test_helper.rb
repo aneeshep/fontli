@@ -8,6 +8,7 @@ require 'minitest/autorun'
 require 'mongoid'
 require 'mongoid-minitest'
 require 'action_controller/test_case'
+require 'active_support/testing/assertions'
 require 'mocha/mini_test'
 
 Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f }
@@ -40,6 +41,7 @@ class ControllerSpec < MiniTest::Spec
   include Rails.application.routes.url_helpers
   include ActionController::TestCase::Behavior
   include Test::Unit::Assertions
+  include ActiveSupport::Testing::Assertions
 
   before do
     @routes = Rails.application.routes
