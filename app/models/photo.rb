@@ -147,12 +147,13 @@ class Photo
       self.add_interaction_for(photo_id, :likes, opts)
     end
 
-    def unlike_for(photo_id, usr_id)
-      foto = self[photo_id]
-      return [nil, :photo_not_found] if foto.nil?
-      lk = foto.likes.where(:user_id => usr_id).first
-      return [nil, :record_not_found] if lk.nil?
-      lk.destroy ? foto.reload : [nil, :unable_to_save]
+    def unlike_for(photo_id, user_id)
+      if photo = self[photo_id]
+        photo.likes.where(:user_id => user_id).first.try(:destroy)
+        photo.reload
+      else
+        [nil, :record_not_found]
+      end
     end
 
     def add_flag_for(photo_id, usr_id)

@@ -27,14 +27,18 @@ namespace :photos do
     start = Time.now.utc
     count = 0
 
-    Photo.in_batches(100, :created_at.gt => last_ran_at) do |fotos|
-      fotos.each do |f|
-        lks_count = f.likes.count
-        next if lks_count == f.likes_count
-        f.update_attribute(:likes_count, lks_count)
+    Photo.in_batches(100, :created_at.gt => last_ran_at) do |photos|
+      photos.each do |photo|
+        next if photo.likes_count == photo.likes.count
+      	Photo.reset_counters(photo.id, :likes)
         count += 1
-      end # fotos
+      end # photos
     end # batches
+
+    Photo.where(:likes_count.lt => 0).each do |photo|
+      Photo.reset_counters(photo.id, :likes)
+      count += 1
+    end
 
     Stat.current.update_attribute(:photo_likes_count_checked_at, Time.now.utc - 5.minutes) # 5 mins buffer
     puts "Completed in #{(Time.now.utc - start) / 60} mins."

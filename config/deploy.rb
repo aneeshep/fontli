@@ -58,4 +58,16 @@ namespace :deploy do
     end
   end
 
+  #cap development deploy:invoke task=task_namespace:task_name
+  #e.g. cap development deploy:invoke task=photos:verify_likes_count
+  desc 'Invoke rake task on the server'
+  task :invoke do
+    on roles(:app), in: :sequence, wait: 15 do
+      within release_path do
+        with rails_env: :production do
+          execute :rake, ENV['task']
+        end
+      end
+    end
+  end
 end

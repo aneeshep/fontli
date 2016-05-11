@@ -11,7 +11,7 @@ gem 'airbrake', '4.0.0'
 gem 'redis', '3.1.0'
 gem 'resque', '1.25.2'
 gem 'resque_mailer', '2.2.6'
-gem 'apn_sender', '2.0.1', :require => 'apn'
+gem 'apn_sender', '2.0.1', :require => ['apn', 'apn/jobs/resque_notification_job']
 gem 'gcm', '~> 0.1.0'
 gem 'newrelic_rpm', '3.9.0.229'
 gem 'fog', '1.23.0'

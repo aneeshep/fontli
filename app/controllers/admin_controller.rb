@@ -217,13 +217,15 @@ class AdminController < ApplicationController
       return
     end
 
-    usrs = User.non_admins.where(:iphone_token.ne => nil).to_a
-    usrs.each do |u|
-      notif_cnt = u.notifications.unread.count
-      opts = { :badge => notif_cnt, :alert => params[:message], :sound => true }
-      APN.notify(to_usr.iphone_token, opts)
+    users = User.non_admins.where(:iphone_token.ne => nil)
+    users.each do |user|
+      opts = { :badge => user.notifications.unread.count,
+               :alert => params[:message],
+               :sound => true }
+      APN.notify_async(user.iphone_token, opts)
     end
-    redirect_to '/admin', :notice => "Notified #{usrs.length} users."
+    
+    redirect_to '/admin', :notice => "Notified #{users.length} users."
   end
 
 private
