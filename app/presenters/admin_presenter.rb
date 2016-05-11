@@ -51,11 +51,14 @@ class AdminPresenter
   end
 
   def users_with_one_photo
-    User.all.select{|u| u.photos_count == 1}.count 
+    Photo.collection.aggregate({ "$match" => { caption: {'$ne' =>  Photo::DEFAULT_TITLE}, 
+                                   flags_count: {'$lt' => Photo::ALLOWED_FLAGS_COUNT}}},
+                               { '$group' => {_id: '$user_id', 'photos_count' => { "$sum" => 1 }}},
+                               {"$match" => { photos_count: 1}}).count
   end
 
   def login_medium
-    ['email'].concat(User::PLATFORMS).join(', ')
+    ['email'].concat(User::PLATFORMS).collect(&:titleize).join(', ')
   end
 
   def shared_post_count
