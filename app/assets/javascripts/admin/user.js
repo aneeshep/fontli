@@ -73,7 +73,7 @@ $(document).ready(function() {
 	}
       },
       series: [ { name: 'Twitter', data: twitterData },
-		{ name: 'Facebook', data: facebookData } ],
+		{ name: 'Facebook', color: '#365899', data: facebookData } ],
       drilldown: {
 	activeDataLabelStyle: {
           color: 'white',
