@@ -4,7 +4,9 @@ $(document).ready(function() {
     var facebookData = [];
     var twitterData = [];
 
-    $.getJSON('/admin/twitter_users', function( data ) { 
+    Highcharts.setOptions({ lang: { thousandsSep: ',' }});
+
+    $.getJSON('/admin/user_stats?platform=twitter', function( data ) { 
       $.each( data, function( key, val ) {
         var twitter_user = {};
         twitter_user['name'] = key;
@@ -20,11 +22,12 @@ $(document).ready(function() {
       });
     });
 	
-    $.getJSON('/admin/facebook_users', function( data ) { 
+    $.getJSON('/admin/user_stats?platform=facebook', function( data ) { 
       $.each( data, function( key, val ) {
 	var fb_user = {};
 	fb_user.name = key;
 	fb_user.y = val.total_count;
+	fb_user.color = '#365899';
 	fb_user.drilldown = 'facebook_' + key;
 	facebookData.push(fb_user);
 	      
@@ -44,6 +47,9 @@ $(document).ready(function() {
       title: {
 	text: 'Users Statistics'
       },
+      yAxis: {
+	  title: { text: 'Count of Signup'}
+      },
       xAxis: { 
 	type: 'category'
       },
@@ -58,8 +64,9 @@ $(document).ready(function() {
 	    enabled: true,
 	    style: 
 	      {
-                color: 'white',
-                textShadow: '0 0 2px black, 0 0 2px black'
+                color: 'White',
+                textShadow: false,
+                fontSize: '12px'
 	      }
 	  },
 	  stacking: 'normal'
@@ -70,7 +77,8 @@ $(document).ready(function() {
       drilldown: {
 	activeDataLabelStyle: {
           color: 'white',
-          textShadow: '0 0 2px black, 0 0 2px black'
+          textShadow: false,
+          fontSize: '12px'
 	},
 	series: []
       }

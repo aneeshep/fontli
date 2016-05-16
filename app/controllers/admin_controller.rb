@@ -231,20 +231,9 @@ class AdminController < ApplicationController
   def users_statistics
   end
 
-  def facebook_users
-    users = User.order_by(:created_at => :asc).collection.
-                  aggregate({ '$match' => {admin: false, platform: 'facebook'} }, 
-                            {'$group'  => {_id: { 'month' => { '$month' => '$created_at' }, 
-                                  'year' => {'$year' => '$created_at'}}, 'count' => { '$sum' => 1 }}})
-    render :json => Hash[users_data(users).sort]
-  end
-
-  def twitter_users
-    users = User.order_by(:created_at => :asc).collection.
-                  aggregate({ '$match' => {admin: false, platform: 'twitter'} }, 
-                            {'$group'  => {_id: { 'month' => { '$month' => '$created_at' }, 
-                                  'year' => {'$year' => '$created_at'}}, 'count' => { '$sum' => 1 }}})
-    render :json => Hash[users_data(users).sort]
+  def user_stats
+    result = params[:platform].present? ? Hash[users_data(params[:platform]).sort] : {} 
+    render :json => result
   end
 
 private
@@ -256,7 +245,11 @@ private
     params[:direction].blank? ? "desc" : params[:direction]
   end
 
-  def users_data(users)
+  def users_data(platform)
+    users = User.order_by(:created_at => :asc).collection.
+                  aggregate({ '$match' => {admin: false, platform: "#{platform}"} }, 
+                            {'$group'  => {_id: { 'month' => { '$month' => '$created_at' }, 
+                                  'year' => {'$year' => '$created_at'}}, 'count' => { '$sum' => 1 }}})
     {}.tap do |h|
       users.each do |user|
         year = user['_id']['year']
