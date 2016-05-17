@@ -34,6 +34,7 @@
   <li>New users since <%= Time.now.beginning_of_month %>: <%= @admin_presenter.new_users_count %></li>
   <li>New users in past 30 days: <%= @admin_presenter.users_in_past_30_days %></li>
   <li>Users with atleast one photo: <%= @admin_presenter.users_with_photos %></li>
+  <li>Users with just one post: <%= @admin_presenter.users_with_one_photo %></li>
   <li>Number of users currently active: <%= @admin_presenter.online_users_count %></li> 
   <li>Users sharing to other platforms: <%= @admin_presenter.users_sharing_to_other_platforms %></li>
 
