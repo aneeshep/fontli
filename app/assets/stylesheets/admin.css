@@ -4,6 +4,7 @@ body {
 
 .pagination {
   float: right;
+  margin: 0;
 }
 
 .pagination a {
