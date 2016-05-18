@@ -240,13 +240,13 @@ class AdminController < ApplicationController
     sort_by   = params[:sort] || 'photos_count'
     direction = params[:direction] || 'desc'
     
-    @top_contributors = User.non_admins.where(:photos_count.gt => 0).order_by(sort_by => direction)
+    @top_contributors = User.non_admins.where(:photos_count.gt => 0).order_by(sort_by => direction).limit(100)
     @top_contributors = @top_contributors.search(params[:search]) if params[:search].present?
     
     if request.format.csv?
       send_data top_contributors_csv, type: 'text/csv', filename: "top_contributors.csv"
     else
-      @top_contributors = @top_contributors.page(params[:page]).per(25) unless params[:search].to_s.present?
+      @top_contributors = Kaminari.paginate_array(@top_contributors.to_a).page(params[:page]).per(25)
     end
   end
   
