@@ -236,6 +236,20 @@ class AdminController < ApplicationController
     render :json => result
   end
 
+  def top_contributors
+    sort_by   = params[:sort] || 'photos_count'
+    direction = params[:direction] || 'desc'
+    
+    @top_contributors = User.non_admins.where(:photos_count.gt => 0).order_by(sort_by => direction)
+    @top_contributors = @top_contributors.search(params[:search]) if params[:search].present?
+    
+    if request.format.csv?
+      send_data top_contributors_csv, type: 'text/csv', filename: "top_contributors.csv"
+    else
+      @top_contributors = @top_contributors.page(params[:page]).per(25) unless params[:search].to_s.present?
+    end
+  end
+  
 private
   def sort_column
     params[:sort].blank? ? "created_at" : params[:sort]
@@ -269,5 +283,16 @@ private
 
   def months_list
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  end
+
+  def top_contributors_csv
+    CSV.generate(headers: true) do |csv|
+      csv << ['Username', 'Full Name', 'Email', 'Photos', 'Platform', 'Flag Count', 'Avatar', 'Created At']
+      
+      @top_contributors.each do |user|
+        full_name = user.full_name.to_s.encode('utf-8', 'binary', invalid: :replace, undef: :replace)
+        csv << [user.username, full_name, user.email, user.photos_count, user.platform, user.user_flags_count, user.url_thumb, user.created_dt]
+      end
+    end
   end
 end
