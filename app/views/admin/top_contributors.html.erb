@@ -29,7 +29,7 @@
     <% @top_contributors.each_with_index do |u, i| %>
     <% fotos_cnt = u.photos_count %>
     <tr id='usr_<%= u.id.to_s %>'>
-      <td><%= (@page - 1) * @lmt + i + 1 %></td>
+      <td><%= current_index(i, 25, params[:page]) %></td>
       <td><img src='<%= u.url_thumb %>' /></td>
       <td><%= u.username %></td>
       <td><%= u.full_name %></td>
@@ -48,13 +48,4 @@
   </tbody>
 </table>
 
-<% if params[:search].to_s.blank? %>
-<ul class='pager'>
-  <li class='previous <%= 'disabled' if @page == 1 %>'>
-    <%= link_to "&larr; Previous".html_safe, url_for(params.merge(page: @page - 1)) %>
-  </li>
-  <li class='next <%= 'disabled' if @page >= @max_page %>'>
-    <%= link_to "Next &rarr;".html_safe, url_for(params.merge(page: @page + 1)) %>
-  </li>
-</ul>
-<% end %>
+<%= paginate @top_contributors %>

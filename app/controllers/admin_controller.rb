@@ -237,9 +237,7 @@ class AdminController < ApplicationController
   end
 
   def top_contributors
-    @page, @lmt = [(params[:page] || 1).to_i, 25]
-    offst       = (@page - 1) * @lmt
-    sort_by = params[:sort] || 'photos_count'
+    sort_by   = params[:sort] || 'photos_count'
     direction = params[:direction] || 'desc'
     
     @top_contributors = User.non_admins.where(:photos_count.gt => 0).order_by(sort_by => direction)
@@ -248,8 +246,7 @@ class AdminController < ApplicationController
     if request.format.csv?
       send_data top_contributors_csv, type: 'text/csv', filename: "top_contributors.csv"
     else
-      @max_page  = (@top_contributors.count / @lmt.to_f).ceil
-      @top_contributors = @top_contributors.skip(offst).limit(@lmt) unless params[:search].to_s.present?
+      @top_contributors = @top_contributors.page(params[:page]).per(25) unless params[:search].to_s.present?
     end
   end
   
