@@ -1,5 +1,5 @@
 <h3>Top Contributors
-  <span class="badge badge-info"><%= @top_contributors.length %></span>
+  <span class="badge badge-info"><%= @top_contributors.total_count %></span>
   <%= link_to "Export as CSV", url_for(params.merge(format: :csv)), class: 'btn pull-right' %>
 </h3>
 
@@ -48,5 +48,4 @@
     <% end %>
   </tbody>
 </table>
-
 <%= paginate @top_contributors %>
