@@ -1,5 +1,5 @@
 <h3>Top Contributors
-  <span class="badge badge-info"><%= @top_contributors.length %></span> 
+  <span class="badge badge-info"><%= @top_contributors.length %></span>
   <%= link_to "Export as CSV", url_for(params.merge(format: :csv)), class: 'btn pull-right' %>
 </h3>
 
@@ -26,10 +26,11 @@
     </tr>
   </thead>
   <tbody>
+    <% count = ((params[:page] || 1).to_i - 1) * 25 %>
     <% @top_contributors.each_with_index do |u, i| %>
     <% fotos_cnt = u.photos_count %>
     <tr id='usr_<%= u.id.to_s %>'>
-      <td><%= current_index(i, 25, params[:page]) %></td>
+      <td><%= count += 1 %></td>
       <td><img src='<%= u.url_thumb %>' /></td>
       <td><%= u.username %></td>
       <td><%= u.full_name %></td>
